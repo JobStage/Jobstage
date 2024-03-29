@@ -7,6 +7,9 @@ require_once './class/formacao.php';
 require_once './class/empresa.php';
 require_once './class/mensagem.php';
 require_once './class/vaga.php';
+require_once './class/Perguntas.php';
+require_once './class/Candidatura.php';
+require_once './class/Curriculo.php';
 
 $aluno = new Aluno();
 $dataAluno = new DateTime('2024-01-01');
@@ -49,3 +52,13 @@ $mensagem->enviarMensagem('Conteudo...');
 
 $vaga = new Vaga();
 $vaga->cadastrar(1, 'Estagio QA', 'resolucao de problemas', 'Cursando 3°Período', 'Paraná', 'Curitiba');
+
+$perguntas = new Perguntas();
+$perguntas->candidatar(1,890567);
+
+$candidatura = new Candidatura();
+$candidatura->mostrarCandidaturas(1,890590);
+
+$curriculo = new Curriculo();
+$curriculo->gerarCurriculo(35);
+$curriculo->baixarCurriculo(35);
