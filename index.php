@@ -10,6 +10,9 @@ require_once './class/vaga.php';
 require_once './class/Perguntas.php';
 require_once './class/Candidatura.php';
 require_once './class/Curriculo.php';
+require_once './class/agencia.php';
+require_once './class/contrato.php';
+require_once './class/instituicao.php';
 
 $aluno = new Aluno();
 $dataAluno = new DateTime('2024-01-01');
@@ -62,3 +65,14 @@ $candidatura->mostrarCandidaturas(1,890590);
 $curriculo = new Curriculo();
 $curriculo->gerarCurriculo(35);
 $curriculo->baixarCurriculo(35);
+
+$contrato = new Contrato();
+$contrato->listarContrato();
+
+$instituicao = new Instituicao();
+$instituicao->cadastrarInstituicao(1, 'Instituição X', 'Rua Roberto carlos, 159', 40028922,);
+$instituicao->editarInstituicao(1);
+$instituicao->excluirInstituicao(1);
+
+$agencia = new Agencia();
+$agencia->validaMatricula();
