@@ -1,6 +1,8 @@
 # Jobstage
 Repositório para TCC
 
-teste
-teste 2 meus hermanos, testando
-testado
+
+João Paulo Magalhães Tomaz de Aquino 
+Júlio Cesar Magalhães Tomaz de Aquino 
+Nelson Olech Fragozo da Silva 
+Wagner Lara da Rosa 
