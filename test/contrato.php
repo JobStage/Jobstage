@@ -1,6 +1,6 @@
 <?php
-require_once 'class\contrato.php';
-require_once 'class\agencia.php';
+require_once '../class/contrato.php';
+require_once '../class/agencia.php';
 
 $agencia = new Agencia(1, 'Agencia X');
 

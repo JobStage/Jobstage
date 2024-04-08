@@ -1,6 +1,6 @@
 <?php
-require_once 'class\Empresa.php';
-require_once 'class\Vaga.php';
+require_once '../class/Empresa.php';
+require_once '../class/Vaga.php';
 
 $vaga = new Vaga(1);
 
