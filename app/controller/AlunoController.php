@@ -1,6 +1,7 @@
 <?php
 require_once "../model/Aluno.php";
 
+
 class AlunoController{
     private int $idAluno; 
     private string $nome; 
@@ -12,11 +13,12 @@ class AlunoController{
     private string $telefone; 
     private string $linkedin; 
     private string $descricao; 
-    private $alunoModel;
     private $dataNasc;
 
+    private $alunoModel;
+
     public function __construct(int $idAluno) {
-        $aflunoModel = new AlunoModel(); // instanciando classe da model
+        $alunoModel = new AlunoModel(); // instanciando classe da model
     } 
 
     public function cadastrarAluno(string $nome, string $curso, int $semestre, string $email, string $senha, string $estadoCivil, string $telefone, string $linkedin, string $descricao, DateTime $dataNasc) {
