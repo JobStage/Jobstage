@@ -1,6 +1,6 @@
 <?php
-require_once '../class/experiencia.php';
-require_once '../class/aluno.php';
+require_once '../class/Experiencia.php';
+require_once '../class/Aluno.php';
 
 $aluno = new Aluno(1);
 
