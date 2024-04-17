@@ -1,8 +1,8 @@
 <?php
 // Na model existirão todas as interações com o BANCO DE DADOS
 
-require_once "../config/conexao.php";
-class Aluno{
+require_once '../app/config/conexao.php';
+class AlunoModel{
 
     private $conn; // variavel para conexao com banco
 

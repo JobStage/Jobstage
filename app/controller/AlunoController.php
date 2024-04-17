@@ -16,7 +16,7 @@ class AlunoController{
     private $dataNasc;
 
     public function __construct(int $idAluno) {
-        $this->alunoModel = new Aluno(); // instanciando classe da model
+        $aflunoModel = new AlunoModel(); // instanciando classe da model
     } 
 
     public function cadastrarAluno(string $nome, string $curso, int $semestre, string $email, string $senha, string $estadoCivil, string $telefone, string $linkedin, string $descricao, DateTime $dataNasc) {
