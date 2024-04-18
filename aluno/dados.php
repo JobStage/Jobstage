@@ -18,7 +18,7 @@ ob_start();
         <form class="row g-3">
             <div class="col-lg-6">
                 <label for="nome" class="form-label">Nome</label>
-                <input type="email" class="form-control" id="nome">
+                <input type="text" class="form-control" id="nome" required>
             </div>
             <div class="col-lg-6">
                 <label for="email" class="form-label">E-mail</label>
@@ -26,15 +26,15 @@ ob_start();
             </div>
             <div class="col-lg-4">
                 <label for="nasc" class="form-label">Data nasc.</label>
-                <input type="date" class="form-control" id="nasc">
+                <input type="date" class="form-control" id="nasc" required>
             </div>
             <div class="col-lg-4">
                 <label for="telefone" class="form-label">Telefone</label>
-                <input type="input" class="form-control" id="telefone">
+                <input type="input" class="form-control" id="telefone" required>
             </div>
             <div class="col-lg-4">
                 <label for="civil" class="form-label">Estado civil</label>
-                <select class="form-select" id="optionsList">
+                <select class="form-select" id="optionsList" required>
                     <option value=''> </option>
                     <option value='Solteiro(a)'>Solteiro(a)</option>
                     <option value='Casado(a)'>Casado(a)</option>
@@ -44,7 +44,7 @@ ob_start();
 
             <div class="col-lg-6">
                 <label for="estado" class="form-label">Estado</label>
-                <select class="form-select" id="estado">
+                <select class="form-select" id="estado" required>
                     <option value=''> </option>
                     <?php
                         $estado->listaEstado();
@@ -53,7 +53,7 @@ ob_start();
             </div>
             <div class="col-lg-6">
                 <label for="cidade" class="form-label">Cidade</label>
-                <select class="form-select" id="optionsList">
+                <select class="form-select" id="optionsList" required>
                     <option value=''> </option>
                    
                 </select>
@@ -61,15 +61,15 @@ ob_start();
 
             <div class="col-lg-4">
                 <label for="cep" class="form-label">CEP</label>
-                <input type="text" class="form-control" id="cep">
+                <input type="text" class="form-control" id="cep" required>
             </div>
             <div class="col-lg-6">
                 <label for="rua" class="form-label">Rua</label>
-                <input type="text" class="form-control" id="rua">
+                <input type="text" class="form-control" id="rua" required>
             </div>
             <div class="col-lg-2">
                 <label for="numero" class="form-label">Numero</label>
-                <input type="number" class="form-control" id="numero">
+                <input type="number" class="form-control" id="numero" required>
             </div>
             <div class="col-lg-12">
                 <label for="linkedin" class="form-label">Linkedin</label>
@@ -85,6 +85,7 @@ ob_start();
         </form>
     </div>
 </div>
+
 <script>
 $('#estado').change(function(){
     var valorSelecionado = $(this).val();
@@ -101,6 +102,7 @@ $('#estado').change(function(){
     });
 });
 </script>
+
 <?php
 $content = ob_get_clean(); 
 $pageTitle = "Dados pessoais"; 
