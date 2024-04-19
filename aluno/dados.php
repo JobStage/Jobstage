@@ -22,7 +22,7 @@ ob_start();
             </div>
             <div class="col-lg-6">
                 <label for="email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" id="email">
+                <input type="email" class="form-control" id="email" readonly disabled>
             </div>
             <div class="col-lg-4">
                 <label for="nasc" class="form-label">Data nasc.</label>
@@ -41,7 +41,6 @@ ob_start();
                     <option value='Divorciado(a)'>Divorciado(a)</option>
                 </select>
             </div>
-
             <div class="col-lg-6">
                 <label for="estado" class="form-label">Estado</label>
                 <select class="form-select" id="estado" required>
@@ -55,10 +54,9 @@ ob_start();
                 <label for="cidade" class="form-label">Cidade</label>
                 <select class="form-select" id="optionsList" required>
                     <option value=''> </option>
-                   
+                    
                 </select>
             </div>
-
             <div class="col-lg-4">
                 <label for="cep" class="form-label">CEP</label>
                 <input type="text" class="form-control" id="cep" required>
@@ -80,13 +78,49 @@ ob_start();
                 <textarea type="text" class="form-control" id="sobre"></textarea>
             </div>
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type='submit' onclick='salvar()' class='btn btn-primary botao-edit'>
+                Salvar
+            </button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
+//recupera os dados cadastrados no banco de dados
+$(document).ready(function(){
+    $.ajax({
+        url: "../app/controller/AlunoController.php",
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            acao: 'getAll',
+            id: 1
+        },
+        success: function(data) {
+            if(data.cadastro){
+                $('#nome').val(data.nome);
+                $('#email').val(data.email);
+                $('#nasc').val(data.nasc);
+                $('#telefone').val(data.tel);
+                $('#civil').val(data.civil);
+                $('#estado option:selected').text(data.estado);
+                $('#optionsListCidade option:selected').text(data.cidade);
+                $('#cep').val(data.cep);
+                $('#rua').val(data.rua);
+                $('#numero').val(data.numero);
+                $('#linkedin').val(data.link);
+                $('#sobre').val(data.sobre);
+            };
+        },
+        error: function(xhr, status, error) {
+            console.log('error');
+        }
+    });
+});
+        
+
+// buisca as cidades baseado no estado
 $('#estado').change(function(){
     var valorSelecionado = $(this).val();
     $.ajax({
@@ -97,10 +131,52 @@ $('#estado').change(function(){
         },
         complete: function(response){
             var cidades = JSON.stringify(response);
-            $('#optionsList').html(cidades);
+            $('#optionsListCidade').html(cidades);
         }
     });
 });
+
+// salva os dados do usuario
+function salvar() {
+    event.preventDefault();
+    var nome = $('#nome').val();
+    var dataNascimento = $('#nasc').val();
+    var telefone = $('#telefone').val();
+    var estadoCivil = $('#civil').val();
+    var estado = $('#estado option:selected').text();
+    var cidade = $('#optionsListCidade option:selected').text();
+    var cep = $('#cep').val();
+    var rua = $('#rua').val();
+    var numero = $('#numero').val();
+    var linkedin = $('#linkedin').val();
+    var sobre = $('#sobre').val();
+    $.ajax({
+        type: "post",
+        url: "../app/controller/AlunoController.php",
+        data: {
+            acao: 'editar',
+            nome: nome,
+            dataNascimento: dataNascimento,
+            telefone: telefone,
+            estadoCivil: estadoCivil,
+            estado: estado,
+            cidade: cidade,
+            cep: cep,
+            rua: rua,
+            numero: numero,
+            linkedin: linkedin,
+            sobre: sobre
+        },
+        success: function(data){
+           
+        },
+        error: function (data) {
+          
+        },
+    });
+}
+
+
 </script>
 
 <?php

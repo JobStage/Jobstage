@@ -1,36 +1,80 @@
 <?php
-require_once "../model/Aluno.php";
+require_once "../model/AlunoModel.php";
 
 
 class AlunoController{
     private int $idAluno; 
-    private string $nome; 
-    private string $curso; 
-    private int $semestre; 
-    private string $email; 
-    private string $senha; 
-    private string $estadoCivil; 
+    private string $nome;  
+    private $dataNasc;
     private string $telefone; 
+    private string $estadoCivil; 
+    private string $cidade; 
+    private string $estado; 
+    private string $cep; 
+    private string $rua; 
+    private string $numero; 
     private string $linkedin; 
     private string $descricao; 
-    private $dataNasc;
 
     private $alunoModel;
 
     public function __construct(int $idAluno) {
-        $alunoModel = new AlunoModel(); // instanciando classe da model
+        $this->alunoModel = new AlunoModel(); // instanciando classe da model
+        $this->idAluno = $idAluno;
     } 
-
-    public function cadastrarAluno(string $nome, string $curso, int $semestre, string $email, string $senha, string $estadoCivil, string $telefone, string $linkedin, string $descricao, DateTime $dataNasc) {
-
+     
+    public function editarAluno() {
+        if(empty($_POST['nome']) || empty($_POST['dataNascimento']) || empty($_POST['telefone']) || empty($_POST['estadoCivil']) || empty($_POST['cidade']) || empty($_POST['estado']) || empty($_POST['cep']) || empty($_POST['rua']) || empty($_POST['numero'])) {
+            exit;
+        }
+        $this->nome = $_POST['nome'];
+        $this->dataNasc = $_POST['dataNascimento'];
+        $this->telefone = $_POST['telefone'];
+        $this->estadoCivil = $_POST['estadoCivil'];
+        $this->cidade = $_POST['cidade'];
+        $this->estado = $_POST['estado'];
+        $this->cep = $_POST['cep'];
+        $this->rua = $_POST['rua'];
+        $this->numero = $_POST['numero'];
+        $this->linkedin = $_POST['linkedin'] ?? '';
+        $this->descricao = $_POST['sobre'] ?? '';
+        $this->alunoModel->atualizar($this->idAluno, $this->nome, $this->dataNasc, $this->telefone, $this->estadoCivil, $this->cidade, $this->estado, $this->cep, $this->rua, $this->numero, $this->linkedin, $this->descricao);
     }
 
-    public function editarAluno(int $idAluno) {
-       
+    public function getAll(){
+        return $this->alunoModel->getAll(1);
     }
 
-    public function getId(){
-        $idUser = $this->alunoModel->getID(1);
-        var_dump($idUser);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $acao = $_POST['acao'];
+    $aluno = new AlunoController(1);
+    switch($acao){
+        case 'getAll':
+            $response = $aluno->getAll();
+            $arr = array(   
+                'id'=>$response['ID'],
+                'nome'=>$response['nome'],
+                'email'=>$response['email'],
+                'nasc'=>$response['data_nasc'],
+                'tel'=>$response['telefone'],
+                'civil'=>$response['estado_civil'],
+                'cidade'=>$response['cidade'],
+                'estado'=>$response['estado'],
+                'cep'=>$response['CEP'],
+                'rua'=>$response['rua'],
+                'numero'=>$response['numero'],
+                'sobre'=>$response['descricao'],
+                'link'=>$response['linkedin'],
+                'cadastro'=>$response['cadastro_completo'],
+            );
+            echo json_encode($arr);
+        break;
+        case 'editar':
+            $result = $aluno->editarAluno();
+        break;
     }
+    
+
 }
