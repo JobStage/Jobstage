@@ -22,7 +22,7 @@ ob_start();
         <div class="collapse" id="novaFormacao">
             <br>
             <div class="card card-body">
-                <form class="row g-3">
+                <form class="row g-3" id="uploadForm" enctype="multipart/form-data">
                     <div class="col-lg-4">
                         <label for="nome" class="form-label">Curso</label>
                         <input type="text" class="form-control" id="nome" required>
@@ -58,7 +58,7 @@ ob_start();
                     </div>
 
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-success" onclick="salvarFormacao(event)">
                             Salvar
                         </button>
                     </div>
@@ -112,8 +112,8 @@ ob_start();
                         <label for="fileEdit" class="form-label">Matrícula</label>
                         <input type="file" class="form-control" id="fileEdit" required>
                     </div>
-                    <input type="hidden"  id="idAluno" class="form-control" required>
-                    <input type="hidden"  id="idFormacao" class="form-control" required>
+                    <input type="hidden"  id="idAluno" class="form-control">
+                    <input type="hidden"  id="idFormacao" class="form-control">
                 </form>
             </div>
             <div class="modal-footer">
@@ -162,12 +162,64 @@ ob_start();
     });
 
 
+    function salvarFormacao() {
+        event.preventDefault();
+
+        // Cria um objeto FormData
+        var formData = new FormData();
+
+        // Adiciona os valores do formulário ao objeto FormData
+        formData.append('acao', 'criar');
+        formData.append('curso', $('#nome').val());
+        formData.append('setor', $('#setor').val());
+        formData.append('instituicao', $('#instittuicao').val());
+        formData.append('nivel', $('#nivel').val());
+        formData.append('inicio', $('#inicio').val());
+        formData.append('fim', $('#fim').val());
+        formData.append('status', $('#status').val());
+        
+        // Adiciona o arquivo ao objeto FormData
+        var file = $('#file').prop('files')[0];
+
+        if(file['type'] != 'application/pdf'){
+            Swal.fire({
+                    title: "Erro!",
+                    text: "Envie somente arquivos PDF!",
+                    icon: "error"
+                    });
+            return;
+        }
+        formData.append('file', file);
+
+        $.ajax({
+            url: '../app/controller/uploadMatricula.php',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            processData: false, // Não processa os dados
+            contentType: false, // Não defina automaticamente o tipo de conteúdo
+            success: function(data) {
+                Swal.fire({
+                    title: data.tittle,
+                    text: data.msg,
+                    icon: data.icon
+                });
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+
+
     function editarFormacao(){
         var idaluno = $('#idAluno').val();
         var idFormacao = $('#idFormacao').val();
         var curso = $('#cursoEdit').val();
         var instituicao = $('#instituicaoEdit').val();
-        var nive = $('#nivelEdit').val();
+        var nivel = $('#nivelEdit').val();
         var status = $('#statusEdit').val();
 
         Swal.fire({

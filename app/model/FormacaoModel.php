@@ -29,5 +29,21 @@ class FormacaoModel{
 
         return $result;
    }
+
+   public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
+    $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
+    
+    $sql->bindParam(':curso', $curso);
+    $sql->bindParam(':setor', $setor);
+    $sql->bindParam(':instituicao', $instituicao);
+    $sql->bindParam(':nivel', $nivel);
+    $sql->bindParam(':inicio', $inicio); 
+    $sql->bindParam(':fim', $fim); 
+    $sql->bindParam(':status', $status);
+    $sql->bindParam(':arquivo', $arquivo);
+    $sql->execute();
+}
+
+
 }
 

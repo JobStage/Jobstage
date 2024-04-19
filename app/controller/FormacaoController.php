@@ -8,8 +8,8 @@ class FormacaoController{
        $this->formacaoModel = new FormacaoModel();
     }
 
-    public function criarFormacao(string $curso, string $instituicao, string $nivelTecnico, int $duracao, string $status) {
-       
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
+       $this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $arquivo);
     }
 
     public function editarFormacao(int $idFormacao, string $curso, string $instituicao, string $nivelTecnico, int $duracao, string $status) {
