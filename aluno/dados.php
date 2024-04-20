@@ -33,8 +33,8 @@ ob_start();
                 <input type="input" class="form-control" id="telefone" required>
             </div>
             <div class="col-lg-4">
-                <label for="civil" class="form-label">Estado civil</label>
-                <select class="form-select" id="optionsList" required>
+                <label for="optionsListCivil" class="form-label">Estado civil</label>
+                <select class="form-select" id="optionsListCivil" required>
                     <option value=''> </option>
                     <option value='Solteiro(a)'>Solteiro(a)</option>
                     <option value='Casado(a)'>Casado(a)</option>
@@ -52,7 +52,7 @@ ob_start();
             </div>
             <div class="col-lg-6">
                 <label for="cidade" class="form-label">Cidade</label>
-                <select class="form-select" id="optionsList" required>
+                <select class="form-select" id="optionsListCidade" required>
                     <option value=''> </option>
                     
                 </select>
@@ -103,8 +103,8 @@ $(document).ready(function(){
                 $('#email').val(data.email);
                 $('#nasc').val(data.nasc);
                 $('#telefone').val(data.tel);
-                $('#civil').val(data.civil);
-                $('#estado option:selected').text(data.estado);
+                $('#optionsListCivil [value="' + data.civil + '"]').attr('selected', 'selected');
+                $('#estado [value="' + data.estado + '"]').attr('selected', 'selected');
                 $('#optionsListCidade option:selected').text(data.cidade);
                 $('#cep').val(data.cep);
                 $('#rua').val(data.rua);
@@ -142,8 +142,8 @@ function salvar() {
     var nome = $('#nome').val();
     var dataNascimento = $('#nasc').val();
     var telefone = $('#telefone').val();
-    var estadoCivil = $('#civil').val();
-    var estado = $('#estado option:selected').text();
+    var estadoCivil = $('#optionsListCivil option:selected').val();
+    var estado = $('#estado option:selected').val();
     var cidade = $('#optionsListCidade option:selected').text();
     var cep = $('#cep').val();
     var rua = $('#rua').val();
@@ -153,6 +153,7 @@ function salvar() {
     $.ajax({
         type: "post",
         url: "../app/controller/AlunoController.php",
+        dataType: 'json',
         data: {
             acao: 'editar',
             nome: nome,
@@ -168,10 +169,11 @@ function salvar() {
             sobre: sobre
         },
         success: function(data){
-           
-        },
-        error: function (data) {
-          
+            Swal.fire({
+                title: data.tittle,
+                text: data.msg,
+                icon: data.icon
+            });
         },
     });
 }
