@@ -111,6 +111,10 @@ ob_start();
                     <div class="form-group">
                         <label for="fileEdit" class="form-label">Matrícula</label>
                         <input type="file" class="form-control" id="fileEdit" required>
+                        <a id="matriculaEdit" href="" target="_blank">
+                            <img src="https://cdn-icons-png.flaticon.com/512/473/473554.png" alt="Ícone" style="width: 30px; height: 30px; margin-right: 5px;">
+                            Matricula Atual
+                        </a>
                     </div>
                     <input type="hidden"  id="idAluno" class="form-control">
                     <input type="hidden"  id="idFormacao" class="form-control">
@@ -126,6 +130,7 @@ ob_start();
 
 
 <script>
+    // função para puxar os valores do banco de dados na MODAL
     $(document).ready(function() {
         $('.btn-primary').on('click', function() {
             var id = $(this).val(); 
@@ -141,11 +146,15 @@ ob_start();
                 },
                 success: function(data) {
                     $('#cursoEdit').val(data.curso);
+                    $('#setorEdit').val(data.setor);
                     $('#instituicaoEdit').val(data.instituicao);
                     $('#nivelEdit').val(data.nivel);
+                    $('#inicioEdit').val(data.inicio);
+                    $('#fimEdit').val(data.fim);
                     $('#statusEdit').val(data.status);
                     $('#idAluno').val(data.id_aluno);
                     $('#idFormacao').val(data.id_formacao);
+                    $('#matriculaEdit').attr('href', '../app/matricula/' + data.matricula); // adiciona o nome da matricula no diretório de upload
                 },
                 error: function(xhr, status, error) {
                     console.log("Erro ao receber os dados:", error);
@@ -203,8 +212,9 @@ ob_start();
                     title: data.tittle,
                     text: data.msg,
                     icon: data.icon
+                }).then(() => {
+                    location.reload();
                 });
-                
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -215,21 +225,63 @@ ob_start();
 
 
     function editarFormacao(){
-        var idaluno = $('#idAluno').val();
-        var idFormacao = $('#idFormacao').val();
-        var curso = $('#cursoEdit').val();
-        var instituicao = $('#instituicaoEdit').val();
-        var nivel = $('#nivelEdit').val();
-        var status = $('#statusEdit').val();
+        var formData = new FormData();
 
-        Swal.fire({
-            title: "Sucesso!",
-            text: "Formação atualizada com sucesso",
-            icon: "success"
+        formData.append('acao', 'editar');
+        formData.append('curso', $('#cursoEdit').val());
+        formData.append('setor', $('#setorEdit').val());
+        formData.append('instituicao', $('#instituicaoEdit').val());
+        formData.append('nivel', $('#nivelEdit').val());
+        formData.append('inicio', $('#inicioEdit').val());
+        formData.append('fim', $('#fimEdit').val());
+        formData.append('status', $('#statusEdit').val());
+        formData.append('file', $('#fileEdit').val());  // Este campo retorna o nome do arquivo, não o arquivo em si
+        formData.append('idAluno', $('#idAluno').val());
+        formData.append('idFormacao', $('#idFormacao').val());
+
+        // Adiciona o arquivo ao objeto FormData
+        var file = $('#fileEdit').prop('files')[0];
+
+        if(file){
+            if(file['type'] != 'application/pdf'){
+                Swal.fire({
+                        title: "Erro!",
+                        text: "Envie somente arquivos PDF!",
+                        icon: "error"
+                        });
+                return;
+            }
+        }
+        formData.append('file', file);
+        $.ajax({
+            url: '../app/controller/FormacaoController.php',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            processData: false, // Não processa os dados
+            contentType: false, // Não defina automaticamente o tipo de conteúdo
+            success: function(data) {
+                if(data.success){
+                Swal.fire({
+                    title: data.tittle,
+                    text: data.msg,
+                    icon: data.icon
+                }).then(() => {
+                    $('#staticBackdrop').modal('hide');
+                    location.reload();
+                });
+                }else{
+                    Swal.fire({
+                        title: data.tittle,
+                        text: data.msg,
+                        icon: data.icon
+                    });
+                };
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
         });
-        $('#staticBackdrop').modal('hide');
-
-        // CRIAR AJAX -----------
     }
 
     function excluirFormacao(id) { 

@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             
             if(move_uploaded_file($arquivo['tmp_name'], $caminho_upload . $renomear)){
-               $retorno = array('tittle' => 'Sucesso', 'msg' => 'inserido com sucesso', 'icon' => 'success');
+               $retorno = array('tittle' => 'Sucesso', 'msg' => 'Formação cadastrada com sucesso!', 'icon' => 'success');
                echo json_encode($retorno);
                 return;
             }else{

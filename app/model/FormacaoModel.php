@@ -9,7 +9,7 @@ class FormacaoModel{
         $this->conn = $conexao->conn();
     }
 
-   public function getAllformacao($id = null){
+    public function getAllformacao($id = null){
         $sql = 'SELECT * FROM formacao';
 
         // verifica se existe valor no id para incluir no WHERE
@@ -28,21 +28,72 @@ class FormacaoModel{
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
-   }
+    }
 
-   public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
-    $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
-    
-    $sql->bindParam(':curso', $curso);
-    $sql->bindParam(':setor', $setor);
-    $sql->bindParam(':instituicao', $instituicao);
-    $sql->bindParam(':nivel', $nivel);
-    $sql->bindParam(':inicio', $inicio); 
-    $sql->bindParam(':fim', $fim); 
-    $sql->bindParam(':status', $status);
-    $sql->bindParam(':arquivo', $arquivo);
-    $sql->execute();
-}
+   
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
+        $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
+        
+        $sql->bindParam(':curso', $curso);
+        $sql->bindParam(':setor', $setor);
+        $sql->bindParam(':instituicao', $instituicao);
+        $sql->bindParam(':nivel', $nivel);
+        $sql->bindParam(':inicio', $inicio); 
+        $sql->bindParam(':fim', $fim); 
+        $sql->bindParam(':status', $status);
+        $sql->bindParam(':arquivo', $arquivo);
+        $sql->execute();
+    }
+
+    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null){
+        
+        try {
+            $sql = 'UPDATE formacao SET curso = :curso, setor = :setor, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status';
+
+        if($arquivo){
+            $sql .= ', matricula = :arquivo';
+        }
+
+        $sql .= ' WHERE id_aluno = :idAluno AND id_formacao = :idFormacao';
+
+        $sql = $this->conn->prepare($sql);
+
+        $sql->bindParam(':curso', $curso);
+        $sql->bindParam(':setor', $setor);
+        $sql->bindParam(':instituicao', $instituicao);
+        $sql->bindParam(':nivel', $nivel);
+        $sql->bindParam(':inicio', $inicio);
+        $sql->bindParam(':fim', $fim);
+        $sql->bindParam(':status', $status);
+        $sql->bindParam(':idAluno', $idAluno);
+        $sql->bindParam(':idFormacao', $idFormacao);
+
+        if ($arquivo) {
+            $sql->bindParam(':arquivo', $arquivo);
+        }
+
+        $sql->execute();
+
+        return;
+        } catch (PDOException $e) {
+            echo ' MODEL -> Erro ao executar a operação: ' . $e->getMessage();
+        }
+        
+    }
+
+    public function getMatricula($idAluno, $idFormacao){
+        $sql = $this->conn->prepare('SELECT matricula FROM formacao
+                                    WHERE id_aluno = :idAluno
+                                    AND id_formacao = :idFormacao');
+        $sql->bindParam(':idAluno',$idAluno);
+        $sql->bindParam(':idFormacao',$idFormacao);
+
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return $result['matricula'];
+    }
 
 
 }

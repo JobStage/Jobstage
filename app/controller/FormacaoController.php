@@ -12,8 +12,31 @@ class FormacaoController{
        $this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $arquivo);
     }
 
-    public function editarFormacao(int $idFormacao, string $curso, string $instituicao, string $nivelTecnico, int $duracao, string $status) {
-       
+    public function editarFormacao(int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo = null, $nomeTemporario = null) {
+        // se existir arquivo deleta o arquivo cadastrado do usuario para substituir
+        if ($arquivo){
+            $nomeArquivo = $this->formacaoModel->getMatricula(1, $idFormacao);
+            
+            // verifica o retorno do banco de dados se teve resultado (se não teve ele não deleta)
+            if($nomeArquivo){
+                $caminhoArquivoAtual = '../matricula/' . $nomeArquivo; // acessa o arquivo já cadastrado
+                unlink($caminhoArquivoAtual); // deleta o arquivo
+            }
+
+            $caminho_upload = '../matricula/';
+            // insere o novo arquivo no diretório
+            move_uploaded_file($nomeTemporario, $caminho_upload . $arquivo); 
+            
+            $this->formacaoModel->editarFormacao(1, $idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status, $arquivo);
+            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
+            echo json_encode($retorno);
+            return;
+        }
+    
+        $this->formacaoModel->editarFormacao(1 ,$idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status);
+        $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
+        echo json_encode($retorno);
+        return;
     }    
 
     public function excluirFormacao(int $idFormacao) {
@@ -68,14 +91,28 @@ class FormacaoController{
     }
 }
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];
-    $id = $_POST['id'];
-
+    $id = $_POST['id'] ?? '';
     $formacao = new FormacaoController();
     switch($acao){
         case 'editar':
-            # code...
+            $renomear = '';
+            $nomeTemporario = '';
+            $arquivo = $_FILES['file'] ?? '';
+            if($arquivo){
+                $nomeTemporario = $arquivo['tmp_name']; // pega o nome temporário do arquivo enviado
+                if($arquivo['type'] == 'application/pdf'){
+                    $renomear = md5(time()) . '.pdf';
+                }else{
+                    $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Envie apenas arquivo PDF', 'icon' => 'Danger');
+                    echo json_encode($retorno);
+                    return;
+                }
+            }
+            
+            $formacao->editarFormacao($idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $renomear, $nomeTemporario);
         break;
         case 'excluir':
             # code...
@@ -84,9 +121,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $response = $formacao->getAllFormacao($id);
             $arr = array( 'id_formacao' => $response['0']['id_formacao'],
                             'curso' => $response['0']['curso'],
+                            'setor' => $response['0']['setor'], 
                             'instituicao' => $response['0']['instituicao'], 
                             'nivel' => $response['0']['nivel'],
-                            'duracao' => $response['0']['duracao'], 
+                            'inicio' => $response['0']['inicio'], 
+                            'fim' => $response['0']['fim'], 
                             'status' => $response['0']['status'],
                             'matricula' => $response['0']['matricula'], 
                             'id_aluno' => $response['0']['id_aluno'],
