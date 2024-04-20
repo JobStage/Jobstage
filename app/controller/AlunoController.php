@@ -25,7 +25,7 @@ class AlunoController{
      
     public function editarAluno() {
         if(empty($_POST['nome']) || empty($_POST['dataNascimento']) || empty($_POST['telefone']) || empty($_POST['estadoCivil']) || empty($_POST['cidade']) || empty($_POST['estado']) || empty($_POST['cep']) || empty($_POST['rua']) || empty($_POST['numero'])) {
-            $retorno = array('tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
+            $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
             echo json_encode($retorno);
             return;
         }
@@ -41,7 +41,7 @@ class AlunoController{
         $this->linkedin = $_POST['linkedin'] ?? '';
         $this->descricao = $_POST['sobre'] ?? '';
         $this->alunoModel->atualizar($this->idAluno, $this->nome, $this->dataNasc, $this->telefone, $this->estadoCivil, $this->cidade, $this->estado, $this->cep, $this->rua, $this->numero, $this->linkedin, $this->descricao);
-        $retorno = array('tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
+        $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
         echo json_encode($retorno);
         return;
     }
