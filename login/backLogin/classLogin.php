@@ -10,6 +10,11 @@ class Login
         $this->senha = $senha;
     }
 
+    public function criarConta(string $tipoConta, string $email, string $senha): string
+    {
+        return "conta de $tipoConta criada com sucesso para o email: $email";
+    }
+
     public function loginAluno(string $emailAluno, string $senhaAluno): bool
     {
         return $this->email === $emailAluno && $this->senha === $senhaAluno;
@@ -24,4 +29,27 @@ class Login
     {
         return $this->email === $emailAgencia && $this->senha === $senhaAgencia;
     }
+}
+
+$login = new Login("usuario@example.com", "senha123");
+
+// Tentativa de login como aluno
+if ($login->loginAluno("usuario@example.com", "senha123")) {
+    echo "Login de aluno bem-sucedido!";
+} else {
+    echo "Falha no login de aluno.";
+}
+
+// Tentativa de login como empresa
+if ($login->loginEmpresa("empresa@example.com", "senhaEmpresa")) {
+    echo "Login de empresa bem-sucedido!";
+} else {
+    echo "Falha no login de empresa.";
+}
+
+// Tentativa de login como agência
+if ($login->loginAgencia("agencia@example.com", "senhaDiferente")) {
+    echo "Login de agência bem-sucedido!";
+} else {
+    echo "Falha no login de agência.";
 }
