@@ -8,9 +8,11 @@ class FormacaoController{
        $this->formacaoModel = new FormacaoModel();
     }
 
+
     public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
        $this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $arquivo);
     }
+
 
     public function editarFormacao(int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo = null, $nomeTemporario = null) {
         // se existir arquivo deleta o arquivo cadastrado do usuario para substituir
@@ -39,9 +41,27 @@ class FormacaoController{
         return;
     }    
 
-    public function excluirFormacao(int $idFormacao) {
-      
+
+    public function excluirFormacao(int $idFormacao, int $idAluno) {
+        $nomeMatricula = $this->formacaoModel->getMatricula($idAluno, $idFormacao);
+        $caminho = '../matricula/' . $nomeMatricula;
+        
+        $resultDeleteFormacao = $this->formacaoModel->excluirFormacao($idFormacao, $idAluno);
+
+        if($resultDeleteFormacao){
+            unlink($caminho);
+
+            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação excluída!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return;
+        }
+
+        $retorno = array('success' => false, 'tittle' => 'Erro!', 'msg' => 'Não foi possível excluir a formação!', 'icon' => 'error');
+        echo json_encode($retorno);
+        return;
+
     }
+
 
     public function listarFormacao() {
         $html = '';
@@ -52,7 +72,6 @@ class FormacaoController{
             <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Instituição</th>
                         <th scope="col">Nível</th>
@@ -64,7 +83,6 @@ class FormacaoController{
                     foreach($tabelaFormacao as $value){
                         $html .= '
                         <tr>
-                            <td>' . $value['id_formacao'] . '</td>
                             <td>' . $value['curso'] . '</td>
                             <td>' . $value['instituicao'] . '</td>
                             <td>' . $value['nivel'] . '</td>
@@ -86,6 +104,7 @@ class FormacaoController{
         return $html ? $html : '<div class="alert alert-danger" role="alert">Não foram encontradas formações cadastradas!</div>';
     }
 
+    
     public function getAllFormacao($id){
         return $this->formacaoModel->getAllformacao($id);
     }
@@ -101,8 +120,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $renomear = '';
             $nomeTemporario = '';
             $arquivo = $_FILES['file'] ?? '';
+
             if($arquivo){
                 $nomeTemporario = $arquivo['tmp_name']; // pega o nome temporário do arquivo enviado
+                
                 if($arquivo['type'] == 'application/pdf'){
                     $renomear = md5(time()) . '.pdf';
                 }else{
@@ -115,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $formacao->editarFormacao($idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $renomear, $nomeTemporario);
         break;
         case 'excluir':
-            # code...
+            $formacao->excluirFormacao($_POST['idFormacao'], 1);
         break;
         case 'getAll':
             $response = $formacao->getAllFormacao($id);

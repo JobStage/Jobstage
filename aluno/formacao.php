@@ -190,12 +190,21 @@ ob_start();
         // Adiciona o arquivo ao objeto FormData
         var file = $('#file').prop('files')[0];
 
-        if(file['type'] != 'application/pdf'){
-            Swal.fire({
+        if(file){
+            if(file['type'] != 'application/pdf'){
+                Swal.fire({
                     title: "Erro!",
                     text: "Envie somente arquivos PDF!",
                     icon: "error"
-                    });
+                });
+                return;
+            }
+        }else{
+            Swal.fire({
+                title: "Erro!",
+                text: "Todos os campos são obrigatórios!",
+                icon: "warning"
+            });
             return;
         }
         formData.append('file', file);
@@ -245,10 +254,10 @@ ob_start();
         if(file){
             if(file['type'] != 'application/pdf'){
                 Swal.fire({
-                        title: "Erro!",
-                        text: "Envie somente arquivos PDF!",
-                        icon: "error"
-                        });
+                    title: "Erro!",
+                    text: "Envie somente arquivos PDF!",
+                    icon: "error"
+                });
                 return;
             }
         }
@@ -286,7 +295,7 @@ ob_start();
 
     function excluirFormacao(id) { 
         Swal.fire({
-            title: "Quer mesmo excluir essa formação? " + id,
+            title: "Quer mesmo excluir essa formação?",
             text: "Você não poderá reverter esta ação!",
             icon: "warning",
             showCancelButton: true,
@@ -296,13 +305,34 @@ ob_start();
             confirmButtonText: "Sim"
         }).then((result) => {
             if (result.isConfirmed) {
-
-                // CRIAR AJAX -----------------
-
-                Swal.fire({
-                title: "Sucesso!",
-                text: "Formação deletada com sucesso!",
-                icon: "success"
+                $.ajax({
+                    url: '../app/controller/FormacaoController.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        acao: 'excluir',
+                        idFormacao: id
+                    },
+                    success: function(data) {
+                        if(data.success){
+                            Swal.fire({
+                                title: data.tittle,
+                                text: data.msg,
+                                icon: data.icon
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }else{
+                            Swal.fire({
+                                title: data.tittle,
+                                text: data.msg,
+                                icon: data.icon
+                            });
+                        };
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
                 });
             }
         });

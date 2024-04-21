@@ -31,7 +31,7 @@ class FormacaoModel{
     }
 
    
-    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo): void {
         $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
         
         $sql->bindParam(':curso', $curso);
@@ -45,7 +45,7 @@ class FormacaoModel{
         $sql->execute();
     }
 
-    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null){
+    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null): void{
         
         try {
             $sql = 'UPDATE formacao SET curso = :curso, setor = :setor, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status';
@@ -81,7 +81,25 @@ class FormacaoModel{
         
     }
 
-    public function getMatricula($idAluno, $idFormacao){
+    public function excluirFormacao(int $idFormacao, int $idAluno): bool{
+        try {
+            $sql = $this->conn->prepare('DELETE FROM formacao 
+                                            WHERE id_aluno = :idAluno
+                                            AND id_formacao = :idFormacao');
+            $sql->bindParam(':idAluno',$idAluno);
+            $sql->bindParam(':idFormacao',$idFormacao);
+    
+            $sql->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            echo ' MODEL -> Erro ao executar a operação: ' . $e->getMessage();
+            return false;
+        }
+        
+    }
+
+    public function getMatricula(int $idAluno, int $idFormacao): string{
         $sql = $this->conn->prepare('SELECT matricula FROM formacao
                                     WHERE id_aluno = :idAluno
                                     AND id_formacao = :idFormacao');
