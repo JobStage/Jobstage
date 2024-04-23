@@ -3,7 +3,7 @@
 class Conexao {
     
     private $host = 'localhost';
-    private $db = 'jobstage';
+    private $db = 'jobstage at';
     private $user = 'root';
     private $passwd = '';
 
