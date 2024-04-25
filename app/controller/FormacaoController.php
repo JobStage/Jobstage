@@ -1,69 +1,73 @@
 <?php
 require_once __DIR__ . '/../model/FormacaoModel.php';
+require_once 'matricula.php';
 
 class FormacaoController{
     private $formacaoModel;
+    private $matricula;
 
     public function __construct() {
        $this->formacaoModel = new FormacaoModel();
+       $this->matricula = new matricula();
     }
 
 
-    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo) {
-       $this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $arquivo);
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo): array {
+        $nomeArquivo = $this->matricula->inserirMatricula($arquivo);
+        
+        if($this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $nomeArquivo)){
+            $retorno = array('tittle' => 'Sucesso', 'msg' => 'Formação cadastrada com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+        }    
+
+        $retorno = array('tittle' => 'erro', 'msg' => 'erro', 'icon' => 'danger');
+        echo json_encode($retorno);
+        return $retorno;
     }
 
 
-    public function editarFormacao(int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo = null, $nomeTemporario = null) {
+    public function editarFormacao(int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo = null): array {        
         // se existir arquivo deleta o arquivo cadastrado do usuario para substituir
         if ($arquivo){
             $nomeArquivo = $this->formacaoModel->getMatricula(1, $idFormacao);
-            
-            // verifica o retorno do banco de dados se teve resultado (se não teve ele não deleta)
-            if($nomeArquivo){
-                $caminhoArquivoAtual = '../matricula/' . $nomeArquivo; // acessa o arquivo já cadastrado
-                unlink($caminhoArquivoAtual); // deleta o arquivo
+            $nomeNovoArquivo = $this->matricula->atualizarMatricula($nomeArquivo, $arquivo);
+        
+            if($this->formacaoModel->editarFormacao(1, $idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status, $nomeNovoArquivo)){
+                $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
+                echo json_encode($retorno);
+                return $retorno;
             }
-
-            $caminho_upload = '../matricula/';
-            // insere o novo arquivo no diretório
-            move_uploaded_file($nomeTemporario, $caminho_upload . $arquivo); 
-            
-            $this->formacaoModel->editarFormacao(1, $idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status, $arquivo);
-            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
-            echo json_encode($retorno);
-            return;
         }
-    
+
         $this->formacaoModel->editarFormacao(1 ,$idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status);
         $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
         echo json_encode($retorno);
-        return;
+        return $retorno;
     }    
 
 
     public function excluirFormacao(int $idFormacao, int $idAluno) {
         $nomeMatricula = $this->formacaoModel->getMatricula($idAluno, $idFormacao);
-        $caminho = '../matricula/' . $nomeMatricula;
-        
-        $resultDeleteFormacao = $this->formacaoModel->excluirFormacao($idFormacao, $idAluno);
 
+        $resultDeleteFormacao = $this->formacaoModel->excluirFormacao($idFormacao, $idAluno);
+        
         if($resultDeleteFormacao){
-            unlink($caminho);
+            $this->matricula->excluirMatricula($nomeMatricula);
 
             $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação excluída!', 'icon' => 'success');
             echo json_encode($retorno);
-            return;
+            return $retorno;
         }
 
         $retorno = array('success' => false, 'tittle' => 'Erro!', 'msg' => 'Não foi possível excluir a formação!', 'icon' => 'error');
         echo json_encode($retorno);
-        return;
+        return $retorno;
 
     }
 
 
-    public function listarFormacao() {
+    public function listarFormacao(): string {
         $html = '';
         $tabelaFormacao = $this->formacaoModel->getAllformacao();
        
@@ -105,7 +109,7 @@ class FormacaoController{
     }
 
     
-    public function getAllFormacao($id){
+    public function getAllFormacao($id): array{
         return $this->formacaoModel->getAllformacao($id);
     }
 }
@@ -117,23 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $formacao = new FormacaoController();
     switch($acao){
         case 'editar':
-            $renomear = '';
-            $nomeTemporario = '';
-            $arquivo = $_FILES['file'] ?? '';
-
-            if($arquivo){
-                $nomeTemporario = $arquivo['tmp_name']; // pega o nome temporário do arquivo enviado
-                
-                if($arquivo['type'] == 'application/pdf'){
-                    $renomear = md5(time()) . '.pdf';
-                }else{
-                    $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Envie apenas arquivo PDF', 'icon' => 'Danger');
-                    echo json_encode($retorno);
-                    return;
-                }
-            }
-            
-            $formacao->editarFormacao($idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $renomear, $nomeTemporario);
+           $formacao->editarFormacao($idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'] ?? '');
         break;
         case 'excluir':
             $formacao->excluirFormacao($_POST['idFormacao'], 1);
@@ -152,6 +140,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                             'id_aluno' => $response['0']['id_aluno'],
                         );
             echo json_encode($arr);
+        break;
+        case 'criar':
+            if (isset($_FILES["file"]) && $_FILES["file"]["error"] == 0) {
+                $formacao->criarFormacao($curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file']);
+            }
         break;
     }
 }

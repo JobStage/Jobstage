@@ -210,7 +210,7 @@ ob_start();
         formData.append('file', file);
 
         $.ajax({
-            url: '../app/controller/uploadMatricula.php',
+            url: '../app/controller/FormacaoController.php',
             type: 'POST',
             dataType: 'json',
             data: formData,

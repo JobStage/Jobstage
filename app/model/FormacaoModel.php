@@ -31,21 +31,27 @@ class FormacaoModel{
     }
 
    
-    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo): void {
-        $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo): bool {
+        try {
+            $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
         
-        $sql->bindParam(':curso', $curso);
-        $sql->bindParam(':setor', $setor);
-        $sql->bindParam(':instituicao', $instituicao);
-        $sql->bindParam(':nivel', $nivel);
-        $sql->bindParam(':inicio', $inicio); 
-        $sql->bindParam(':fim', $fim); 
-        $sql->bindParam(':status', $status);
-        $sql->bindParam(':arquivo', $arquivo);
-        $sql->execute();
+            $sql->bindParam(':curso', $curso);
+            $sql->bindParam(':setor', $setor);
+            $sql->bindParam(':instituicao', $instituicao);
+            $sql->bindParam(':nivel', $nivel);
+            $sql->bindParam(':inicio', $inicio); 
+            $sql->bindParam(':fim', $fim); 
+            $sql->bindParam(':status', $status);
+            $sql->bindParam(':arquivo', $arquivo);
+            $sql->execute();
+    
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null): void{
+    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null): bool{
         
         try {
             $sql = 'UPDATE formacao SET curso = :curso, setor = :setor, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status';
@@ -74,9 +80,10 @@ class FormacaoModel{
 
         $sql->execute();
 
-        return;
+        return true;
         } catch (PDOException $e) {
             echo ' MODEL -> Erro ao executar a operação: ' . $e->getMessage();
+            return false;
         }
         
     }
