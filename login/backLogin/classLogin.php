@@ -10,11 +10,6 @@ class Login
         $this->senha = $senha;
     }
 
-    public function criarConta(string $tipoConta, string $email, string $senha): string
-    {
-        return "conta de $tipoConta criada com sucesso para o email: $email";
-    }
-
     public function loginAluno(string $emailAluno, string $senhaAluno): bool
     {
         return $this->email === $emailAluno && $this->senha === $senhaAluno;
