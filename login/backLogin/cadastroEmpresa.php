@@ -6,17 +6,20 @@ require_once "../backLogin/classCadastro.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
-  $email = $_POST['emailEmpresa'];
-  $senha = md5($_POST['senhaEmpresa']);
+  $email = $_POST['email'];
+  $senha = md5($_POST['senha']);
 
 
   $cadastro = new Cadastro();
   if(!$cadastro->getEmailEmpresa($email)){
         
     $cadastro->inserirEmpresa($email, $senha);
-    echo "Cadastro da empresa realizado com sucesso!";
-    return;
+    $retorno = array('tittle' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
+    echo json_encode($retorno);
+    return $retorno;
+     
 }
-
-echo"E-mail ja existente";
+$retorno = array('tittle' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
+echo json_encode($retorno);
+return $retorno;
 }

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../app/public/css/sweetalert2.min.css">
+  <script src="../../app/public/js/sweetalert2.all.min.js"></script>
+  <script src="../../app/public/js/jquery-3.7.1.js"></script>
   <title>Cadastro</title>
 </head>
 <body>
@@ -12,19 +15,48 @@
     <img src="jobstage.png" alt="Logo do Jobstage"> Jobstage
   </header> 
   <main class="w-100 m-auto form-container">
-    <form action="../backLogin/cadastroEmpresa.php" method="post">
+    <form >
       <h3 class="h3 mb-3 fw-normal">Cadastro</h3>
     
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" name="emailEmpresa" placeholder="seu-email@gmail.com">
+        <input type="email" class="email form-control" id="floatingInput" name="emailEmpresa" placeholder="seu-email@gmail.com">
         <label for="floatingInput">E-mail</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingInput" name="senhaEmpresa" placeholder="senha">
+        <input type="password" class="senha form-control" id="floatingInput" name="senhaEmpresa" placeholder="senha">
         <label for="floatingInput">senha</label>
       </div>
-      <button class="btn btn-primary w-100 py-2">Cadastrar</button>
+      <button class="btn btn-primary w-100 py-2" onclick="cadastro()">Cadastrar</button>
     </form>
   </main>
+  <script>
+    function cadastro(){
+      event.preventDefault();
+      var email = $('.email').val();
+      var senha = $('.senha').val();
+      
+      $.ajax({
+        type: 'POST',
+        url: '../backLogin/cadastroEmpresa.php',
+        dataType: 'JSON',
+        data: {
+          email: email,
+          senha: senha
+        },
+        success: function(data){
+          Swal.fire({
+            title: data.tittle,
+            text: data.msg,
+            icon: data.icon
+          });
+        },
+        error: function(data){
+    
+        }
+    
+      }) 
+    }
+   
+  </script>
 </body>
 </html>

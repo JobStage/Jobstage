@@ -20,7 +20,6 @@ class Cadastro {
         
         $stmt->bindParam(":email", $email);
         $stmt->bindParam(":senha", $senha);
-        
 
         $stmt->execute();
         

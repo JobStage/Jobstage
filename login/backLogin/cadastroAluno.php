@@ -4,18 +4,22 @@ require_once "classCadastro.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
    
-    $email = $_POST['emailAluno'];
-    $senha = md5($_POST['senhaAluno']);
+    $email = $_POST['email'];
+    $senha = md5($_POST['senha']);
 
   
     $cadastro = new Cadastro();
     if(!$cadastro->getEmailAluno($email)){
         
         $cadastro->inserirAluno($email, $senha);
-        echo "Cadastro de aluno realizado com sucesso!";
-        return;
+        $retorno = array('tittle' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
+        echo json_encode($retorno);
+        return $retorno;
+     
     }
     
-    echo"E-mail ja existente";
+    $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
+    echo json_encode($retorno);
+    return $retorno;
 
 }
