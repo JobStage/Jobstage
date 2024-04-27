@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../app/controller/FormacaoController.php';
 $formacao = new FormacaoController();
 ob_start();  

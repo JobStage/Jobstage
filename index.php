@@ -10,7 +10,7 @@
 <body>
 
   <header class="page-header">
-    <img src="login/frontLogin/jobstage.png" alt="Logo do Jobstage"> Jobstage
+    <img src="app/public/img/jobstage.png" alt="Logo do Jobstage"> Jobstage
   </header> 
 
     <section class="container">

@@ -1,4 +1,8 @@
 <?php
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 require_once "../model/AlunoModel.php";
 
 
@@ -40,6 +44,7 @@ class AlunoController{
         $this->numero = $_POST['numero'];
         $this->linkedin = $_POST['linkedin'] ?? '';
         $this->descricao = $_POST['sobre'] ?? '';
+        
         $this->alunoModel->atualizar($this->idAluno, $this->nome, $this->dataNasc, $this->telefone, $this->estadoCivil, $this->cidade, $this->estado, $this->cep, $this->rua, $this->numero, $this->linkedin, $this->descricao);
         $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
         echo json_encode($retorno);
@@ -47,14 +52,14 @@ class AlunoController{
     }
 
     public function getAll(){
-        return $this->alunoModel->getAll(1);
+        return $this->alunoModel->getAll($this->idAluno);
     }
 
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];
-    $aluno = new AlunoController(1);
+    $aluno = new AlunoController($_SESSION['id']);
     switch($acao){
         case 'getAll':
             $response = $aluno->getAll();

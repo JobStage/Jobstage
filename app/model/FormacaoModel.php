@@ -9,15 +9,18 @@ class FormacaoModel{
         $this->conn = $conexao->conn();
     }
 
-    public function getAllformacao($id = null){
+    public function getAllformacao($id = null, $idAluno){
         $sql = 'SELECT * FROM formacao';
-
+        $sql .= ' WHERE id_aluno = :idAluno';
+        
         // verifica se existe valor no id para incluir no WHERE
         if ($id !== null) {
-            $sql .= ' WHERE id_formacao = :id';
+            $sql .= ' AND id_formacao = :id';
         }
 
         $sql = $this->conn->prepare($sql);
+
+        $sql->bindParam(':idAluno', $idAluno);
 
         // verifica novamente se existe valor para inserir no bindParam
         if ($id !== null) {
@@ -31,9 +34,9 @@ class FormacaoModel{
     }
 
    
-    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo): bool {
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo, $idAluno): bool {
         try {
-            $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, 1)');
+            $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, :idAluno)');
         
             $sql->bindParam(':curso', $curso);
             $sql->bindParam(':setor', $setor);
@@ -43,6 +46,7 @@ class FormacaoModel{
             $sql->bindParam(':fim', $fim); 
             $sql->bindParam(':status', $status);
             $sql->bindParam(':arquivo', $arquivo);
+            $sql->bindParam(':idAluno', $idAluno);
             $sql->execute();
     
             return true;

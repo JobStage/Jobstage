@@ -1,21 +1,27 @@
 <?php
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 require_once __DIR__ . '/../model/FormacaoModel.php';
 require_once 'matricula.php';
 
 class FormacaoController{
     private $formacaoModel;
     private $matricula;
+ 
 
     public function __construct() {
        $this->formacaoModel = new FormacaoModel();
        $this->matricula = new matricula();
+     
     }
 
 
-    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo): array {
+    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo, int $idAluno): array {
         $nomeArquivo = $this->matricula->inserirMatricula($arquivo);
         
-        if($this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $nomeArquivo)){
+        if($this->formacaoModel->criarFormacao($curso, $setor, $instituicao, $nivel, $inicio, $fim, $status, $nomeArquivo, $idAluno)){
             $retorno = array('tittle' => 'Sucesso', 'msg' => 'Formação cadastrada com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return $retorno;
@@ -27,20 +33,20 @@ class FormacaoController{
     }
 
 
-    public function editarFormacao(int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo = null): array {        
+    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo = null): array {        
         // se existir arquivo deleta o arquivo cadastrado do usuario para substituir
         if ($arquivo){
-            $nomeArquivo = $this->formacaoModel->getMatricula(1, $idFormacao);
+            $nomeArquivo = $this->formacaoModel->getMatricula($idAluno, $idFormacao);
             $nomeNovoArquivo = $this->matricula->atualizarMatricula($nomeArquivo, $arquivo);
         
-            if($this->formacaoModel->editarFormacao(1, $idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status, $nomeNovoArquivo)){
+            if($this->formacaoModel->editarFormacao($idAluno, $idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status, $nomeNovoArquivo)){
                 $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
                 echo json_encode($retorno);
                 return $retorno;
             }
         }
 
-        $this->formacaoModel->editarFormacao(1 ,$idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status);
+        $this->formacaoModel->editarFormacao($idAluno ,$idFormacao,  $curso,  $setor,  $instituicao,  $nivel, $inicio, $fim, $status);
         $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação atualizada', 'icon' => 'success');
         echo json_encode($retorno);
         return $retorno;
@@ -68,8 +74,9 @@ class FormacaoController{
 
 
     public function listarFormacao(): string {
+        $idAluno = $_SESSION['id'];
         $html = '';
-        $tabelaFormacao = $this->formacaoModel->getAllformacao();
+        $tabelaFormacao = $this->formacaoModel->getAllformacao(null, $idAluno);
        
         if($tabelaFormacao){
             $html .= '
@@ -109,8 +116,8 @@ class FormacaoController{
     }
 
     
-    public function getAllFormacao($id): array{
-        return $this->formacaoModel->getAllformacao($id);
+    public function getAllFormacao(int $id, int $idAluno): array{
+        return $this->formacaoModel->getAllformacao($id, $idAluno);
     }
 }
 
@@ -118,16 +125,16 @@ class FormacaoController{
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];
     $id = $_POST['id'] ?? '';
-    $formacao = new FormacaoController();
+    $formacao = new FormacaoController($_SESSION['id']);
     switch($acao){
         case 'editar':
-           $formacao->editarFormacao($idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'] ?? '');
+           $formacao->editarFormacao($_SESSION['id'], $idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'] ?? '');
         break;
         case 'excluir':
-            $formacao->excluirFormacao($_POST['idFormacao'], 1);
+            $formacao->excluirFormacao($_POST['idFormacao'], $_SESSION['id']);
         break;
         case 'getAll':
-            $response = $formacao->getAllFormacao($id);
+            $response = $formacao->getAllFormacao($id, $_SESSION['id']);
             $arr = array( 'id_formacao' => $response['0']['id_formacao'],
                             'curso' => $response['0']['curso'],
                             'setor' => $response['0']['setor'], 
@@ -143,7 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         break;
         case 'criar':
             if (isset($_FILES["file"]) && $_FILES["file"]["error"] == 0) {
-                $formacao->criarFormacao($curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file']);
+                $formacao->criarFormacao($curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'], $_SESSION['id']);
             }
         break;
     }
