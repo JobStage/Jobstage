@@ -45,36 +45,98 @@ ob_start();
                         <input type="number" class="form-control" id="num">
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-success">
-                            Salvar
-                        </button>
+                    <button type='submit' onclick='salvar()' class='btn btn-primary botao-edit'>
+                Salvar
+                    </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 <script>
- $(document).ready(function(){
-    $('#formNovaEmpresa').submit(function(e){
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "EmpresaController.php",
-            data: $(this).serialize() + '&acao=inserir',
-            success: function(response){
-                console.log(response);
-                var data = JSON.parse(response);
-                    if(data.success){
-                        alert(data.msg);
-                    } else {
-                        alert(data.msg);
-                    }
-                }
-            });
-        });
-    }); 
+ 
+function salvarEmpresa() {
+    event.preventDefault();
+    var id = $('#id').val();
+    var nome = $('#nome').val();
+    var email = $('#email').val();
+    var cnpj = $('#cnpj').val();
+    var contato = $('#contato').val();
+    var estado = $('#estado').val();
+    var cidade = $('#cidade').val();
+    var cep = $('#cep').val();
+    var rua = $('#rua').val();
+    var numero = $('#numero').val();
+
+    var acao = (id === "") ? "inserir" : "atualizar";
+
+    $.ajax({
+        type: "POST",
+        url: "../app/controller/EmpresaController.php",
+        dataType: 'json',
+        data: {
+            acao: acao,
+            id: id,
+            nome: nome,
+            email: email,
+            cnpj: cnpj,
+            contato: contato,
+            estado: estado,
+            cidade: cidade,
+            cep: cep,
+            rua: rua,
+            numero: numero
+        },
+        success: function(data){
+            if(data.success){
+                Swal.fire({
+                    title: data.tittle,
+                    text: data.msg,
+                    icon: data.icon
+                }).then(() => {
+                    location.reload();
+                });
+            }else{
+                Swal.fire({
+                    title: data.tittle,
+                    text: data.msg,
+                    icon: data.icon
+                });
+            }
+        },
+    });
+}
+
+$(document).ready(function(){
+    $.ajax({
+        url: "../app/controller/EmpresaController.php",
+        type: 'POST',
+        dataType: 'json',
+        data:{
+            acao: 'getAll',
+            id: 1
+        },
+        success: function(data) {
+            if(data.cadastro){
+                $('#id').val(data.id);
+                $('#nome').val(data.nome);
+                $('#email').val(data.email);
+                $('#cnpj').val(data.cnpj);
+                $('#contato').val(data.contato);
+                $('#estado [value="' + data.estado + '"]').attr('selected', 'selected');
+                $('#cidade [value="' + data.cidade + '"]').attr('selected', 'selected');
+                $('#cep').val(data.cep);
+                $('#rua').val(data.rua);
+                $('#numero').val(data.numero);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('error');
+        }
+    });
+});
+
 </script>
 
 <?php
