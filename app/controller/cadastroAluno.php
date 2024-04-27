@@ -1,6 +1,6 @@
 <?php
 
-require_once "classCadastro.php";
+require_once __DIR__."/../model/classCadastro.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
    

@@ -1,6 +1,7 @@
 <?php
-require_once "../backLogin/classLogin.php";
-// require_once "../backLogin/cadastroAluno.php";
+
+require_once __DIR__."/../model/classLogin.php";
+
 
 session_start();
 
@@ -9,19 +10,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email']) && isset($_PO
   $senha = md5($_POST['senha']);
   $login = new Login();
     
-  $resultLogin = $login->loginAluno($email, $senha);
+  $resultLogin = $login->loginEmpresa($email, $senha);
   if($resultLogin){
     
     $_SESSION['id'] = $resultLogin;
-   
-  
-    $retorno = array('redirecionar'=>'../../aluno/index.php', 'sucesso'=> true);
+    
+    $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
     echo json_encode($retorno);
     return $retorno;
   
-  
-  
   }
+
+
   $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
   echo json_encode($retorno);
   return $retorno;

@@ -21,10 +21,10 @@
                         <h4>Entrar</h4>
                     </div>
                     <div class="card-body">
-                        <a href="login/frontLogin/loginAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Usuário</button></a>
+                        <a href="aluno/loginAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Usuário</button></a>
                         <br>
                         <br>
-                        <a href="login/frontLogin/loginEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
+                        <a href="empresa/loginEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
                     </div>
                 </div>
             </div>
@@ -34,10 +34,10 @@
                         <h4>Cadastrar-se</h4>
                     </div>
                     <div class="card-body">
-                        <a href="login\frontLogin\cadastroAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Usuário</button></a>
+                        <a href="aluno/cadastroAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Usuário</button></a>
                         <br>
                         <br>
-                        <a href="login\frontLogin\cadastroEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
+                        <a href="empresa/cadastroEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
                     </div>
                 </div>
             </div>

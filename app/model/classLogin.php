@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ .'/../../app/config/conexao.php';
+require_once __DIR__."/../config/conexao.php";
+
 
 class Login
 {
