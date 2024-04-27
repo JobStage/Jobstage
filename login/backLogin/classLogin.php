@@ -1,50 +1,48 @@
 <?php
+
+require_once __DIR__ .'/../../app/config/conexao.php';
+
 class Login
 {
-    private string $email;
-    private string $senha;
+    private $conn;
 
-    public function __construct(string $email, string $senha)
+    public function __construct()
     {
-        $this->email = $email;
-        $this->senha = $senha;
+        $conexao = new Conexao();
+        $this->conn = $conexao->conn();
     }
 
-    public function loginAluno(string $emailAluno, string $senhaAluno): bool
+    public function loginAluno(string $emailAluno, string $senhaAluno)
     {
-        return $this->email === $emailAluno && $this->senha === $senhaAluno;
-    }
+        $sql = "SELECT ID, email, senha FROM aluno WHERE email = :email AND senha = :senhaAluno";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $emailAluno);
+        $stmt->bindParam(':senhaAluno', $senhaAluno);
+        $stmt->execute();
 
-    public function loginEmpresa(string $emailEmpresa, string $senhaEmpresa): bool
-    {
-        return $this->email === $emailEmpresa && $this->senha === $senhaEmpresa;
+      
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            
+            return false;  
+        }
+        return $result['ID'];
     }
-
-    public function loginAgencia(string $emailAgencia, string $senhaAgencia): bool
+    public function loginEmpresa(string $emailEmpresa, string $senhaEmpresa)
     {
-        return $this->email === $emailAgencia && $this->senha === $senhaAgencia;
+        $sql = "SELECT id_empresa, email, senha FROM empresa WHERE email = :email AND senha = :senha";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $emailEmpresa);
+        $stmt->bindParam(':senha', $senhaEmpresa);
+        $stmt->execute();
+
+      
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            
+            return false;  
+        }
+        return $result['id_empresa'];
     }
 }
 
-$login = new Login("usuario@example.com", "senha123");
-
-// Tentativa de login como aluno
-if ($login->loginAluno("usuario@example.com", "senha123")) {
-    echo "Login de aluno bem-sucedido!";
-} else {
-    echo "Falha no login de aluno.";
-}
-
-// Tentativa de login como empresa
-if ($login->loginEmpresa("empresa@example.com", "senhaEmpresa")) {
-    echo "Login de empresa bem-sucedido!";
-} else {
-    echo "Falha no login de empresa.";
-}
-
-// Tentativa de login como agência
-if ($login->loginAgencia("agencia@example.com", "senhaDiferente")) {
-    echo "Login de agência bem-sucedido!";
-} else {
-    echo "Falha no login de agência.";
-}
