@@ -6,9 +6,6 @@ ob_start();
 
 <div class="card">
     <div class="card-body">
-        <?= $empresa->listarEmpresa() // COLOCAR ID DO USUÁRIO PELA SESSÃO APÓS IMPLEMENTAÇÃO DE LOGIN ?> 
-        <div class="collapse" id="novaEmpresa">
-            <br>
             <div class="card card-body">
                 <form class="row g-3">
                     <div class="col-md-6">
@@ -58,8 +55,14 @@ ob_start();
     </div>
 </div>
 
-<?php
-$content = ob_get_clean(); 
-$pageTitle = "Empresa"; 
-include('../app/public/html/template.php'); 
-?>
+<script>
+ $(document).ready(function(){
+    $('#formNovaEmpresa').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "EmpresaController.php",
+            data: $(this).serialize() + '&acao=inserir',
+            success: function(response){
+                console.log(response); 
+</script>

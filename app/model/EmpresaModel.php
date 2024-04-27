@@ -10,18 +10,11 @@ class Empresa{
         $this->conn = $conexao->conn();
     }
 
-    public function atualizar($idEmpresa, $nome, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
-        $sql = $this->conn->prepare('UPDATE aluno 
-                                        SET nome = :nome,
-                                            cnpj = :cnpj,
-                                            contato = :contato,
-                                            estado = :estado,
-                                            cidade = :cidade,
-                                            cep = :cep,
-                                            rua = :rua,
-                                            numero = :numero,
-                                            cadastro_completo = 1
-                                        WHERE ID = :id');
+    public function atualizar( $nome, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
+        $sql = $this->conn->prepare('INSERT INTO empresa (nome, email, cnpj, contato, estado, cidade,
+                                    cep, rua, numero, cadastro_completo) 
+                                    VALUES (:nome, :email, :cnpj, :contato, :estado, :cidade,
+                                    :cep, :rua, :numero, 1)');
         $sql->bindParam(':id', $idEmpresa);
         $sql->bindParam(':nome', $nome);
         $sql->bindParam(':cnpj', $cnpj);
@@ -36,14 +29,4 @@ class Empresa{
         return;
     }
 
-    public function getAll($id) {
-        
-        $sql = $this->conn->prepare('SELECT * FROM empresa WHERE id = ?');
-        $sql->bindParam(':id', $id);
-        $sql->execute();
-
-        $result = $sql->fetch(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
 }
