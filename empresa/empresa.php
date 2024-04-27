@@ -64,5 +64,21 @@ ob_start();
             url: "EmpresaController.php",
             data: $(this).serialize() + '&acao=inserir',
             success: function(response){
-                console.log(response); 
+                console.log(response);
+                var data = JSON.parse(response);
+                    if(data.success){
+                        alert(data.msg);
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
+    }); 
 </script>
+
+<?php
+$content = ob_get_clean(); 
+$pageTitle = "Empresa"; 
+include('../app/public/html/template.php'); 
+?>

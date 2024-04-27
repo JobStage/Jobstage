@@ -10,7 +10,7 @@ class Empresa{
         $this->conn = $conexao->conn();
     }
 
-    public function atualizar( $nome, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
+    public function inserir( $nome, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
         $sql = $this->conn->prepare('INSERT INTO empresa (nome, email, cnpj, contato, estado, cidade,
                                     cep, rua, numero, cadastro_completo) 
                                     VALUES (:nome, :email, :cnpj, :contato, :estado, :cidade,
@@ -25,8 +25,6 @@ class Empresa{
         $sql->bindParam(':rua', $rua);
         $sql->bindParam(':numero', $numero);
         $sql->execute();
-
-        return;
     }
 
 }
