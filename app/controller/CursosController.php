@@ -1,6 +1,9 @@
 <?php
-
-require_once __DIR__ . '/../model/Cursos.php';
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
+require_once __DIR__ . '/../model/CursosModel.php';
 
 class CursosController {
     private int $idCurso;
@@ -17,11 +20,10 @@ class CursosController {
         $this->cursosModel = new CursosModel();
     }
 
-    public function criarCurso(string $curso, string $instituicao, string $nivelTecnico, $inicio, $fim, string $status) {
-        if($this->cursosModel->salvarCurso($curso, $instituicao, $nivelTecnico, $inicio, $fim, $status)) {
+    public function criarCurso(string $curso, string $instituicao, string $nivelTecnico, $inicio, $fim, string $status, int $idAluno) {
+        if($this->cursosModel->salvarCurso($curso, $instituicao, $nivelTecnico, $inicio, $fim, $status,$idAluno)) {
             $retorno = array('tittle' => 'Sucesso', 'msg' => 'Curso cadastrado com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
-            // echo 'QUALQUER COISA'; 
             return $retorno;
         }
         $retorno = array('tittle' => 'erro', 'msg' => 'erro', 'icon' => 'danger');
@@ -30,7 +32,7 @@ class CursosController {
         return $retorno;
     }
 
-    public function editarCurso() {
+    public function editarCurso(int $idAluno) {
         if(empty($_POST['nome']) || empty($_POST['nivel']) || empty($_POST['instituicao']) || empty($_POST['inicio']) || empty($_POST['fim']) || empty($_POST['status'])) {
             $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
             echo json_encode($retorno);
@@ -43,14 +45,14 @@ class CursosController {
         $this->inicio = $_POST['inicio'];
         $this->fim = $_POST['fim'];
         $this->status = $_POST['status'];
-        $this->cursosModel->atualizar($this->idCurso, $this->curso, $this->nivelTecnico, $this->instituicao, $this->inicio, $this->fim, $this->status,1);
+        $this->cursosModel->atualizar($this->idCurso, $this->curso, $this->nivelTecnico, $this->instituicao, $this->inicio, $this->fim, $this->status,$idAluno);
         $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
         echo json_encode($retorno);
         return;
     } 
     
     public function excluirCurso(int $idCurso, int $idAluno) {
-        $resultDeleteCurso = $this->cursosModel->excluirCurso($idCurso, 1);
+        $resultDeleteCurso = $this->cursosModel->excluirCurso($idCurso, $idAluno);
         
         if($resultDeleteCurso){
 
@@ -67,7 +69,7 @@ class CursosController {
 
     public function listarCursos() {
         $html = '';
-        $tabelaCursos = $this->cursosModel->getAllcurso();
+        $tabelaCursos = $this->cursosModel->getAllcurso($_SESSION['id']);
        
         if($tabelaCursos){
             $html .= '
@@ -112,28 +114,28 @@ class CursosController {
         return $html ? $html : '<div class="alert alert-danger" role="alert">Não foram encontrados cursos cadastrados!</div>';
     }
 
-    public function getAllCurso($id){
-        return $this->cursosModel->getAllcurso($id);
+    public function getAllCurso(int $idAluno, $id){
+        return $this->cursosModel->getAllcurso($idAluno,$id);
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];
     $id = $_POST['id'] ?? '';
-
+    $idAluno = $_SESSION['id'];
     $curso = new CursosController();
     switch($acao){
         case 'salvar':
-            $curso->criarCurso($_POST['nome'], $_POST['instituicao'], $_POST['nivel'], $_POST['inicio'], $_POST['fim'], $_POST['status']);
+            $curso->criarCurso($_POST['nome'], $_POST['instituicao'], $_POST['nivel'], $_POST['inicio'], $_POST['fim'], $_POST['status'],$idAluno);
             break;
         case 'editar':
-            $curso->editarCurso();
+            $curso->editarCurso($idAluno);
         break;
         case 'excluir':
-           $curso->excluirCurso($_POST['idCurso'],1);
+           $curso->excluirCurso($_POST['idCurso'],$idAluno);
         break;
         case 'getAll':
-            $response = $curso->getAllCurso($id);
+            $response = $curso->getAllCurso($idAluno,$id);
             $arr = array( 'id_curso' => $response['0']['id_curso'],
                             'nome_curso' => $response['0']['nome_curso'],
                             'instituicao' => $response['0']['instituicao'],

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../app/controller/CursosController.php';
 $cursos = new CursosController();
 ob_start(); 
@@ -166,7 +167,6 @@ ob_start();
                 status: status
             },
             success: function(data) {
-                alert('QUALQUER COISA')
                     Swal.fire({
                         title: data.tittle,
                         text: data.msg,

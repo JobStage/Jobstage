@@ -35,7 +35,7 @@ class CursosModel {
     }
     
 
-   public function getAllcurso($id = null){
+   public function getAllcurso(int $idAluno,$id = null){
         $sql = 'SELECT * FROM curso';
         $sql .= ' WHERE id_aluno = :idAluno';
 
@@ -46,7 +46,7 @@ class CursosModel {
 
         $sql = $this->conn->prepare($sql);
 
-        $sql->bindValue(':idAluno', 1);
+        $sql->bindValue(':idAluno', $idAluno);
 
         // verifica novamente se existe valor para inserir no bindParam
         if ($id !== null) {
@@ -58,7 +58,7 @@ class CursosModel {
 
         return $result;
    }
-   public function salvarCurso(string $curso, string $instituicao, string $nivelTecnico, $inicio, $fim, string $status) {
+   public function salvarCurso(string $curso, string $instituicao, string $nivelTecnico, $inicio, $fim, string $status, int $idAluno) {
     try {
         $sql = $this->conn->prepare('INSERT INTO curso (nome_curso, instituicao, inicio, fim, status, nivel, id_aluno) VALUES (:curso, :instituicao, :inicio, :fim, :status, :nivelTecnico, :id_aluno)');
 
@@ -68,7 +68,7 @@ class CursosModel {
         $sql->bindValue(':fim', $fim);
         $sql->bindValue(':status', $status);
         $sql->bindValue(':nivelTecnico', $nivelTecnico);
-        $sql->bindValue(':id_aluno', 1);
+        $sql->bindValue(':id_aluno', $idAluno);
 
         $sql->execute();
         // $result = $sql->fetchAll(PDO::FETCH_ASSOC);

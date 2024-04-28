@@ -1,5 +1,8 @@
 <?php
-
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+}
 require_once __DIR__ . '/../model/ExperienciaModel.php';
 
 class ExperienciaController {
@@ -17,7 +20,7 @@ class ExperienciaController {
         echo json_encode($retorno);
         return;
       }
-      $result = $this->experienciaModel->salvarExperiencia(1, $cargo, $empresa, $tipo, $inicio, $fim, $atividades);
+      $result = $this->experienciaModel->salvarExperiencia($idAluno, $cargo, $empresa, $tipo, $inicio, $fim, $atividades);
         if($result) {
             $retorno = array('tittle' => 'Sucesso', 'msg' => 'Experiência cadastrado com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
@@ -29,20 +32,20 @@ class ExperienciaController {
         return $retorno;
     }
 
-    public function editarExperiencia(int $idExperiencia) {
+    public function editarExperiencia(int $idAluno,int $idExperiencia) {
         if(empty($_POST['nome']) || empty($_POST['cargo']) || empty($_POST['inicio']) || empty($_POST['fim']) || empty($_POST['tipo']) || empty($_POST['atividade'])) {
             $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
             echo json_encode($retorno);
             return;
         }
-        $this->experienciaModel->atualizar($idExperiencia,$_POST['nome'], $_POST['cargo'], $_POST['inicio'], $_POST['fim'], $_POST['tipo'], $_POST['atividade'],1);
+        $this->experienciaModel->atualizar($idExperiencia,$_POST['nome'], $_POST['cargo'], $_POST['inicio'], $_POST['fim'], $_POST['tipo'], $_POST['atividade'],$idAluno);
         $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
         echo json_encode($retorno);
         return;
     } 
     
     public function excluirExperiencia(int $idExp, int $idAluno) {
-        $resultDeleteExp = $this->experienciaModel->excluirExperiencia($idExp, 1);
+        $resultDeleteExp = $this->experienciaModel->excluirExperiencia($idExp, $idAluno);
         if($resultDeleteExp){
 
             $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Experiência excluída!', 'icon' => 'success');
@@ -58,7 +61,7 @@ class ExperienciaController {
 
     public function listarExperiencia() {
         $html = '';
-        $tabelaExperiencia = $this->experienciaModel->getAllExperiencia();
+        $tabelaExperiencia = $this->experienciaModel->getAllExperiencia($_SESSION['id']);
        
         if($tabelaExperiencia){
             $html .= '
@@ -99,28 +102,28 @@ class ExperienciaController {
         return $html ? $html : '<div class="alert alert-danger" role="alert">Não foram encontrados cursos cadastrados!</div>';
     }
 
-    public function getAllExperiencia($id){
-        return $this->experienciaModel->getAllExperiencia($id);
+    public function getAllExperiencia(int $idAluno,$id){
+        return $this->experienciaModel->getAllExperiencia($idAluno,$id);
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];
     $id = $_POST['id'] ?? '';
-
+    $idAluno = $_SESSION['id'];
     $experiencia = new ExperienciaController();
     switch($acao){
         case 'salvar':
-            $experiencia->criarExperiencia(1,$_POST['cargo'], $_POST['empresa'], $_POST['tipo'], $_POST['inicio'], $_POST['fim'], $_POST['atividade']);
+            $experiencia->criarExperiencia($idAluno,$_POST['cargo'], $_POST['empresa'], $_POST['tipo'], $_POST['inicio'], $_POST['fim'], $_POST['atividade']);
             break;
         case 'editar':
-            $experiencia->editarExperiencia($id);
+            $experiencia->editarExperiencia($idAluno,$id);
         break;
         case 'excluir':
-           $experiencia->excluirExperiencia($_POST['id'],1);
+           $experiencia->excluirExperiencia($_POST['id'],$idAluno);
         break;
         case 'getAll':
-            $response = $experiencia->getAllExperiencia($id);
+            $response = $experiencia->getAllExperiencia($idAluno,$id);
             $arr = array( 'id_exp' => $response['0']['id_exp'],
                             'nome' => $response['0']['nome'],
                             'cargo' => $response['0']['cargo'],

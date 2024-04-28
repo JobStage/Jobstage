@@ -40,7 +40,7 @@ class ExperienciaModel {
     
     
 
-   public function getAllExperiencia($id = null){
+   public function getAllExperiencia(int $idAluno,$id = null){
         $sql = 'SELECT * FROM experiencia';
         $sql .= ' WHERE id_aluno = :idAluno';
 
@@ -51,7 +51,7 @@ class ExperienciaModel {
 
         $sql = $this->conn->prepare($sql);
 
-        $sql->bindValue(':idAluno', 1);
+        $sql->bindValue(':idAluno', $idAluno);
 
         // verifica novamente se existe valor para inserir no bindParam
         if ($id !== null) {
