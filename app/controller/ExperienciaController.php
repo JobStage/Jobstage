@@ -99,7 +99,7 @@ class ExperienciaController {
                 </tbody>
             </table>';
         };
-        return $html ? $html : '<div class="alert alert-danger" role="alert">Não foram encontrados cursos cadastrados!</div>';
+        return $html ? $html : '<div class="alert alert-danger" role="alert">Não foram encontradas experiências cadastradas!</div>';
     }
 
     public function getAllExperiencia(int $idAluno,$id){

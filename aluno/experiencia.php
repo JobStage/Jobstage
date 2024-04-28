@@ -17,7 +17,7 @@ ob_start();
     <div class="card-body">
         <?= $experiencia->listarExperiencia() ?> 
         <a class="btn btn-secondary" data-bs-toggle="collapse" href="#novaFormacao" role="button" aria-expanded="false" aria-controls="novaFormacao">
-            Nova Formação
+            Nova experiencia
         </a>
         <div class="collapse" id="novaFormacao">
             <br>

@@ -9,7 +9,7 @@ class FormacaoModel{
         $this->conn = $conexao->conn();
     }
 
-    public function getAllformacao($id = null, $idAluno){
+    public function getAllformacao(int $idAluno, $id = null ){
         $sql = 'SELECT * FROM formacao';
         $sql .= ' WHERE id_aluno = :idAluno';
         

@@ -76,7 +76,7 @@ class FormacaoController{
     public function listarFormacao(): string {
         $idAluno = $_SESSION['id'];
         $html = '';
-        $tabelaFormacao = $this->formacaoModel->getAllformacao(null, $idAluno);
+        $tabelaFormacao = $this->formacaoModel->getAllformacao($idAluno);
        
         if($tabelaFormacao){
             $html .= '
@@ -117,7 +117,7 @@ class FormacaoController{
 
     
     public function getAllFormacao(int $id, int $idAluno): array{
-        return $this->formacaoModel->getAllformacao($id, $idAluno);
+        return $this->formacaoModel->getAllformacao($idAluno, $id );
     }
 }
 

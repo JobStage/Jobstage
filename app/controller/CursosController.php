@@ -21,6 +21,12 @@ class CursosController {
     }
 
     public function criarCurso(string $curso, string $instituicao, string $nivelTecnico, $inicio, $fim, string $status, int $idAluno) {
+        if(empty($_POST['nome']) || empty($_POST['nivel']) || empty($_POST['instituicao']) || empty($_POST['inicio']) || empty($_POST['fim']) || empty($_POST['status'])) {
+            $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
+            echo json_encode($retorno);
+            return;
+        }
+
         if($this->cursosModel->salvarCurso($curso, $instituicao, $nivelTecnico, $inicio, $fim, $status,$idAluno)) {
             $retorno = array('tittle' => 'Sucesso', 'msg' => 'Curso cadastrado com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);

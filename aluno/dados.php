@@ -99,9 +99,9 @@ $(document).ready(function(){
             id: 1
         },
         success: function(data) {
+            $('#email').val(data.email);
             if(data.cadastro){
                 $('#nome').val(data.nome);
-                $('#email').val(data.email);
                 $('#nasc').val(data.nasc);
                 $('#telefone').val(data.tel);
                 $('#optionsListCivil [value="' + data.civil + '"]').attr('selected', 'selected');

@@ -80,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 'cadastro'=>$response['cadastro_completo'],
             );
             echo json_encode($arr);
+            return $arr;
         break;
         case 'editar':
             $result = $aluno->editarAluno();

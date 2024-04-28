@@ -17,7 +17,7 @@ ob_start();
     <div class="card-body">
         <?= $cursos->listarCursos() // COLOCAR ID DO USUÁRIO PELA SESSÃO APÓS IMPLEMENTAÇÃO DE LOGIN ?> 
         <a class="btn btn-secondary" data-bs-toggle="collapse" href="#novaFormacao" role="button" aria-expanded="false" aria-controls="novaFormacao">
-            Nova Formação
+            Novo curso
         </a>
         <div class="collapse" id="novaFormacao">
             <br>
@@ -233,7 +233,7 @@ ob_start();
 
     function excluirCurso(id) { 
         Swal.fire({
-            title: "Quer mesmo excluir esse curso? " + id,
+            title: "Quer mesmo excluir esse curso? ",
             text: "Você não poderá reverter esta ação!",
             icon: "warning",
             showCancelButton: true,

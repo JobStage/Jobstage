@@ -18,7 +18,7 @@ ob_start();
     <div class="card-body">
         <?= $formacao->listarFormacao() // COLOCAR ID DO USUÁRIO PELA SESSÃO APÓS IMPLEMENTAÇÃO DE LOGIN ?> 
         <a class="btn btn-secondary" data-bs-toggle="collapse" href="#novaFormacao" role="button" aria-expanded="false" aria-controls="novaFormacao">
-            Nova Formação
+            Nova formação
         </a>
         <div class="collapse" id="novaFormacao">
             <br>
@@ -76,7 +76,7 @@ ob_start();
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="modalEditar">
-                    Editar Formação
+                    Editar formação
                 </h4>
             </div>
             <div class="modal-body">
