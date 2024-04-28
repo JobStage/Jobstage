@@ -1,0 +1,136 @@
+<?php
+
+require_once __DIR__ . '/../model/ExperienciaModel.php';
+
+class ExperienciaController {
+   
+
+    private $experienciaModel;
+
+    public function __construct() {
+        $this->experienciaModel = new ExperienciaModel();
+    }
+
+    public function criarExperiencia(int $idAluno, string $cargo, string $empresa, string $tipo, $inicio, $fim, string $atividades) {
+      if(empty($_POST['empresa']) || empty($_POST['cargo']) || empty($_POST['inicio']) || empty($_POST['fim']) || empty($_POST['tipo']) || empty($_POST['atividade'])) {
+        $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
+        echo json_encode($retorno);
+        return;
+      }
+      $result = $this->experienciaModel->salvarExperiencia(1, $cargo, $empresa, $tipo, $inicio, $fim, $atividades);
+        if($result) {
+            $retorno = array('tittle' => 'Sucesso', 'msg' => 'Experiência cadastrado com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+        }
+        $retorno = array('tittle' => 'erro', 'msg' => 'erro', 'icon' => 'danger');
+        echo json_encode($retorno);
+        echo 'qualquer coisa';
+        return $retorno;
+    }
+
+    public function editarExperiencia(int $idExperiencia) {
+        if(empty($_POST['nome']) || empty($_POST['cargo']) || empty($_POST['inicio']) || empty($_POST['fim']) || empty($_POST['tipo']) || empty($_POST['atividade'])) {
+            $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
+            echo json_encode($retorno);
+            return;
+        }
+        $this->experienciaModel->atualizar($idExperiencia,$_POST['nome'], $_POST['cargo'], $_POST['inicio'], $_POST['fim'], $_POST['tipo'], $_POST['atividade'],1);
+        $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
+        echo json_encode($retorno);
+        return;
+    } 
+    
+    public function excluirExperiencia(int $idExp, int $idAluno) {
+        $resultDeleteExp = $this->experienciaModel->excluirExperiencia($idExp, 1);
+        if($resultDeleteExp){
+
+            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Experiência excluída!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+        }
+
+        $retorno = array('success' => false, 'tittle' => 'Erro!', 'msg' => 'Não foi possível excluir a experiência!', 'icon' => 'error');
+        echo json_encode($retorno);
+        return $retorno;
+
+    }
+
+    public function listarExperiencia() {
+        $html = '';
+        $tabelaExperiencia = $this->experienciaModel->getAllExperiencia();
+       
+        if($tabelaExperiencia){
+            $html .= '
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Cargo</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">Inicio</th>
+                        <th scope="col">Fim</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Ação</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">';
+                    foreach($tabelaExperiencia as $value){
+                        $html .= '
+                        <tr>
+                            <td>' . $value['cargo'] . '</td>
+                            <td>' . $value['nome'] . '</td>
+                            <td>' . $value['inicio'] . '</td>
+                            <td>' . $value['fim'] . '</td>
+                            <td>' . $value['tipo'] . '</td>
+                            <td>
+                                <button class="btn btn-primary" id="edit-'.$value['id_exp'].'" value='.$value['id_exp'].'>
+                                    Editar
+                                </button>
+                                <button class="btn btn-danger" value='.$value['id_exp'].' onclick="excluirExperiencia('.$value['id_exp'].')">
+                                    Excluir
+                                </button>
+                            </td>
+                        </tr>';
+                    }
+                     $html .='
+                </tbody>
+            </table>';
+        };
+        return $html ? $html : '<div class="alert alert-danger" role="alert">Não foram encontrados cursos cadastrados!</div>';
+    }
+
+    public function getAllExperiencia($id){
+        return $this->experienciaModel->getAllExperiencia($id);
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $acao = $_POST['acao'];
+    $id = $_POST['id'] ?? '';
+
+    $experiencia = new ExperienciaController();
+    switch($acao){
+        case 'salvar':
+            $experiencia->criarExperiencia(1,$_POST['cargo'], $_POST['empresa'], $_POST['tipo'], $_POST['inicio'], $_POST['fim'], $_POST['atividade']);
+            break;
+        case 'editar':
+            $experiencia->editarExperiencia($id);
+        break;
+        case 'excluir':
+           $experiencia->excluirExperiencia($_POST['id'],1);
+        break;
+        case 'getAll':
+            $response = $experiencia->getAllExperiencia($id);
+            $arr = array( 'id_exp' => $response['0']['id_exp'],
+                            'nome' => $response['0']['nome'],
+                            'cargo' => $response['0']['cargo'],
+                            'inicio' => $response['0']['inicio'],
+                            'fim' => $response['0']['fim'],
+                            'tipo' => $response['0']['tipo'],
+                            'atividades' => $response['0']['atividades'],
+                            'id_aluno' => $response['0']['id_aluno'],
+                        );
+            echo json_encode($arr);
+        break;
+    }
+}
