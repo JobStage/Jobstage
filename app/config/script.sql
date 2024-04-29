@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 13-Abr-2024 às 18:05
+-- Tempo de geração: 29-Abr-2024 às 01:04
 -- Versão do servidor: 8.0.31
 -- versão do PHP: 8.2.0
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `jobstage`
 --
+CREATE DATABASE IF NOT EXISTS `jobstage` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `jobstage`;
 
 -- --------------------------------------------------------
 
@@ -30,20 +32,23 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `aluno`;
 CREATE TABLE IF NOT EXISTS `aluno` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL,
-  `curso` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `setor` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `semestre` int DEFAULT NULL,
-  `estado_civil` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nome` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `data_nasc` date DEFAULT NULL,
   `telefone` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `linkedin` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `descricao` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado_civil` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `cidade` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `estado` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `CEP` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `rua` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `numero` int DEFAULT NULL,
+  `descricao` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `linkedin` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `termos_de_uso` int DEFAULT '0' COMMENT 'mensagem que aparece apos fazer login (1 = aceitou // 0 ou NULL = nao aceitou)',
+  `cadastro_completo` int DEFAULT NULL COMMENT 'Quando inserir todos os dados na pagina de dados de usuario o cadastro estara completo (1)',
+  `senha` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -5641,15 +5646,15 @@ INSERT INTO `cidades` (`id`, `nome`, `id_estado`) VALUES
 DROP TABLE IF EXISTS `curso`;
 CREATE TABLE IF NOT EXISTS `curso` (
   `id_curso` int NOT NULL AUTO_INCREMENT,
-  `nome_curso` varchar(50) NOT NULL,
-  `instituicao` varchar(50) NOT NULL,
-  `duracao` int NOT NULL,
-  `status` int NOT NULL,
-  `nivel` varchar(50) NOT NULL,
+  `nome_curso` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `instituicao` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `inicio` date NOT NULL,
+  `fim` date NOT NULL,
+  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nivel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `id_aluno` int NOT NULL,
-  PRIMARY KEY (`id_curso`),
-  KEY `id_aluno` (`id_aluno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id_curso`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -5660,14 +5665,18 @@ CREATE TABLE IF NOT EXISTS `curso` (
 DROP TABLE IF EXISTS `empresa`;
 CREATE TABLE IF NOT EXISTS `empresa` (
   `id_empresa` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) NOT NULL,
-  `cnpj` varchar(18) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL,
-  `endereco` varchar(100) DEFAULT NULL,
-  `contato` varchar(14) DEFAULT NULL,
+  `nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cnpj` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `senha` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `contato` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `cidade` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `cep` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `rua` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `numero` int NOT NULL,
   PRIMARY KEY (`id_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -5725,16 +5734,15 @@ INSERT INTO `estados` (`id`, `nome`, `uf`) VALUES
 DROP TABLE IF EXISTS `experiencia`;
 CREATE TABLE IF NOT EXISTS `experiencia` (
   `id_exp` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) NOT NULL,
-  `cargo` varchar(50) NOT NULL,
+  `nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `cargo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `inicio` date NOT NULL,
-  `fim` varchar(50) NOT NULL,
-  `tipo` varchar(50) NOT NULL COMMENT 'CLT - PJ - ESTAGIO',
-  `atividades` varchar(500) NOT NULL,
+  `fim` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `atividades` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `id_aluno` int NOT NULL,
-  PRIMARY KEY (`id_exp`),
-  KEY `id_aluno` (`id_aluno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  PRIMARY KEY (`id_exp`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -5745,44 +5753,28 @@ CREATE TABLE IF NOT EXISTS `experiencia` (
 DROP TABLE IF EXISTS `formacao`;
 CREATE TABLE IF NOT EXISTS `formacao` (
   `id_formacao` int NOT NULL AUTO_INCREMENT,
-  `curso` varchar(100) NOT NULL,
-  `instituicao` varchar(100) NOT NULL,
-  `nivel` varchar(50) NOT NULL,
-  `duracao` int NOT NULL,
-  `status` int NOT NULL,
-  `matricula` varchar(100) NOT NULL COMMENT 'INSERIR URL DO ARQUIVO DA MATRICULA',
+  `curso` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `setor` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `instituicao` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nivel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `inicio` date NOT NULL,
+  `fim` date NOT NULL,
+  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `matricula` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'INSERIR URL DO ARQUIVO DA MATRICULA',
   `id_aluno` int NOT NULL,
   PRIMARY KEY (`id_formacao`),
   KEY `id_aluno` (`id_aluno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Restrições para despejos de tabelas
 --
 
 --
--- Limitadores para a tabela `aluno`
---
-ALTER TABLE `aluno`
-  ADD CONSTRAINT `aluno_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `formacao` (`id_aluno`);
-
---
 -- Limitadores para a tabela `cidades`
 --
 ALTER TABLE `cidades`
   ADD CONSTRAINT `cidades_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id`);
-
---
--- Limitadores para a tabela `curso`
---
-ALTER TABLE `curso`
-  ADD CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`);
-
---
--- Limitadores para a tabela `experiencia`
---
-ALTER TABLE `experiencia`
-  ADD CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`);
 
 --
 -- Limitadores para a tabela `formacao`
