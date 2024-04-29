@@ -51,7 +51,7 @@ class CursosController {
         $this->inicio = $_POST['inicio'];
         $this->fim = $_POST['fim'];
         $this->status = $_POST['status'];
-        $this->cursosModel->atualizar($this->idCurso, $this->curso, $this->nivelTecnico, $this->instituicao, $this->inicio, $this->fim, $this->status,$idAluno);
+        $this->cursosModel->atualizar($this->idCurso, $this->curso, $this->instituicao,  $this->inicio, $this->fim, $this->status, $this->nivelTecnico, $idAluno);
         $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
         echo json_encode($retorno);
         return;

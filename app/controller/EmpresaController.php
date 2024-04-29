@@ -1,11 +1,17 @@
 <?php
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 require_once __DIR__ . "/../model/EmpresaModel.php";
 
 class EmpresaController{ 
+    private $idEmpresa;
     private $empresaModel;
 
-    public function __construct() {
+    public function __construct(int $idEmpresa) {
         $this->empresaModel = new Empresa();
+        $this->idEmpresa = $idEmpresa;
     } 
 
     public function inserirEmpresa() {
@@ -47,24 +53,24 @@ class EmpresaController{
         $rua = $_POST['rua'];
         $numero = $_POST['numero'];
 
-        $this->empresaModel->atualizar($nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero);
+        $this->empresaModel->atualizar($this->idEmpresa, $nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero);
 
         $retorno = array('success' => true, 'title' => 'Sucesso!', 'msg' => 'Dados atualizados!', 'icon' => 'success');
         echo json_encode($retorno);
         return;
     }
 
-    public function getAll($idEmpresa){
-        return $this->empresaModel->getAll($idEmpresa);
+    public function getAll(){
+        return $this->empresaModel->getAll($this->idEmpresa);
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];
-    $empresa = new EmpresaController();
+    $empresa = new EmpresaController($_SESSION['id']);
     switch($acao){
         case 'getAll':
-            $response = $empresa->getAll(1);
+            $response = $empresa->getAll();
             $arr = array(
                 'id'=>$response['id_empresa'],
                 'nome'=>$response['nome'],

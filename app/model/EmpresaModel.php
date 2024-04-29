@@ -14,7 +14,7 @@ class Empresa{
         $sql = $this->conn->prepare('INSERT INTO empresa (nome, email, cnpj, contato, estado, cidade,
                                     cep, rua, numero, id_empresa) 
                                     VALUES (:nome, :email, :cnpj, :contato, :estado, :cidade,
-                                    :cep, :rua, :numero, 1)');
+                                    :cep, :rua, :numero, :id)');
         $sql->bindParam(':id', $idEmpresa);
         $sql->bindParam(':nome', $nome);
         $sql->bindParam(':cnpj', $cnpj);
@@ -27,9 +27,9 @@ class Empresa{
         $sql->execute();
     }
 
-    public function atualizar($nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
+    public function atualizar($idEmpresa, $nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
         $sql = $this->conn->prepare('UPDATE empresa SET nome = :nome, email = :email, cnpj = :cnpj, contato = :contato, estado = :estado, cidade = :cidade, cep = :cep, rua = :rua, numero = :numero WHERE id_empresa = :id');
-        $sql->bindValue(':id', 1);
+        $sql->bindValue(':id', $idEmpresa);
         $sql->bindParam(':nome', $nome);
         $sql->bindParam(':email', $email);
         $sql->bindParam(':cnpj', $cnpj);

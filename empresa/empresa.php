@@ -1,8 +1,9 @@
 <?php
+session_start();
 require_once '../app/controller/EmpresaController.php';
 require_once '../app/controller/CidadeEstado.php';
 $estado = new CidadeEstado();
-$empresa = new EmpresaController();
+$empresa = new EmpresaController($_SESSION['id']);
 ob_start();  
 ?>
 
