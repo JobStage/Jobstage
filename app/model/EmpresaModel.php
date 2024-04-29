@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "../config/conexao.php";
+require_once __DIR__ . "/../config/conexao.php";
 class Empresa{
 
     private $conn;
@@ -27,9 +27,9 @@ class Empresa{
         $sql->execute();
     }
 
-    public function atualizar($idEmpresa, $nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
-        $sql = $this->conn->prepare('UPDATE empresa SET nome = :nome, email = :email, cnpj = :cnpj, contato = :contato, estado = :estado, cidade = :cidade, cep = :cep, rua = :rua, numero = :numero WHERE id = :id');
-        $sql->bindParam(':id', $idEmpresa);
+    public function atualizar($nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
+        $sql = $this->conn->prepare('UPDATE empresa SET nome = :nome, email = :email, cnpj = :cnpj, contato = :contato, estado = :estado, cidade = :cidade, cep = :cep, rua = :rua, numero = :numero WHERE id_empresa = :id');
+        $sql->bindValue(':id', 1);
         $sql->bindParam(':nome', $nome);
         $sql->bindParam(':email', $email);
         $sql->bindParam(':cnpj', $cnpj);
@@ -42,4 +42,15 @@ class Empresa{
         $sql->execute();
     }
 
+    public function getAll($idEmpresa){
+        $sql = $this->conn->prepare('SELECT * FROM empresa WHERE id_empresa = :id');
+
+        $sql->bindParam(':id', $idEmpresa);
+
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 }
