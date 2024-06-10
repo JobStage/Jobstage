@@ -26,37 +26,9 @@
         <input type="password" class="senha form-control" id="floatingInput" name="senhaEmpresa" placeholder="senha">
         <label for="floatingInput">senha</label>
       </div>
-      <button class="btn btn-primary w-100 py-2" onclick="cadastro()">Cadastrar</button>
+      <button class="btn btn-primary w-100 py-2" onclick="cadastroEmpresa()">Cadastrar</button>
     </form>
   </main>
-  <script>
-    function cadastro(){
-      event.preventDefault();
-      var email = $('.email').val();
-      var senha = $('.senha').val();
-      
-      $.ajax({
-        type: 'POST',
-        url: '../app/controller/cadastroEmpresa.php',
-        dataType: 'JSON',
-        data: {
-          email: email,
-          senha: senha
-        },
-        success: function(data){
-          Swal.fire({
-            title: data.tittle,
-            text: data.msg,
-            icon: data.icon
-          });
-        },
-        error: function(data){
-    
-        }
-    
-      }) 
-    }
-   
-  </script>
+  <script src="../app/public/js/login.js"></script>
 </body>
 </html>

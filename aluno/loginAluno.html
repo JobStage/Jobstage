@@ -29,44 +29,11 @@
         <input type="checkbox" class="form-check-input" id="flexCheckDefault">
         <label class="form-check-label" for="flexCheckDefault">Lembra-me</label>
       </div>
-      <button class="btn btn-primary w-100 py-2" onclick="cadastro()">Entrar</button>
+      <button class="btn btn-primary w-100 py-2" onclick="loginAluno()">Entrar</button>
     </form>
   </main>
 
-  <script>
-    function cadastro(){
-      event.preventDefault();
-      var email = $('.email').val();
-      var senha = $('.senha').val();
-      
-      $.ajax({
-        type: 'POST',
-        url: '../app/controller/loginAluno.php',
-        dataType: 'JSON',
-        data: {
-          email: email,
-          senha: senha
-        },
-        success: function(data){
-          if(data.sucesso){
-            window.location.replace(data.redirecionar);
-
-          }else{
-            Swal.fire({
-              title: data.tittle,
-              text: data.msg,
-              icon: data.icon
-            });
-          }
-        },
-        error: function(xhr, error, status){
-          console.log(xhr, error, status);
-        }
-    
-      }) 
-    }
-   
-  </script>
+  <script src="../app/public/js/login.js"></script>
 
 </body>
 </html>

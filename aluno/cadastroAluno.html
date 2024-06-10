@@ -27,38 +27,9 @@
         <input type="password" class="senha form-control" id=" senha floatingInput" name="senhaAluno" placeholder="senha">
         <label for="floatingInput">senha</label>
       </div>
-      <button class="btn btn-primary w-100 py-2" onclick="cadastro()">Cadastrar</button>
+      <button class="btn btn-primary w-100 py-2" onclick="cadastroAluno()">Cadastrar</button>
     </form>
   </main>
-
-  <script>
-    function cadastro(){
-      event.preventDefault();
-      var email = $('.email').val();
-      var senha = $('.senha').val();
-      
-      $.ajax({
-        type: 'POST',
-        url: '../app/controller/cadastroAluno.php',
-        dataType: 'JSON',
-        data: {
-          email: email,
-          senha: senha
-        },
-        success: function(data){
-          Swal.fire({
-            title: data.tittle,
-            text: data.msg,
-            icon: data.icon
-          });
-        },
-        error: function(data){
-    
-        }
-    
-      }) 
-    }
-   
-  </script>
+  <script src="../app/public/js/login.js"></script>
 </body>
 </html>
