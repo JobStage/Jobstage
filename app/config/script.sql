@@ -5786,3 +5786,282 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+-- Tabela Nivel
+CREATE TABLE Nivel (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    nivel VARCHAR(50)
+);
+
+-- Inserir dados na tabela Nivel
+INSERT INTO Nivel (nivel) VALUES
+('Ensino médio'),
+('Técnico'),
+('Superior');
+
+-- Tabela Setor
+CREATE TABLE Setor (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    setor VARCHAR(50)
+);
+
+-- Inserir dados na tabela Setor
+INSERT INTO Setor (setor) VALUES
+('Educação'),
+('Humanas'),
+('Ciências Sociais'),
+('Tecnologia da Informação'),
+('Ciência'),
+('Produção e construção'),
+('Agricultura'),
+('Veterinária'),
+('Saúde');
+
+-- Tabela Curso
+CREATE TABLE Curso_db (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    curso VARCHAR(100),
+    nivel_id INT,
+    setor_id INT,
+    FOREIGN KEY (nivel_id) REFERENCES Nivel(ID),
+    FOREIGN KEY (setor_id) REFERENCES Setor(ID)
+);
+
+-- Inserir dados na tabela Curso
+INSERT INTO Curso_db (curso, nivel_id, setor_id) VALUES
+('Pedagogia', 3, 1), -- Educação
+('Educação Física', 3, 1), -- Educação
+('Artes Visuais', 3, 1), -- Educação
+('Música', 3, 1), -- Educação
+
+('Artes', 3, 2), -- Humanas
+('Cinema e Animação', 3, 2), -- Humanas
+('Design de Interiores', 3, 2), -- Humanas
+('Moda', 3, 2), -- Humanas
+('Design', 3, 2), -- Humanas
+('Filosofia', 3, 2), -- Humanas
+('História', 3, 2), -- Humanas
+('Literatura', 3, 2), -- Humanas
+('Artes Cênicas', 3, 2), -- Humanas
+('Dança', 3, 2), -- Humanas
+('Música', 3, 2), -- Humanas
+('Teatro', 3, 2), -- Humanas
+('Teologia', 3, 2), -- Humanas
+('Fotografia', 3, 2), -- Humanas
+('Som e Imagem', 3, 2), -- Humanas
+
+('Ciência Política', 3, 3), -- Ciências Sociais
+('Relações Internacionais', 3, 3), -- Ciências Sociais
+('Ciências Sociais', 3, 3), -- Ciências Sociais
+('Negócios Internacionais', 3, 3), -- Ciências Sociais
+('Ciências Contábeis', 3, 3), -- Ciências Sociais
+('Direito', 3, 3), -- Ciências Sociais
+('Economia', 3, 3), -- Ciências Sociais
+('Administração', 3, 3), -- Ciências Sociais
+('Empreendedorismo', 3, 3), -- Ciências Sociais
+('Jornalismo', 3, 3), -- Ciências Sociais
+('Radiologia', 3, 3), -- Ciências Sociais
+('Radio', 3, 3), -- Ciências Sociais
+('Marketing', 3, 3), -- Ciências Sociais
+('Psicologia', 3, 3), -- Ciências Sociais
+('Secretariado', 3, 3), -- Ciências Sociais
+('Sociologia', 3, 3), -- Ciências Sociais
+
+('Banco de Dados', 3, 4), -- Tecnologia da Informação
+('Ciência da Computação', 3, 4), -- Tecnologia da Informação
+('Engenharia de Software', 3, 4), -- Tecnologia da Informação
+('Análise e Desenvolvimento de Sistemas', 3, 4), -- Tecnologia da Informação
+('Informática para Internet', 3, 4), -- Tecnologia da Informação
+
+('Biologia', 3, 5), -- Ciências
+('Biomedicina', 3, 5), -- Ciências
+('Bioquímica', 3, 5), -- Ciências
+('Zoologia', 3, 5), -- Ciências
+('Meteorologia', 3, 5), -- Ciências
+('Estatística', 3, 5), -- Ciências
+('Física', 3, 5), -- Ciências
+('Astronomia', 3, 5), -- Ciências
+('Matemática', 3, 5), -- Ciências
+('Química', 3, 5), -- Ciências
+
+('Arquitetura e Urbanismo', 3, 6), -- Produção e Construção
+('Paisagismo', 3, 6), -- Produção e Construção
+('Eletrotécnica', 3, 6), -- Produção e Construção
+('Elétrica', 3, 6), -- Produção e Construção
+('Eletromecânica', 3, 6), -- Produção e Construção
+('Mecatrônica', 3, 6), -- Produção e Construção
+('Construção Civil', 3, 6), -- Produção e Construção
+('Engenharia Mecânica', 3, 6), -- Produção e Construção
+('Engenharia Metalúrgica', 3, 6), -- Produção e Construção
+('Cerâmica', 3, 6), -- Produção e Construção
+('Engenharia de Petróleo', 3, 6), -- Produção e Construção
+('Engenharia Geológica', 3, 6), -- Produção e Construção
+('Extração de Petróleo e Gás', 3, 6), -- Produção e Construção
+('Rochas Ornamentais', 3, 6), -- Produção e Construção
+('Tecnologia de Mineração', 3, 6), -- Produção e Construção
+('Engenharia de Alimentos', 3, 6), -- Produção e Construção
+('Indústrias de Laticínios', 3, 6), -- Produção e Construção
+('Engenharia Têxtil', 3, 6), -- Produção e Construção
+('Engenharia Aeroespacial', 3, 6), -- Produção e Construção
+('Engenharia Aeronáutica', 3, 6), -- Produção e Construção
+('Engenharia Automotiva', 3, 6), -- Produção e Construção
+('Engenharia Marítima', 3, 6), -- Produção e Construção
+('Engenharia Naval', 3, 6), -- Produção e Construção
+
+('Engenharia Florestal', 3, 7), -- Agricultura
+('Silvicultura', 3, 7), -- Agricultura
+('Horticultura', 3, 7), -- Agricultura
+('Agroecologia', 3, 7), -- Agricultura
+('Agroindústria', 3, 7), -- Agricultura
+('Agronomia', 3, 7), -- Agricultura
+('Agropecuária', 3, 7), -- Agricultura
+('Ciências Agrárias', 3, 7), -- Agricultura
+('Criação de Animais', 3, 7), -- Agricultura
+('Engenharia Agrícola', 3, 7), -- Agricultura
+('Manejo da Produção Agrícola', 3, 7), -- Agricultura
+('Zootecnia', 3, 7), -- Agricultura
+
+('Medicina Veterinária', 3, 8), -- Veterinária
+
+('Enfermagem', 3, 9), -- Saúde
+('Farmácia', 3, 9), -- Saúde
+('Medicina', 3, 9), -- Saúde
+('Odontologia', 3, 9), -- Saúde
+('Fisioterapia', 3, 9), -- Saúde
+('Fonoaudiologia', 3, 9), -- Saúde
+('Nutrição', 3, 9), -- Saúde
+('Optometria', 3, 9), -- Saúde
+('Quiroprática', 3, 9), -- Saúde
+('Terapia Ocupacional', 3, 9), -- Saúde
+
+('Técnico em Artes Visuais', 2, 1), -- Humanas
+('Técnico em Artesanato', 2, 1), -- Humanas
+('Técnico em Canto', 2, 1), -- Humanas
+('Técnico em Cenografia', 2, 1), -- Humanas
+('Técnico em Composição e Arranjo', 2, 1), -- Humanas
+('Técnico em Comunicação Visual', 2, 1), -- Humanas
+('Técnico em Conservação e Restauro', 2, 1), -- Humanas
+('Técnico em Dança', 2, 1), -- Humanas
+('Técnico em Design de Calçados', 2, 1), -- Humanas
+('Técnico em Design de Embalagens', 2, 1), -- Humanas
+('Técnico em Design de Interiores', 2, 1), -- Humanas
+('Técnico em Design de Móveis', 2, 1), -- Humanas
+('Técnico em Documentação Musical', 2, 1), -- Humanas
+('Técnico em Fabricação de Instrumentos Musicais', 2, 1), -- Humanas
+('Técnico em Instrumento Musical', 2, 1), -- Humanas
+('Técnico em Modelagem do Vestuário', 2, 1), -- Humanas
+('Técnico em Multimídia', 2, 1), -- Humanas
+('Técnico em Museologia', 2, 1), -- Humanas
+('Técnico em Paisagismo', 2, 1), -- Humanas
+('Técnico em Processos Fotográficos', 2, 1), -- Humanas
+('Técnico em Produção de Áudio e Vídeo', 2, 1), -- Humanas
+('Técnico em Produção de Moda', 2, 1), -- Humanas
+('Técnico em Publicidade', 2, 1), -- Humanas
+('Técnico em Rádio e Televisão', 2, 1), -- Humanas
+('Técnico em Regência', 2, 1), -- Humanas
+('Técnico em Teatro', 2, 1), -- Humanas
+('Técnico em Segurança do Trabalho', 2, 1), -- Humanas
+
+('Técnico em Administração', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Comércio', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Comércio Exterior', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Condomínio', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Contabilidade', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Cooperativismo', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Finanças', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Logística', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Marketing', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Qualidade', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Recursos Humanos', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Secretariado', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Seguros', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Serviços Jurídicos', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Serviços Públicos', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Transações Imobiliárias', 2, 3), -- Ciências Sociais, Negócios e Direito
+('Técnico em Vendas', 2, 3), -- Ciências Sociais, Negócios e Direito
+
+('Técnico em Computação Gráfica', 2, 4), -- Tecnologia da Informação
+('Técnico em Desenvolvimento de Sistemas', 2, 4), -- Tecnologia da Informação
+('Técnico em Informática', 2, 4), -- Tecnologia da Informação
+('Técnico em Informática para Internet', 2, 4), -- Tecnologia da Informação
+('Técnico em Manutenção e Suporte em Informática', 2, 4), -- Tecnologia da Informação
+('Técnico em Programação de Jogos Digitais', 2, 4), -- Tecnologia da Informação
+('Técnico em Redes de Computadores', 2, 4), -- Tecnologia da Informação
+('Técnico em Sistemas de Comutação', 2, 4), -- Tecnologia da Informação
+('Técnico em Sistemas de Transmissão', 2, 4), -- Tecnologia da Informação
+('Técnico em Telecomunicações', 2, 4), -- Tecnologia da Informação
+
+('Técnico em Açúcar e Álcool', 2, 6), -- Produção e Construção
+('Técnico em Análises Químicas', 2, 6), -- Produção e Construção
+('Técnico em Biocombustíveis', 2, 6), -- Produção e Construção
+('Técnico em Biotecnologia', 2, 6), -- Produção e Construção
+('Técnico em Calçados', 2, 6), -- Produção e
+('Técnico em Calçados', 2, 6), -- Produção e Construção
+('Técnico em Celulose e Papel', 2, 6), -- Produção e Construção
+('Técnico em Cerâmica', 2, 6), -- Produção e Construção
+('Técnico em Construção Naval', 2, 6), -- Produção e Construção
+('Técnico em Curtimento', 2, 6), -- Produção e Construção
+('Técnico em Fabricação Mecânica', 2, 6), -- Produção e Construção
+('Técnico em Impressão Offset', 2, 6), -- Produção e Construção
+('Técnico em Impressão Rotográfica e Flexográfica', 2, 6), -- Produção e Construção
+('Técnico em Joalheria', 2, 6), -- Produção e Construção
+('Técnico em Móveis', 2, 6), -- Produção e Construção
+('Técnico em Petróleo e Gás', 2, 6), -- Produção e Construção
+('Técnico em Petroquímica', 2, 6), -- Produção e Construção
+('Técnico em Plásticos', 2, 6), -- Produção e Construção
+('Técnico em Pré-Impressão Gráfica', 2, 6), -- Produção e Construção
+('Técnico em Processos Gráficos', 2, 6), -- Produção e Construção
+('Técnico em Química', 2, 6), -- Produção e Construção
+('Técnico em Têxtil', 2, 6), -- Produção e Construção
+('Técnico em Vestuário', 2, 6), -- Produção e Construção
+
+('Técnico em Agricultura', 2, 7), -- Agricultura
+('Técnico em Agroecologia', 2, 7), -- Agricultura
+('Técnico em Agronegócio', 2, 7), -- Agricultura
+('Técnico em Agropecuária', 2, 7), -- Agricultura
+('Técnico em Aquicultura', 2, 7), -- Agricultura
+('Técnico em Cafeicultura', 2, 7), -- Agricultura
+('Técnico em Equipamentos Pesqueiros', 2, 7), -- Agricultura
+('Técnico em Florestas', 2, 7), -- Agricultura
+('Técnico em Fruticultura', 2, 7), -- Agricultura
+('Técnico em Geologia', 2, 7), -- Agricultura
+('Técnico em Grãos', 2, 7), -- Agricultura
+('Técnico em Mineração', 2, 7), -- Agricultura
+('Técnico em Pesca', 2, 7), -- Agricultura
+('Técnico em Pós-Colheita', 2, 7), -- Agricultura
+('Técnico em Recursos Minerais', 2, 7), -- Agricultura
+('Técnico em Recursos Pesqueiros', 2, 7), -- Agricultura
+('Técnico em Zootecnia', 2, 7), -- Agricultura
+
+('Técnico em Agente Comunitário de Saúde', 2, 9), -- Saúde
+('Técnico em Análises Clínicas', 2, 9), -- Saúde
+('Técnico em Citopatologia', 2, 9), -- Saúde
+('Técnico em Controle Ambiental', 2, 9), -- Saúde
+('Técnico em Cuidados de Idosos', 2, 9), -- Saúde
+('Técnico em Enfermagem', 2, 9), -- Saúde
+('Técnico em Equipamentos Biomédicos', 2, 9), -- Saúde
+('Técnico em Estética', 2, 9), -- Saúde
+('Técnico em Farmácia', 2, 9), -- Saúde
+('Técnico em Gerência de Saúde', 2, 9), -- Saúde
+('Técnico em Hemoterapia', 2, 9), -- Saúde
+('Técnico em Imagem Pessoal', 2, 9), -- Saúde
+('Técnico em Imobilizações Ortopédicas', 2, 9), -- Saúde
+('Técnico em Massoterapia', 2, 9), -- Saúde
+('Técnico em Meio Ambiente', 2, 9), -- Saúde
+('Técnico em Meteorologia', 2, 9), -- Saúde
+('Técnico em Necropsia', 2, 9), -- Saúde
+('Técnico em Nutrição e Dietética', 2, 9), -- Saúde
+('Técnico em Óptica', 2, 9), -- Saúde
+('Técnico em Órteses e Próteses', 2, 9), -- Saúde
+('Técnico em Podologia', 2, 9), -- Saúde
+('Técnico em Prótese Dentária', 2, 9), -- Saúde
+('Técnico em Radiologia', 2, 9), -- Saúde
+('Técnico em Reabilitação de Dependentes Químicos', 2, 9), -- Saúde
+('Técnico em Reciclagem', 2, 9), -- Saúde
+('Técnico em Registros e Informações em Saúde', 2, 9), -- Saúde
+('Técnico em Saúde Bucal', 2, 9); -- Saúde
