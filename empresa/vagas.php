@@ -24,7 +24,7 @@ ob_start();
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Modelo</label>
-                    <select class="form-select" aria-label="Default select example">
+                    <select id="modelo" class="form-select" aria-label="Default select example">
                         <option value=""></option>
                         <option value="presencial">Presencial</option>
                         <option value="hibrido">Híbrido</option>
@@ -87,7 +87,7 @@ ob_start();
                 </div>
 
                 <div class="col-md-12">
-                    <button type='submit' onclick='a()' class='btn btn-primary botao-edit'>
+                    <button type='submit' onclick='salvar()' class='btn btn-primary botao-edit'>
                         Salvar
                     </button>
                 </div>

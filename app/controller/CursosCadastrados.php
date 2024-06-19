@@ -32,7 +32,6 @@ class CursosCadastrados{
         echo json_encode($html);
         return $html;
     }
-
     
 }
 
@@ -44,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     switch($tipo){
         case 'listarArea':
-        
             $curso->listarArea($nivel);
         break;
         case 'listarCursos':
