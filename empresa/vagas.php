@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once '../app/controller/EmpresaController.php';
-require_once '../app/controller/CidadeEstado.php';
-$estado = new CidadeEstado();
-$empresa = new EmpresaController($_SESSION['id']);
+require_once '../app/controller/vagaEmpresaController.php';
+
+$vagas = new VagaEmpresaController();
+
 ob_start();  
 ?>
 <div style="display: flex; justify-content: end; margin-top: 20px;">
@@ -97,34 +97,7 @@ ob_start();
 </div>
 <br>
 <div class="row g-3">
-    <div class="col-xl-6">
-        <div class="card">
-            <div class="card-header">
-                Nome da vaga
-            </div>
-            <div class="card-body">
-                <div class="infoVaga" style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap;">
-                    <div class="">
-                        <i class="fas fa-user"></i> R$ salário
-                    </div>
-                    <div class="">
-                        <i class="fas fa-calendar"></i> Cidade - UF
-                    </div>
-                    <div class="">
-                        <i class="fas fa-money-bill"></i> Remoto
-                    </div>
-                </div>
-                <div class="row g-3">
-                    <div class="col-6">
-                        <button class="btn btn-primary" style="width:100%">Editar</button>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-danger" style="width:100%">Excluir</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?= $vagas->listarVagasEmpresa($_SESSION['id']) ?>
 </div>
 
 

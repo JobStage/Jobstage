@@ -210,3 +210,48 @@ function salvar(){
     }
 
 }
+
+function excluirVaga(id) { 
+    Swal.fire({
+        title: "Quer mesmo excluir essa vaga? ",
+        text: "Você não poderá reverter esta ação!",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        cancelButtonText: 'Não',
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Sim"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "../app/controller/vagaEmpresaController.php",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    tipo: 'excluir',
+                    idVaga: id
+                },
+                success: function(data) {
+                    if(data.success) {
+                        Swal.fire({
+                            title: data.tittle,
+                            text: data.msg,
+                            icon: data.icon
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: data.tittle,
+                            text: data.msg,
+                            icon: data.icon
+                        });
+                    };
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
+}

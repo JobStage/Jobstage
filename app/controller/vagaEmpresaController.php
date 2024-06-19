@@ -30,6 +30,56 @@ class VagaEmpresaController{
        return;
     }
     
+    public function listarVagasEmpresa($idEmpresa){
+        $html = '';
+    
+        foreach($this->vagaModel->getAllVagas($idEmpresa) as $value){
+            $html .= '
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-header">
+                        <h3>'.$value['nome'].'</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="infoVaga" style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap;">
+                                <div class="">
+                                    <i class="fas fa-user"></i> R$ ' . $value['salario'] .'
+                                </div>
+                                <div class="">
+                                    <i class="fas fa-calendar"></i> Cidade - UF
+                                </div>
+                                <div class="">
+                                    <i class="fas fa-money-bill"></i> '. $value['modelo'] .'
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <button class="btn btn-primary" style="width:100%">Editar</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-danger" style="width:100%" onclick="excluirVaga('. $value['idVaga'] .')">Excluir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ';
+        }
+        echo $html;
+    }
+
+    public function excluirVaga($idVaga){
+        if($this->vagaModel->excluirVaga($idVaga, $_SESSION['id'])){
+            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Vaga excluida com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return;
+        }
+
+        $retorno = array('success' => false, 'tittle' => 'Sucesso!', 'msg' => 'Erro ao excluir a vaga, tente novamente!', 'icon' => 'error');
+        echo json_encode($retorno);
+        return;
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -49,6 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
             $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
             $vaga->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area, $valoresSelecionados);
+        break;
+        case 'excluir';
+            $vaga->excluirVaga($_POST['idVaga']);
         break;
     }
 }

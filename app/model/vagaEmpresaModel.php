@@ -35,5 +35,36 @@ class vagaEmpresaModel{
             return false;
         }
     }
+
+
+    public function getAllVagas($idEmpresa){
+        $sql = $this->conn->prepare('SELECT * FROM vagas 
+                                    WHERE id_empresa = :id');
+
+        $sql->bindParam(':id', $idEmpresa);
+        $sql->execute();
+
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function excluirVaga($idVaga, $idEmpresa){
+
+        try {
+            $sql = $this->conn->prepare('DELETE FROM vagas
+                                        WHERE idVaga = :vaga
+                                        AND id_empresa = :empresa');
+    
+            $sql->bindParam(':vaga', $idVaga);
+            $sql->bindParam(':empresa', $idEmpresa);
+    
+            $sql->execute();
+            
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 
