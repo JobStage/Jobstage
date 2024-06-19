@@ -55,7 +55,7 @@ class VagaEmpresaController{
                             <br>
                             <div class="row g-3">
                                 <div class="col-6">
-                                    <button class="btn btn-primary" style="width:100%">Editar</button>
+                                    <button class="btn btn-primary" style="width:100%" onclick="getEditarVaga('. $value['idVaga'] .')">Editar</button>
                                 </div>
                                 <div class="col-6">
                                     <button class="btn btn-danger" style="width:100%" onclick="excluirVaga('. $value['idVaga'] .')">Excluir</button>
@@ -80,6 +80,26 @@ class VagaEmpresaController{
         echo json_encode($retorno);
         return;
     }
+
+    public function getEditVaga($id){
+        $result = $this->vagaModel->getVagaFiltado($id);
+
+        $array = array(
+            'idVaga' =>$result['idVaga'],
+            'nome'=>$result['nome'],  
+            'salario'=>$result['salario'],  
+            'nivel'=>$result['nivel'],  
+            'setor'=>$result['setor'], 
+            'cursos'=>$result['cursos'], 
+            'modelo'=>$result['modelo'], 
+            'descricao'=>$result['descricao'],  
+            'requisitos'=>$result['requisitos'],  
+            'id_empresa'=>$result['id_empresa'], 
+        );
+
+        echo json_encode($array);
+        return $array;
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -102,6 +122,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         break;
         case 'excluir';
             $vaga->excluirVaga($_POST['idVaga']);
+        break;
+        case 'getEditVaga':
+            $vaga->getEditVaga($_POST['id']);
         break;
     }
 }

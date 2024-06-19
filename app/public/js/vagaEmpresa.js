@@ -3,8 +3,18 @@ $(document).ready(function(){
         sendAjaxRequestArea();
     });
 
+
     $('#nivel, #area').change(function() {
         sendAjaxRequest();
+    });
+
+    $('#nivelEdit').change(function() {
+        sendAjaxRequestAreaEdit();
+    });
+
+
+    $('#nivelEdit, #areaEdit').change(function() {
+        sendAjaxRequesEdit($('#areaEdit').val());
     });
 
     $('#rs').on('input', function() {
@@ -27,6 +37,14 @@ $(document).ready(function(){
         }
 
         $(this).val(valor);
+    });
+
+    $('[data-dismiss="modal"]').on('click', function(){
+        $('#areaEdit').attr('disabled', 'disabled').val('');
+        $('#selecCursosEdit').removeClass('btn-primary').addClass('btn-secondary disabled');
+        $('#selecionarCursosCollapseEdit').collapse('hide');
+        $('#avisoCursoCollapseEdit').collapse('hide');
+        $('#staticBackdrop').modal('hide');
     });
 });
 
@@ -60,6 +78,67 @@ function sendAjaxRequestArea() {
         });
     }else{
         $('#area').attr('disabled', 'disabled').val('');
+    }
+}
+
+function sendAjaxRequestAreaEdit() {
+    var nivel = $('#nivelEdit').val();
+    // desativa e apaga dados cadastrados no input da area e do collapse
+    $('#areaEdit').attr('disabled', 'disabled').val('');
+    $('#selecCursosEdit').removeClass('btn-primary').addClass('btn-secondary disabled');
+    $('#selecionarCursosCollapseEdit').collapse('hide');
+    $('#avisoCursoCollapseEdit').collapse('hide');
+    
+    if(nivel > 1){
+        $('#areaEdit').removeAttr('disabled');
+        
+        $.ajax({
+            url: '../app/controller/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                nivel: nivel,
+                tipo: 'listarArea'
+            },
+            success: function(response) {
+                $("#areaEdit").html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+            }
+        });
+    }else{
+        $('#areaEdit').attr('disabled', 'disabled').val('');
+    }
+}
+
+function sendAjaxRequesEdit(areaId) {
+    var nivel = $('#nivelEdit').val();
+    
+    if (nivel && areaId) {
+        $('#selecCursosEdit').removeClass('btn-secondary disabled').addClass('btn-primary');
+        
+        $.ajax({
+            url: '../app/controller/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                nivel: nivel,
+                area: areaId,
+                tipo: 'listarCursos'
+            },
+            success: function(response) {
+                $("#optionsEdit").html(response);
+            },
+            error: function(xhr, status, error) {
+                
+                console.error('AJAX Error: ' + status + error);
+            }
+        });
+    }else{
+        $('#selecCursosEdit').removeClass('btn-primary').addClass('btn-secondary disabled');
+        $('#selecionarCursosCollapseEdit').collapse('hide');
+        $('#avisoCursoCollapseEdit').collapse('hide');
     }
 }
 
@@ -254,4 +333,54 @@ function excluirVaga(id) {
             });
         }
     });
+}
+
+function getEditarVaga(id){
+        $('#staticBackdrop').modal('show');
+        // AJAX -----------------------------------------
+        $.ajax({
+            type: "post",
+            url: "../app/controller/vagaEmpresaController.php",
+            dataType: 'json',
+            data: {
+                tipo: 'getEditVaga',
+                id: id
+            },
+            success: function(data) {
+                $('#nomeEdit').val(data.nome);
+                $('#rsEdit').val(data.salario);
+                $('#modeloEdit').val(data.modelo);
+                $('#nivelEdit').val(data.nivel);
+                console.log(data.nivel);
+                if(data.nivel > 1){
+                    console.log('MAIOR QUE 1')
+                    sendAjaxRequestAreaEdit()
+                    $('#areaEdit').removeAttr('disabled');
+
+                    setTimeout(function() { // tempo para sistema puxar a area selecionada do banco
+                        $('#areaEdit [value="' + data.setor + '"]').attr('selected', 'selected');
+                    }, 100);
+
+                    sendAjaxRequesEdit(data.setor)
+                    $('#selecCursosEdit').removeClass('btn-secondary disabled').addClass('btn-primary');
+                    setTimeout(function() {
+                       // Divide a string data.cursos em um array de valores separados por vírgula
+                        var valores = data.cursos.split(',');
+
+                        // Itera sobre cada valor
+                        $.each(valores, function(index, valor) {
+                            // Seleciona o checkbox com o valor correspondente e marca como selecionado
+                            $('#optionsEdit input[type="checkbox"][value="' + valor + '"]').prop('checked', true);
+                        });
+                    }, 100);
+                };
+
+                $('#descEdit').val(data.descricao);
+                $('#reqEdit').val(data.requisitos);
+
+            },
+            error: function(xhr, status, error) {
+                console.log("Erro ao receber os dados:", error);
+            }
+        });
 }

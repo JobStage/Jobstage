@@ -66,5 +66,16 @@ class vagaEmpresaModel{
             return false;
         }
     }
+
+    public function getVagaFiltado($id){
+        $sql = $this->conn->prepare('SELECT * FROM vagas
+                                    WHERE idVaga = :id');
+
+        $sql->bindParam(':id', $id);
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
 

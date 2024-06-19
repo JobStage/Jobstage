@@ -101,7 +101,97 @@ ob_start();
 </div>
 
 
+<!-- MODAL -->
+<div id="staticBackdrop" data-bs-backdrop="static" class="modal fade" tabindex="-1" aria-labelledby="modalEditar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalEditar">
+                    Editar Vaga
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" class="row g-3">
+                    <div class="col-md-12">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nomeEdit">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rs" class="form-label">R$</label>
+                        <input type="rs" class="form-control" id="rsEdit">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Modelo</label>
+                        <select id="modeloEdit" class="form-select" aria-label="Default select example">
+                            <option value=""></option>
+                            <option value="presencial">Presencial</option>
+                            <option value="hibrido">Híbrido</option>
+                            <option value="remoto">Remoto</option>
+                        </select>
+                    </div>
 
+                    <div class="col-md-3">
+                        <label for="nivel" class="form-label">Nível</label>
+                        <select id="nivelEdit" class="form-select" aria-label="Default select example">
+                            <option value=""></option>
+                            <option value="1">Ensino médio</option>
+                            <option value="2">Técnico</option>
+                            <option value="3">Superior</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="area" class="form-label">Área</label>
+                        <select id="areaEdit" class="form-select" aria-label="Default select example" disabled>
+                        
+                            
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div style="display: flex; flex-direction:column; margin-bottom:10px;">
+                            <label for="selecCursosEdit" class="form-label">Cursos</label>
+                            <div id="selecCursosEdit" class="btn btn-secondary disabled" data-bs-toggle="collapse" data-bs-target=".multi-collapse" href="#selecionarCursosCollapseEdit " role="button" aria-expanded="false" aria-controls="selecionarCursosCollapseEdit avisoCursoCollapseEdit">
+                                Selecionar cursos
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6" style="display: flex; align-items: center;">
+                            <div class="collapse multi-collapse" id="avisoCursoCollapseEdit">
+                                <div class="alert alert-info" role="alert">
+                                    <h5>Selecione os cursos do nível e área escolhida que você deseja que vejam a sua vaga de estágio!</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="collapse multi-collapse" id="selecionarCursosCollapseEdit">
+                                <div class="card card-body" id="optionsEdit">
+                                
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label for="desc" class="form-label">Descrição</label>
+                        <textarea id="descEdit" type="text" class="form-control"></textarea>
+                    </div>
+                    <div class="col-lg-12">
+                        <label for="req" class="form-label">Requisitos</label>
+                        <textarea id="reqEdit" type="text" class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success" id='salvarEdit' onclick="editarCurso()">Salvar alterações</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="../app/public/js/vagaEmpresa.js"></script>
 
