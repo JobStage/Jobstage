@@ -12,7 +12,7 @@ class CursosCadastrados{
         $html = "";
         foreach($this->cursosModel->getCursosCadastradosFiltrados($nivel, $area) as $value){
             $html .= '<div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="'. $value['ID'] .'"/>
+                        <input class="form-check-input" type="checkbox" value="'. $value['ID'] .'" id="'. $value['ID'] .'"/>
                         <label class="form-check-label" for="'. $value['ID'] .'">'. $value['curso'] .'</label>
                     </div>';
         }

@@ -52,17 +52,29 @@ ob_start();
                 <div class="col-md-6">
                     <div style="display: flex; flex-direction:column; margin-bottom:10px;">
                         <label for="email" class="form-label">Cursos</label>
-                        <div id="selecCursos" class="btn btn-secondary disabled" data-bs-toggle="collapse" href="#selecionarCursosCollapse" role="button" aria-expanded="false" aria-controls="selecionarCursosCollapse">
+                        <div id="selecCursos" class="btn btn-secondary disabled" data-bs-toggle="collapse" data-bs-target=".multi-collapse" href="#selecionarCursosCollapse " role="button" aria-expanded="false" aria-controls="selecionarCursosCollapse avisoCursoCollapse">
                             Selecionar cursos
                         </div>
                     </div>
 
-                    <div class="collapse" id="selecionarCursosCollapse">
-                        <div class="card card-body" id="options">
-                            
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" style="display: flex; align-items: center;">
+                        <div class="collapse multi-collapse" id="avisoCursoCollapse">
+                            <div class="alert alert-info" role="alert">
+                                <h5>Selecione os cursos do nível e área escolhida que você deseja que vejam a sua vaga de estágio!</h5>
+                            </div>
                         </div>
                     </div>
-                
+                    <div class="col-md-6">
+                        <div class="collapse multi-collapse" id="selecionarCursosCollapse">
+                            <div class="card card-body" id="options">
+                            
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="col-lg-12">
@@ -75,7 +87,7 @@ ob_start();
                 </div>
 
                 <div class="col-md-12">
-                    <button type='submit' onclick='salvarEmpresa()' class='btn btn-primary botao-edit'>
+                    <button type='submit' onclick='a()' class='btn btn-primary botao-edit'>
                         Salvar
                     </button>
                 </div>

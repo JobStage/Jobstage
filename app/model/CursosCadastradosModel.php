@@ -15,7 +15,8 @@ class CursosCadastradosModel{
     public function getCursosCadastradosFiltrados($nivel, $area){
         $sql = $this->conn->prepare('SELECT * FROM curso_db
                                         WHERE nivel_id = :nivel
-                                        AND setor_id = :setor');
+                                        AND setor_id = :setor
+                                        ORDER BY curso ASC');
         $sql->bindParam(':nivel', $nivel);
         $sql->bindParam(':setor', $area);
         $sql->execute();
