@@ -43,13 +43,16 @@ class VagaEmpresaController{
                         <div class="card-body">
                             <div class="infoVaga" style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap;">
                                 <div class="">
-                                    <i class="fas fa-user"></i> R$ ' . $value['salario'] .'
+                                    <img src="../app/public/img/cifrao.png" width="40px" heigth="40px">
+                                    R$ '. $value['salario'] .'
                                 </div>
                                 <div class="">
-                                    <i class="fas fa-calendar"></i> Cidade - UF
+                                    <img src="../app/public/img/formacao.png" width="40px" heigth="40px">
+                                    '. $value['nomeNivel'] .'
                                 </div>
                                 <div class="">
-                                    <i class="fas fa-money-bill"></i> '. $value['modelo'] .'
+                                   <img src="../app/public/img/pasta.png" width="40px" heigth="40px">
+                                    '. $value['modeloVaga'] .'
                                 </div>
                             </div>
                             <br>
@@ -100,6 +103,23 @@ class VagaEmpresaController{
         echo json_encode($array);
         return $array;
     }
+
+    public function atualizarVaga($idVaga, $nome, $rs, $modelo, $desc, $req, $valoresSelecionados = null){
+        if($valoresSelecionados){
+            $valoresSelecionados =  implode(',', $valoresSelecionados);
+        }
+
+        if($this->vagaModel->atualizarVaga($idVaga, $nome, $rs, $modelo, $desc, $req, $valoresSelecionados)){
+            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Vaga editada com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return;
+        }
+
+       $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Erro ao editar a vaga, tente novamente!', 'icon' => 'error');
+       echo json_encode($retorno);
+       return;
+
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -125,6 +145,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         break;
         case 'getEditVaga':
             $vaga->getEditVaga($_POST['id']);
+        break;
+        case 'atualizarVaga':
+            $idVaga =  $_POST['id'];
+            $nome =  $_POST['nome'];
+            $rs =  $_POST['rs'];
+            $modelo =  $_POST['modelo'];
+            $desc =  $_POST['desc'];
+            $req =  $_POST['req'];
+            $valoresSelecionados =  $_POST['cursos'] ?? null;
+            $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
+            $vaga->atualizarVaga($idVaga, $nome, $rs, $modelo, $desc, $req, $valoresSelecionados);
         break;
     }
 }

@@ -26,9 +26,9 @@ ob_start();
                     <label class="form-label">Modelo</label>
                     <select id="modelo" class="form-select" aria-label="Default select example">
                         <option value=""></option>
-                        <option value="presencial">Presencial</option>
-                        <option value="hibrido">Híbrido</option>
-                        <option value="remoto">Remoto</option>
+                        <option value="1">Presencial</option>
+                        <option value="2">Híbrido</option>
+                        <option value="3">Remoto</option>
                     </select>
                 </div>
 
@@ -124,16 +124,15 @@ ob_start();
                         <label class="form-label">Modelo</label>
                         <select id="modeloEdit" class="form-select" aria-label="Default select example">
                             <option value=""></option>
-                            <option value="presencial">Presencial</option>
-                            <option value="hibrido">Híbrido</option>
-                            <option value="remoto">Remoto</option>
+                            <option value="1">Presencial</option>
+                            <option value="2">Híbrido</option>
+                            <option value="3">Remoto</option>
                         </select>
                     </div>
 
                     <div class="col-md-3">
                         <label for="nivel" class="form-label">Nível</label>
-                        <select id="nivelEdit" class="form-select" aria-label="Default select example">
-                            <option value=""></option>
+                        <select id="nivelEdit" class="form-select" aria-label="Default select example" disabled>
                             <option value="1">Ensino médio</option>
                             <option value="2">Técnico</option>
                             <option value="3">Superior</option>
@@ -150,7 +149,7 @@ ob_start();
                     <div class="col-md-6">
                         <div style="display: flex; flex-direction:column; margin-bottom:10px;">
                             <label for="selecCursosEdit" class="form-label">Cursos</label>
-                            <div id="selecCursosEdit" class="btn btn-secondary disabled" data-bs-toggle="collapse" data-bs-target=".multi-collapse" href="#selecionarCursosCollapseEdit " role="button" aria-expanded="false" aria-controls="selecionarCursosCollapseEdit avisoCursoCollapseEdit">
+                            <div id="selecCursosEdit" class="btn btn-secondary disabled" data-bs-toggle="collapse" data-bs-target="#selecionarCursosCollapseEdit, #avisoCursoCollapseEdit"  role="button" aria-expanded="false" aria-controls="selecionarCursosCollapseEdit avisoCursoCollapseEdit">
                                 Selecionar cursos
                             </div>
                         </div>
@@ -161,7 +160,7 @@ ob_start();
                         <div class="col-md-6" style="display: flex; align-items: center;">
                             <div class="collapse multi-collapse" id="avisoCursoCollapseEdit">
                                 <div class="alert alert-info" role="alert">
-                                    <h5>Selecione os cursos do nível e área escolhida que você deseja que vejam a sua vaga de estágio!</h5>
+                                    <h5>Edite os cursos que você deseja que faça parte da sua vaga de estágio escolhendo uma das opções ao lado de acordo com o nivel e área selecionados!</h5>
                                 </div>
                             </div>
                         </div>
@@ -183,11 +182,12 @@ ob_start();
                         <label for="req" class="form-label">Requisitos</label>
                         <textarea id="reqEdit" type="text" class="form-control"></textarea>
                     </div>
+                    <input type="hidden" id="idVaga">
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-success" id='salvarEdit' onclick="editarCurso()">Salvar alterações</button>
+                <button type="submit" class="btn btn-success" id='salvarEdit' onclick="salvarEdicao()">Salvar alterações</button>
             </div>
         </div>
     </div>

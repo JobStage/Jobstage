@@ -36,10 +36,13 @@ class vagaEmpresaModel{
         }
     }
 
-
     public function getAllVagas($idEmpresa){
-        $sql = $this->conn->prepare('SELECT * FROM vagas 
-                                    WHERE id_empresa = :id');
+        $sql = $this->conn->prepare('SELECT n.nivel as nomeNivel, m.modelo as modeloVaga, v.* FROM vagas as v
+                                        INNER JOIN nivel as n
+                                        ON n.ID = v.nivel
+                                        INNER JOIN modelo as m
+                                        ON m.id = v.modelo
+                                    WHERE v.id_empresa = :id');
 
         $sql->bindParam(':id', $idEmpresa);
         $sql->execute();
@@ -68,14 +71,49 @@ class vagaEmpresaModel{
     }
 
     public function getVagaFiltado($id){
-        $sql = $this->conn->prepare('SELECT * FROM vagas
-                                    WHERE idVaga = :id');
+        $sql = $this->conn->prepare('SELECT * FROM vagas as v
+                                    WHERE v.idVaga = :id');
 
         $sql->bindParam(':id', $id);
         $sql->execute();
 
         $result = $sql->fetch(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    public function atualizarVaga($idVaga, $nome, $rs, $modelo, $desc, $req, $valoresSelecionados = null){
+        try {
+            $sql = 'UPDATE vagas 
+                SET nome = :nome, salario = :rs, modelo = :modelo, descricao = :desc, requisitos = :req';
+            
+            if($valoresSelecionados){
+                $sql .= ', cursos = :cursos';
+            }
+                    
+            $sql .= ' WHERE idVaga = :idVaga';
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':rs', $rs);
+            $stmt->bindParam(':modelo', $modelo);
+            $stmt->bindParam(':desc', $desc);
+            $stmt->bindParam(':req', $req);
+
+            if($valoresSelecionados){
+                $stmt->bindParam(':cursos', $valoresSelecionados);
+            }
+            
+            $stmt->bindParam(':idVaga', $idVaga);
+
+            // Executa a query
+            $stmt->execute();
+            
+            return true;
+        } catch (PDOException $e) {
+            echo $e;
+            return false;
+        }
     }
 }
 
