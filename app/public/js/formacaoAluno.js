@@ -2,6 +2,7 @@
  $(document).ready(function() {
     $('.btn-primary').on('click', function() {
         var id = $(this).val(); 
+        
 
         // AJAX -----------------------------------------
         $.ajax({
@@ -36,6 +37,11 @@
     $('[data-dismiss="modal"]').on('click', function(){
         $('#staticBackdrop').modal('hide');
     });
+
+    $('#nivel').change(function() {
+           
+            sendAjaxRequestCurso(); 
+        });
 });
 
 
@@ -205,3 +211,31 @@ function excluirFormacao(id) {
         }
     });
 }
+function sendAjaxRequestCurso() {
+    var nivel = $('#nivel').val();
+    // desativa e apaga dados cadastrados no input da area e do collapse
+    $('#curso').attr('disabled', 'disabled').val('');
+
+    if(nivel > 1){
+        $('#curso').removeAttr('disabled');
+
+        $.ajax({
+            url: '../app/controller/curso.php',  // Substitua pelo seu endpoint de servidor
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                nivel: nivel,
+                tipo: 'listarCurso'
+            },
+            success: function(response) {
+                $("#curso").html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+            }
+        });
+    }else{
+        $('#curso').attr('disabled', 'disabled').val('');
+    }
+}
+

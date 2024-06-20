@@ -36,9 +36,9 @@ ob_start();
                     </div>
                     <div class="col-lg-4">
                         <label for="curso" class="form-label">Curso</label>
-                        <select type="text" class="form-control" id="curso" required> <?=$cursos->listaCursos() ?> </select>
+                        <select type="text" class="form-control" id="curso" required disabled> </select>
                     </div>
-                    <div class="col-lg-4">
+                    <!-- <div class="col-lg-4">
                         <label for="estado" class="form-label">Estado</label>
                         <input type="text" class="form-control" id="estado" required disabled>
                     </div>
@@ -53,7 +53,7 @@ ob_start();
                     <div class="col-lg-4">
                         <label for="rua" class="form-label">Rua</label>
                         <input type="text" class="form-control" id="rua" required disabled>
-                    </div>
+                    </div> -->
                                        
                     <div class="col-lg-2">
                         <label for="inicio" class="form-label">Inicio</label>
