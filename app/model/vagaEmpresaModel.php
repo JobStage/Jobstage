@@ -48,9 +48,11 @@ class vagaEmpresaModel{
                                         ON n.ID = v.nivel
                                         INNER JOIN modelo as m
                                         ON m.id = v.modelo
-                                    WHERE v.id_empresa = :id');
+                                    WHERE v.id_empresa = :id
+                                    AND v.ativo = :ativo');
 
         $sql->bindParam(':id', $idEmpresa);
+        $sql->bindValue(':ativo', 1);
         $sql->execute();
 
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -61,9 +63,10 @@ class vagaEmpresaModel{
     public function excluirVaga($idVaga, $idEmpresa){
 
         try {
-            $sql = $this->conn->prepare('DELETE FROM vagas
-                                        WHERE idVaga = :vaga
-                                        AND id_empresa = :empresa');
+            $sql = $this->conn->prepare(' UPDATE vagas
+                                            SET ativo = 0
+                                          WHERE idVaga = :vaga
+                                            AND id_empresa = :empresa');
     
             $sql->bindParam(':vaga', $idVaga);
             $sql->bindParam(':empresa', $idEmpresa);
