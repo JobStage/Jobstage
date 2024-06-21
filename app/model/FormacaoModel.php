@@ -10,12 +10,12 @@ class FormacaoModel{
     }
 
     public function getAllformacao(int $idAluno, $id = null ){
-        $sql = 'SELECT * FROM formacao';
-        $sql .= ' WHERE id_aluno = :idAluno';
+        $sql = 'SELECT c.curso as curso_db, n.nivel as nivelSelecionado, f.* FROM formacao as f INNER JOIN curso_db as c ON c.ID = f.curso INNER JOIN  nivel as n ON n.ID = f.nivel';
+        $sql .= ' WHERE f.id_aluno = :idAluno';
         
         // verifica se existe valor no id para incluir no WHERE
         if ($id !== null) {
-            $sql .= ' AND id_formacao = :id';
+            $sql .= ' AND f.id_formacao = :id';
         }
 
         $sql = $this->conn->prepare($sql);

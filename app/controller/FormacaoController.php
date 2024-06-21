@@ -91,23 +91,26 @@ class FormacaoController{
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">';
-                    foreach($tabelaFormacao as $value){
-                        $html .= '
-                        <tr>
-                            <td>' . $value['curso'] . '</td>
-                            <td>' . $value['instituicao'] . '</td>
-                            <td>' . $value['nivel'] . '</td>
-                            <td>' . $value['status'] . '</td>
-                            <td>
-                                <button class="btn btn-primary" id="edit-'.$value['id_formacao'].'" value='.$value['id_formacao'].'>
-                                    Editar
-                                </button>
-                                <button class="btn btn-danger" value='.$value['id_formacao'].' onclick="excluirFormacao('.$value['id_formacao'].')">
-                                    Excluir
-                                </button>
-                            </td>
-                        </tr>';
-                    }
+                foreach($tabelaFormacao as $value) {
+                    $curso = $value['curso'] == 'null'? 'Ensino médio' : $value['curso_db'];
+                    $html .= '
+                    <tr>
+                        <td>' . $curso  . '</td>
+                        <td>' . $value['instituicao'] . '</td>
+                        <td>' . $value['nivelSelecionado'] . '</td>
+                        <td>' . $value['status'] . '</td>
+                        <td>
+                            <button class="btn btn-primary" id="edit-' . $value['id_formacao'] . '" value="' . $value['id_formacao'] . '">
+                                Editar
+                            </button>
+                            <button class="btn btn-danger" value="' . $value['id_formacao'] . '" onclick="excluirFormacao(' . $value['id_formacao'] . ')">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>';
+                }
+                
+                
                      $html .='
                 </tbody>
             </table>';
@@ -128,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $formacao = new FormacaoController($_SESSION['id']);
     switch($acao){
         case 'editar':
-           $formacao->editarFormacao($_SESSION['id'], $idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $setor = $_POST["setor"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'] ?? '');
+           $formacao->editarFormacao($_SESSION['id'], $idFormacao = $_POST['idFormacao'], $curso = $_POST["curso"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'] ?? '');
         break;
         case 'excluir':
             $formacao->excluirFormacao($_POST['idFormacao'], $_SESSION['id']);

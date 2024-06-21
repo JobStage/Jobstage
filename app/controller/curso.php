@@ -12,7 +12,15 @@ class cursos{
    
   }
   public function listaCursos($id){
-    $html = '<option> </option>';
+    $html = '<option id= "medio"> </option>';
+    foreach($this->cursosDB->getAllCursos($id) as $value){
+      $html.='<option value='. $value['ID'] .'>'. $value['curso'] .'</option>';
+    }
+    echo json_encode($html);
+    return $html;
+  }
+  public function listaCursosEdit($id){
+    $html = '<option id= "medioEdit" > </option>';
     foreach($this->cursosDB->getAllCursos($id) as $value){
       $html.='<option value='. $value['ID'] .'>'. $value['curso'] .'</option>';
     }
