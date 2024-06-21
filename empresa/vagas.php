@@ -52,7 +52,7 @@ ob_start();
                 <div class="col-md-6">
                     <div style="display: flex; flex-direction:column; margin-bottom:10px;">
                         <label for="email" class="form-label">Cursos</label>
-                        <div id="selecCursos" class="btn btn-secondary disabled" data-bs-toggle="collapse" data-bs-target=".multi-collapse" href="#selecionarCursosCollapse " role="button" aria-expanded="false" aria-controls="selecionarCursosCollapse avisoCursoCollapse">
+                        <div id="selecCursos" class="btn btn-secondary disabled" data-bs-toggle="collapse" data-bs-target="#selecionarCursosCollapse, #avisoCursoCollapse" role="button" aria-expanded="false" aria-controls="selecionarCursosCollapse avisoCursoCollapse">
                             Selecionar cursos
                         </div>
                     </div>
@@ -60,7 +60,7 @@ ob_start();
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6" style="display: flex; align-items: center;">
+                    <div class="col-md-6" style="display: flex;">
                         <div class="collapse multi-collapse" id="avisoCursoCollapse">
                             <div class="alert alert-info" role="alert">
                                 <h5>Selecione os cursos do nível e área escolhida que você deseja que vejam a sua vaga de estágio!</h5>
@@ -158,14 +158,14 @@ ob_start();
 
                     <div class="row">
                         <div class="col-md-6" style="display: flex; align-items: center;">
-                            <div class="collapse multi-collapse" id="avisoCursoCollapseEdit">
+                            <div class="collapse " id="avisoCursoCollapseEdit">
                                 <div class="alert alert-info" role="alert">
                                     <h5>Edite os cursos que você deseja que faça parte da sua vaga de estágio escolhendo uma das opções ao lado de acordo com o nivel e área selecionados!</h5>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="collapse multi-collapse" id="selecionarCursosCollapseEdit">
+                            <div class="collapse " id="selecionarCursosCollapseEdit">
                                 <div class="card card-body" id="optionsEdit">
                                 
                                 </div>

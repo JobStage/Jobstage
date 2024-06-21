@@ -12,7 +12,7 @@ class vagaEmpresaModel{
         $this->conn = $conexao->conn();
     }
 
-    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null){
+    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null){
         try {
              
         $sql = $this->conn->prepare("INSERT INTO vagas (nome, salario, modelo, nivel, descricao, requisitos, setor, cursos, id_empresa) 
@@ -25,7 +25,13 @@ class vagaEmpresaModel{
         $sql->bindParam(':descricao', $desc);
         $sql->bindParam(':requisitos', $req);
         $sql->bindParam(':area', $area);
-        $sql->bindParam(':valores_selecionados', $valoresSelecionados);
+
+        if($valoresSelecionados){
+            $sql->bindParam(':valores_selecionados', $valoresSelecionados);
+        }else{
+            $sql->bindParam(':valores_selecionados', $ensinoMedio);
+        }
+
         $sql->bindParam(':id', $idEmpresa);
         $sql->execute();
 
@@ -42,9 +48,11 @@ class vagaEmpresaModel{
                                         ON n.ID = v.nivel
                                         INNER JOIN modelo as m
                                         ON m.id = v.modelo
-                                    WHERE v.id_empresa = :id');
+                                    WHERE v.id_empresa = :id
+                                    AND v.ativo = :ativo');
 
         $sql->bindParam(':id', $idEmpresa);
+        $sql->bindValue(':ativo', 1);
         $sql->execute();
 
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -55,9 +63,10 @@ class vagaEmpresaModel{
     public function excluirVaga($idVaga, $idEmpresa){
 
         try {
-            $sql = $this->conn->prepare('DELETE FROM vagas
-                                        WHERE idVaga = :vaga
-                                        AND id_empresa = :empresa');
+            $sql = $this->conn->prepare(' UPDATE vagas
+                                            SET ativo = 0
+                                          WHERE idVaga = :vaga
+                                            AND id_empresa = :empresa');
     
             $sql->bindParam(':vaga', $idVaga);
             $sql->bindParam(':empresa', $idEmpresa);
