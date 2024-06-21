@@ -275,6 +275,9 @@ function salvar(){
                 icon: "warning"
               });
         }else{
+            let curso = $('#options').val()
+            curso = 218;
+           
             $.ajax({
                 url: '../app/controller/vagaEmpresaController.php',
                 type: 'POST',
@@ -286,6 +289,7 @@ function salvar(){
                     nivel: nivel, 
                     desc: desc,
                     req: req,
+                    cursoMedio: curso,
                     tipo: 'criarVaga'
                 },
                 success: function(data) {

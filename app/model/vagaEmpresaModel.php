@@ -12,7 +12,7 @@ class vagaEmpresaModel{
         $this->conn = $conexao->conn();
     }
 
-    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null){
+    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null){
         try {
              
         $sql = $this->conn->prepare("INSERT INTO vagas (nome, salario, modelo, nivel, descricao, requisitos, setor, cursos, id_empresa) 
@@ -25,7 +25,13 @@ class vagaEmpresaModel{
         $sql->bindParam(':descricao', $desc);
         $sql->bindParam(':requisitos', $req);
         $sql->bindParam(':area', $area);
-        $sql->bindParam(':valores_selecionados', $valoresSelecionados);
+
+        if($valoresSelecionados){
+            $sql->bindParam(':valores_selecionados', $valoresSelecionados);
+        }else{
+            $sql->bindParam(':valores_selecionados', $ensinoMedio);
+        }
+
         $sql->bindParam(':id', $idEmpresa);
         $sql->execute();
 
