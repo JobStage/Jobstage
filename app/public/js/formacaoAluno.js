@@ -14,8 +14,6 @@
                 id: id
             },
             success: function(data) {
-                $('#cursoEdit').val(data.curso);
-                $('#setorEdit').val(data.setor);
                 $('#instituicaoEdit').val(data.instituicao);
                 $('#nivelEdit').val(data.nivel);
                 $('#inicioEdit').val(data.inicio);
@@ -23,7 +21,12 @@
                 $('#statusEdit').val(data.status);
                 $('#idAluno').val(data.id_aluno);
                 $('#idFormacao').val(data.id_formacao);
-                $('#matriculaEdit').attr('href', '../app/matricula/' + data.matricula); // adiciona o nome da matricula no diretório de upload
+                $('#matriculaEdit').attr('href', '../app/matricula/' + data.matricula); // adiciona o nome da matricula no diretório de upload 
+                sendAjaxRequestCursoEdit(data.nivel);
+                setTimeout(function() { 
+                    $('#cursoEdit').val(data.curso);
+
+                }, 100);
             },
             error: function(xhr, status, error) {
                 console.log("Erro ao receber os dados:", error);
@@ -53,8 +56,7 @@ function salvarFormacao() {
 
     // Adiciona os valores do formulário ao objeto FormData
     formData.append('acao', 'criar');
-    formData.append('curso', $('#nome').val());
-    formData.append('setor', $('#setor').val());
+    formData.append('curso', $('#curso').val());
     formData.append('instituicao', $('#instittuicao').val());
     formData.append('nivel', $('#nivel').val());
     formData.append('inicio', $('#inicio').val());
@@ -239,3 +241,30 @@ function sendAjaxRequestCurso() {
     }
 }
 
+function sendAjaxRequestCursoEdit(nivel) {
+    
+    // desativa e apaga dados cadastrados no input da area e do collapse
+    $('#cursoEdit').attr('disabled', 'disabled').val('');
+
+    if(nivel > 1){
+        $('#cursoEdit').removeAttr('disabled');
+
+        $.ajax({
+            url: '../app/controller/curso.php',  // Substitua pelo seu endpoint de servidor
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                nivel: nivel,
+                tipo: 'listarCurso'
+            },
+            success: function(response) {
+                $("#cursoEdit").html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+            }
+        });
+    }else{
+        $('#cursoEdit').attr('disabled', 'disabled').val('');
+    }
+}

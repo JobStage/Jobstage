@@ -96,21 +96,18 @@ ob_start();
             <div class="modal-body">
                 <form id="editForm">
                     <div class="form-group">
-                        <label for="cursoEdit">Curso</label>
-                        <input type="text" name="curso" id="cursoEdit" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="setorEdit" class="form-label">SetorTESTsE</label>
-                        <input type="text" class="form-control" id="setorEdit" required>
-                    </div>
-                    <div class="form-group">
                         <label for="instituicaoEdit" class="form-label">Instituição</label>
                         <input type="text" class="form-control" id="instituicaoEdit" required>
                     </div>
                     <div class="form-group">
                         <label for="nivelEdit" class="form-label">Nível</label>
-                        <input type="text" class="form-control" id="nivelEdit" required>
+                        <select type="text" class="form-control" id="nivelEdit" required><?=$cursos->getNivel() ?></select>
                     </div>
+                    <div class="form-group">
+                        <label for="cursoEdit">Curso</label>
+                        <select type="text" name="curso" id="cursoEdit" class="form-control" required></select>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="inicioEdit" class="form-label">Inicio</label>
                         <input type="date" class="form-control" id="inicioEdit" required>
