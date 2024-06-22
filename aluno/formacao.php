@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once '../app/controller/FormacaoController.php';
-require_once '../app/controller/curso.php';
+require_once '../app/controller/CursosCadastrados.php';
 $formacao = new FormacaoController();
-$cursos = new cursos();
+$cursos = new CursosCadastrados();
 ob_start();  
 ?>
 

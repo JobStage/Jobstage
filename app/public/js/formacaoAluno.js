@@ -1,5 +1,5 @@
- // função para puxar os valores do banco de dados na MODAL
- $(document).ready(function() {
+// função para puxar os valores do banco de dados na MODAL
+$(document).ready(function() {
     $('.btn-primary').on('click', function() {
         var id = $(this).val(); 
         
@@ -254,7 +254,7 @@ function sendAjaxRequestCurso() {
         $('#curso').removeAttr('disabled');
 
         $.ajax({
-            url: '../app/controller/curso.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/controller/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {
@@ -283,7 +283,7 @@ function sendAjaxRequestCursoEdit(nivel) {
         $('#cursoEdit').removeAttr('disabled');
 
         $.ajax({
-            url: '../app/controller/curso.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/controller/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {
