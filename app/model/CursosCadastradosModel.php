@@ -39,5 +39,20 @@ class CursosCadastradosModel{
 
         return $result;
     }
-}
 
+    public function getAllCursos($id){
+        $sql = $this->conn->prepare('SELECT * from curso_db WHERE nivel_id = :id');
+        $sql->bindParam(':id', $id );
+      
+        $sql->execute();
+        $retorno = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $retorno;
+    }
+
+    public function getNivel(){
+        $sql = $this->conn->prepare('SELECT * from nivel ');
+        $sql->execute();
+        $retorno = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $retorno;
+    }
+}

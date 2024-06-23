@@ -1,7 +1,8 @@
- // função para puxar os valores do banco de dados na MODAL
- $(document).ready(function() {
+// função para puxar os valores do banco de dados na MODAL
+$(document).ready(function() {
     $('.btn-primary').on('click', function() {
         var id = $(this).val(); 
+        
 
         // AJAX -----------------------------------------
         $.ajax({
@@ -13,8 +14,6 @@
                 id: id
             },
             success: function(data) {
-                $('#cursoEdit').val(data.curso);
-                $('#setorEdit').val(data.setor);
                 $('#instituicaoEdit').val(data.instituicao);
                 $('#nivelEdit').val(data.nivel);
                 $('#inicioEdit').val(data.inicio);
@@ -22,7 +21,12 @@
                 $('#statusEdit').val(data.status);
                 $('#idAluno').val(data.id_aluno);
                 $('#idFormacao').val(data.id_formacao);
-                $('#matriculaEdit').attr('href', '../app/matricula/' + data.matricula); // adiciona o nome da matricula no diretório de upload
+                $('#matriculaEdit').attr('href', '../app/matricula/' + data.matricula); // adiciona o nome da matricula no diretório de upload 
+                sendAjaxRequestCursoEdit(data.nivel);
+                setTimeout(function() { 
+                    $('#cursoEdit').val(data.curso);
+
+                }, 100);
             },
             error: function(xhr, status, error) {
                 console.log("Erro ao receber os dados:", error);
@@ -36,19 +40,34 @@
     $('[data-dismiss="modal"]').on('click', function(){
         $('#staticBackdrop').modal('hide');
     });
+
+    $('#nivel').change(function() {
+           
+            sendAjaxRequestCurso(); 
+        });
+
+    $('#nivelEdit').change(function() {
+        
+        sendAjaxRequestCursoEdit($('#nivelEdit').val()); 
+    });
 });
 
 
 function salvarFormacao() {
     event.preventDefault();
-
+    var curso = $('#curso').val();
+    if ($('#curso').prop('disabled')) {
+        curso = 218;
+        console.log(curso+'1');
+        
+    }
+    
     // Cria um objeto FormData
     var formData = new FormData();
 
     // Adiciona os valores do formulário ao objeto FormData
     formData.append('acao', 'criar');
-    formData.append('curso', $('#nome').val());
-    formData.append('setor', $('#setor').val());
+    formData.append('curso',curso);
     formData.append('instituicao', $('#instittuicao').val());
     formData.append('nivel', $('#nivel').val());
     formData.append('inicio', $('#inicio').val());
@@ -101,11 +120,32 @@ function salvarFormacao() {
 
 
 function editarFormacao(){
+    var curso = $('#cursoEdit').val();
+    if ($('#cursoEdit').prop('disabled')) {
+        curso = 218;
+        console.log(curso+'1');
+        
+    }
+    
+    var instituicao = $('#instituicaoEdit').val();
+    var nivel = $('#nivelEdit').val();
+    var inicio = $('#inicioEdit').val();
+    var fim = $('#fimEdit').val();
+    var status = $('#statusEdit').val();
+    var file = $('#fileEdit').prop('files')[0];
+    var idAluno = $('#idAluno').val();
+    var idFormacao = $('#idFormacao').val();
+    if (!curso || !instituicao || !nivel || !inicio || !fim || !status) {
+        Swal.fire({
+            title: "Erro!",
+            text: "Todos os campos devem ser preenchidos!",
+            icon: "error"
+        });
+        return;
+    }
     var formData = new FormData();
-
     formData.append('acao', 'editar');
-    formData.append('curso', $('#cursoEdit').val());
-    formData.append('setor', $('#setorEdit').val());
+    formData.append('curso', curso);
     formData.append('instituicao', $('#instituicaoEdit').val());
     formData.append('nivel', $('#nivelEdit').val());
     formData.append('inicio', $('#inicioEdit').val());
@@ -204,4 +244,61 @@ function excluirFormacao(id) {
             });
         }
     });
+}
+function sendAjaxRequestCurso() {
+    var nivel = $('#nivel').val();
+    // desativa e apaga dados cadastrados no input da area e do collapse
+    $('#curso').attr('disabled', 'disabled').val('');
+
+    if(nivel > 1){
+        $('#curso').removeAttr('disabled');
+
+        $.ajax({
+            url: '../app/controller/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                nivel: nivel,
+                tipo: 'listarCurso'
+            },
+            success: function(response) {
+                $("#curso").html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+            }
+        });
+    }else{
+        $('#curso').attr('disabled', 'disabled').val('');
+        $('#medio').val(218);// 218 é o ID do ensino médio
+    }
+}
+
+function sendAjaxRequestCursoEdit(nivel) {
+    
+    // desativa e apaga dados cadastrados no input da area e do collapse
+    $('#cursoEdit').attr('disabled', 'disabled').val('');
+
+    if(nivel > 1){
+        $('#cursoEdit').removeAttr('disabled');
+
+        $.ajax({
+            url: '../app/controller/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                nivel: nivel,
+                tipo: 'listarCurso'
+            },
+            success: function(response) {
+                $("#cursoEdit").html(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+            }
+        });
+    }else{
+        $('#cursoEdit').attr('disabled', 'disabled').val('');
+        $('#medioEdit').val(218);
+    }
 }

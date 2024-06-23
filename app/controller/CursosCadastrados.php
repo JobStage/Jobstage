@@ -32,6 +32,32 @@ class CursosCadastrados{
         echo json_encode($html);
         return $html;
     }
+
+    public function listaCursos($id){
+        $html = '<option id= "medio"> </option>';
+        
+        foreach($this->cursosModel->getAllCursos($id) as $value){
+            $html.='<option value='. $value['ID'] .'>'. $value['curso'] .'</option>';
+        }
+
+        echo json_encode($html);
+        return $html;
+    }
+
+    public function listaCursosEdit($id){
+    $html = '<option id= "medioEdit" > </option>';
+    foreach($this->cursosModel->getAllCursos($id) as $value){
+        $html.='<option value='. $value['ID'] .'>'. $value['curso'] .'</option>';
+    }
+    echo json_encode($html);
+    return $html;
+    }
+
+    public function getNivel(){
+        foreach($this->cursosModel->getNivel() as $value){
+        echo'<option value='. $value['ID'] .'>'. $value['nivel'] .'</option>';
+        }
+    }
     
 }
 
@@ -47,6 +73,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         break;
         case 'listarCursos':
             $curso->listarCursosFiltrados($nivel, $area);
+        break;
+        case 'listarCurso':
+            $curso->listaCursos($_POST['nivel']);
         break;
     }
 }

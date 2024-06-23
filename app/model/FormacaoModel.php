@@ -10,12 +10,12 @@ class FormacaoModel{
     }
 
     public function getAllformacao(int $idAluno, $id = null ){
-        $sql = 'SELECT * FROM formacao';
-        $sql .= ' WHERE id_aluno = :idAluno';
+        $sql = 'SELECT c.curso as curso_db, n.nivel as nivelSelecionado, f.* FROM formacao as f INNER JOIN curso_db as c ON c.ID = f.curso INNER JOIN  nivel as n ON n.ID = f.nivel';
+        $sql .= ' WHERE f.id_aluno = :idAluno';
         
         // verifica se existe valor no id para incluir no WHERE
         if ($id !== null) {
-            $sql .= ' AND id_formacao = :id';
+            $sql .= ' AND f.id_formacao = :id';
         }
 
         $sql = $this->conn->prepare($sql);
@@ -34,12 +34,11 @@ class FormacaoModel{
     }
 
    
-    public function criarFormacao(string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo, $idAluno): bool {
+    public function criarFormacao(string $curso, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo, $idAluno): bool {
         try {
-            $sql = $this->conn->prepare('INSERT INTO formacao (curso, setor, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :setor, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, :idAluno)');
+            $sql = $this->conn->prepare('INSERT INTO formacao (curso, instituicao, nivel, inicio, fim, status, matricula, id_aluno) VALUES (:curso, :instituicao, :nivel, :inicio, :fim, :status, :arquivo, :idAluno)');
         
             $sql->bindParam(':curso', $curso);
-            $sql->bindParam(':setor', $setor);
             $sql->bindParam(':instituicao', $instituicao);
             $sql->bindParam(':nivel', $nivel);
             $sql->bindParam(':inicio', $inicio); 
@@ -51,14 +50,15 @@ class FormacaoModel{
     
             return true;
         } catch (PDOException $e) {
+            echo $e;
             return false;
         }
     }
 
-    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $setor, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null): bool{
+    public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null): bool{
         
         try {
-            $sql = 'UPDATE formacao SET curso = :curso, setor = :setor, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status';
+            $sql = 'UPDATE formacao SET curso = :curso, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status';
 
         if($arquivo){
             $sql .= ', matricula = :arquivo';
@@ -69,7 +69,6 @@ class FormacaoModel{
         $sql = $this->conn->prepare($sql);
 
         $sql->bindParam(':curso', $curso);
-        $sql->bindParam(':setor', $setor);
         $sql->bindParam(':instituicao', $instituicao);
         $sql->bindParam(':nivel', $nivel);
         $sql->bindParam(':inicio', $inicio);
@@ -124,6 +123,17 @@ class FormacaoModel{
         return $result['matricula'];
     }
 
+    public function getFormacao($id){
+        $sql = $this->conn->prepare('SELECT nivel, curso  FROM formacao
+                                    WHERE id_aluno = :idAluno
+                                  ');
+        $sql->bindParam(':idAluno',$id);
+ 
 
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 }
-
