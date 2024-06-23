@@ -60,6 +60,6 @@ ob_start();
 
 <?php
 $content = ob_get_clean(); 
-$pageTitle = "Dados pessoais"; 
+$pageTitle = "Vagas"; 
 include('../app/public/html/template.php'); 
 ?>
