@@ -35,7 +35,7 @@
 // });
 $(document).ready(function(){
 })
-function candidatar(idVaga, idEmpresa) {
+function candidatar(idEmpresa, idVaga) {
 
   $.ajax({
       type: "POST",

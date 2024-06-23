@@ -123,6 +123,17 @@ class FormacaoModel{
         return $result['matricula'];
     }
 
+    public function getFormacao($id){
+        $sql = $this->conn->prepare('SELECT nivel, curso  FROM formacao
+                                    WHERE id_aluno = :idAluno
+                                  ');
+        $sql->bindParam(':idAluno',$id);
+ 
 
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 }
-

@@ -122,11 +122,15 @@ class FormacaoController{
     public function getAllFormacao(int $id, int $idAluno): array{
         return $this->formacaoModel->getAllformacao($idAluno, $id );
     }
+
+    public function getFormacao(){
+        return $this->formacaoModel->getFormacao($_SESSION['id']);
+    }
 }
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $acao = $_POST['acao'];
+    $acao = $_POST['acao']?? null;
     $id = $_POST['id'] ?? '';
     $formacao = new FormacaoController($_SESSION['id']);
     switch($acao){
