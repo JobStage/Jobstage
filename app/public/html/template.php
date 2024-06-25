@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     <link rel="stylesheet" href="../app/lib/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="../app/public/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="../app/public/css/styleCandidatura.css">
     <script src="../app/public/js/jquery-3.7.1.js"></script>
 </head>
 <body>
