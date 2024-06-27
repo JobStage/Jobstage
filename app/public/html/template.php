@@ -3,7 +3,6 @@
         header('Location:../index.php');
         
     }
-  
 ?>
 
 <!DOCTYPE html>
@@ -19,10 +18,11 @@
     <link rel="stylesheet" href="../app/public/css/sweetalert2.min.css">
     <link rel="stylesheet" href="../app/public/css/styleCandidatura.css">
     <script src="../app/public/js/jquery-3.7.1.js"></script>
+    <script src="../app/public/js/urlConfig.js"></script>
 </head>
 <body>
 <div class="main-container d-flex">
-    <?php require_once  "../app/public/html/sidebar.html"?>
+    <?php $_SESSION['idSessao'] == 1 ? require_once  "../app/public/html/sidebarAluno.html" : require_once  "../app/public/html/sidebarEmpresa.html"?>
     <div class="content">
         <?php require_once "../app/public/html/navbar.html" ?>
         <div class="container">

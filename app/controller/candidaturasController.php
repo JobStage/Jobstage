@@ -103,9 +103,10 @@ class CandidaturasController{
                             </div>
                             <br>
                             <div class="row g-3">
-                                <div class="col-12">
-                                    <button class="btn btn-primary" style="width:100%">Ver candidaturas</button>
+                               <div class="col-12">
+                                    <button class="btn btn-primary" style="width:100%" onclick=window.location.href="candidaturas02.php?id='.$value['idVaga'].'">Ver candidaturas</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
