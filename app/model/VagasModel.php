@@ -150,4 +150,27 @@ public function vagasCandidatadas($id, $idAluno){
 
   }
 
+  public function getCandidatosVagas($idVaga, $idEmpresa) {
+    $sql = $this->conn->prepare("SELECT 
+    al.nome as nomeUsuario,
+    al.data_nasc as dataNasc,
+    curs.curso as curso,
+    form.fim as dataFormacao,
+    TIMESTAMPDIFF(YEAR, al.data_nasc, CURDATE()) AS idade
+FROM 
+    candidatura as cad
+    INNER JOIN aluno as al ON al.ID = cad.id_aluno
+    INNER JOIN formacao as form ON form.id_aluno = al.ID
+    INNER JOIN curso_db as curs ON curs.ID = form.curso
+WHERE 
+    cad.id_vaga = :idVaga 
+    AND cad.id_empresa = :idEmpresa;
+
+");
+    $sql->bindParam(':idVaga', $idVaga);
+    $sql->bindParam(':idEmpresa', $idEmpresa);
+    $sql->execute();
+    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
 }

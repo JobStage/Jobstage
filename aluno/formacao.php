@@ -9,7 +9,7 @@ ob_start();
 
 <div class="card">
     <nav class="nav nav-pills flex-column flex-sm-row">
-        <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="dados.php">Dados</a>
+        <a class="flex-sm-fill text-sm-center nav-link" aria-current="page" href="dados.php">Dados</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="formacao.php">Formação</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="cursos.php">Cursos</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="experiencia.php">Experiência</a>

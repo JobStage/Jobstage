@@ -103,14 +103,50 @@ class CandidaturasController{
                             </div>
                             <br>
                             <div class="row g-3">
-                                <div class="col-12">
-                                    <button class="btn btn-primary" style="width:100%">Ver candidaturas</button>
+                               <div class="col-12">
+                                    <button class="btn btn-primary" style="width:100%" onclick=window.location.href="candidaturas02.php?id='.$value['idVaga'].'">Ver candidaturas</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             ';
+        }
+        echo $html;
+    }
+
+    public function candidatosVaga($idVaga) {
+        $html = '';
+        $testeCandt = $this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']);
+        // echo '<pre>';
+        // var_dump($testeCandt);
+        // echo '<pre>';   
+        // die;
+        foreach($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
+            $html .= '<div class="card">
+    <div class="conteudo-principal">
+        <div class="user">
+            <h5>'.$value['nomeUsuario'].'</h5>
+            <p>'.$value['idade'].'</p>
+        </div>
+        <div class="formacao">
+            <h5>'.$value['curso'].'</h5>
+            <p>'.$value['dataFormacao'].'</p>
+        </div>
+        <div class="icons">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828885.png" width="48px" height="48px" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <img src="https://cdn-icons-png.flaticon.com/512/4543/4543567.png" width="48px" height="48px" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <img src="https://cdn-icons-png.flaticon.com/512/5063/5063960.png" width="48px" height="48px">
+            <img src="https://cdn-icons-png.flaticon.com/512/6964/6964169.png" width="48px" height="48px">
+        </div>
+    </div>
+    <div class="more-info">
+        <div class="collapse" id="collapseExample">
+            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        </div>
+    </div>
+</div>';
         }
         echo $html;
     }
