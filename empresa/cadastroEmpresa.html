@@ -19,11 +19,11 @@
       <h3 class="h3 mb-3 fw-normal">Cadastro</h3>
     
       <div class="form-floating">
-        <input type="email" class="email form-control" id="floatingInput" name="emailEmpresa" placeholder="seu-email@gmail.com">
+        <input type="email" class="email form-control" id="floatingInput" name="emailEmpresa" placeholder="seu-email@gmail.com" required>
         <label for="floatingInput">E-mail</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="senha form-control" id="floatingInput" name="senhaEmpresa" placeholder="senha">
+        <input type="password" class="senha form-control" id="floatingInput" name="senhaEmpresa" placeholder="senha"  required minlength="8" maxlength="30">
         <label for="floatingInput">senha</label>
       </div>
       <button class="btn btn-primary w-100 py-2" onclick="cadastro()">Cadastrar</button>

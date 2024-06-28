@@ -21,7 +21,7 @@
                         <h4>Entrar</h4>
                     </div>
                     <div class="card-body">
-                        <a href="aluno/loginAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Usuário</button></a>
+                        <a href="aluno/loginAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Aluno</button></a>
                         <br>
                         <br>
                         <a href="empresa/loginEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
@@ -34,7 +34,7 @@
                         <h4>Cadastrar-se</h4>
                     </div>
                     <div class="card-body">
-                        <a href="aluno/cadastroAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Usuário</button></a>
+                        <a href="aluno/cadastroAluno.html"><button type="submit" class="btn btn-primary btn-block w-100" >Aluno</button></a>
                         <br>
                         <br>
                         <a href="empresa/cadastroEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
