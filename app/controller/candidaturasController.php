@@ -118,11 +118,6 @@ class CandidaturasController{
 
     public function candidatosVaga($idVaga) {
         $html = '';
-        $testeCandt = $this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']);
-        // echo '<pre>';
-        // var_dump($testeCandt);
-        // echo '<pre>';   
-        // die;
         foreach($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
             $html .= '<div class="card">
     <div class="conteudo-principal">
@@ -135,10 +130,16 @@ class CandidaturasController{
             <p>'.$value['dataFormacao'].'</p>
         </div>
         <div class="icons">
-            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828885.png" width="48px" height="48px" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            <img src="https://cdn-icons-png.flaticon.com/512/4543/4543567.png" width="48px" height="48px" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            <img src="https://cdn-icons-png.flaticon.com/512/5063/5063960.png" width="48px" height="48px">
-            <img src="https://cdn-icons-png.flaticon.com/512/6964/6964169.png" width="48px" height="48px">
+            <img src="../app/public/img/info.png" width="48px" height="48px" 
+            data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+
+            <a href="curriculo.php?id='.$value['idAluno'].'" target="_blank">
+                <img src="../app/public/img/curriculo-preto.png" width="48px" height="48px">
+            </a>
+
+            <img src="../app/public/img/msg.png" width="48px" height="48px">
+
+            <img src="../app/public/img/pasta.png" width="48px" height="48px">
         </div>
     </div>
     <div class="more-info">
