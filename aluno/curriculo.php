@@ -36,48 +36,6 @@ ob_start();
     
 </style>
 <div class="card">
-    <!-- <div class="curriculo">
-        <div class="cabecalho">
-            <p class="nome">Nome da silva</p>
-            <div class="info-cabecalho">
-                <p>10 anos</p>
-                <p>solteiro</p>
-                <p>cidade - UF</p>
-            </div>
-        </div>   
-        <hr>
-        <div class="contato">
-            <p class="contato-titulo">
-                Contato
-            </p>
-            <p><b>E-mail:</b> email aqui</p>
-            <p><b>Linkedin:</b> Linkedin aqui</p>
-            <p><b>Telefone:</b> Telefone aqui</p>
-        </div>
-        <hr>
-        <div class="sobre">
-            <p class="sobre-titulo"> Sobre </p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias animi illum praesentium ad. Sint itaque dignissimos cumque asperiores, dolores delectus porro quos nulla nostrum pariatur quibusdam! Culpa rem quod officiis.</p>
-        </div>
-        <hr>
-        <div class="experiencia">
-            <p class="experiencia-titulo"> Experiência profissional: </p>
-            <p><b>Nome da empresa - Cargo</b></p>
-            <p><b>Período:</b> 01/01/2021 - 01/01/2021</p>
-            <p><b>Atividades Exercidas:</b></p>
-            <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio fuga unde possimus ipsum, officia quaerat harum tempora, consectetur excepturi doloribus rerum officiis magni similique aspernatur incidunt est reiciendis consequuntur autem!</p>
-        </div>
-        <hr>
-        <div class="formacao">
-            <p class="formacao-titulo"> Formação acadêmica </p>
-            <p>Curso - Instituição <b>status</b></p>
-        </div>
-        <hr>
-        <div class="cursos">
-            <p class="cursos-titulo"> Cursos Extras </p>
-            <p>Nome (status) <b>instituição</b></p>
-        </div>
-    </div> -->
     <?= $curriculo->listarCurriculo()?>
 </div>
 

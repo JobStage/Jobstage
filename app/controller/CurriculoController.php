@@ -16,10 +16,15 @@ class CurriculoController{
 
     public function listarCurriculo() {
         $html = '';
-        $dadosAluno = $this->curriculoModel->getDadosAluno($_SESSION['id']);
-        $experienciaAluno = $this->curriculoModel->getAllExperiencia($_SESSION['id']);
-        $formacaoAluno = $this->curriculoModel->getAllFormacao($_SESSION['id']);
-        $cursoAluno = $this->curriculoModel->getAllCursos($_SESSION['id']);
+        if($_SESSION['idSessao'] == 1) {
+            $id = $_SESSION['id'];
+        } else {
+            $id = $_GET['id'];
+        }
+        $dadosAluno = $this->curriculoModel->getDadosAluno($id);
+        $experienciaAluno = $this->curriculoModel->getAllExperiencia($id);
+        $formacaoAluno = $this->curriculoModel->getAllFormacao($id);
+        $cursoAluno = $this->curriculoModel->getAllCursos($id);
         foreach($dadosAluno as $value) {
             $html .= '<div class="curriculo">
         <div class="cabecalho">

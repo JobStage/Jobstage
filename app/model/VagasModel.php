@@ -151,7 +151,8 @@ public function vagasCandidatadas($id, $idAluno){
   }
 
   public function getCandidatosVagas($idVaga, $idEmpresa) {
-    $sql = $this->conn->prepare("SELECT 
+    $sql = $this->conn->prepare("SELECT
+    al.ID as idAluno, 
     al.nome as nomeUsuario,
     al.data_nasc as dataNasc,
     curs.curso as curso,
