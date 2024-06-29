@@ -1,13 +1,15 @@
 <?php
 session_start();
 require_once '../app/controller/FormacaoController.php';
+require_once '../app/controller/CursosCadastrados.php';
 $formacao = new FormacaoController();
+$cursos = new CursosCadastrados();
 ob_start();  
 ?>
 
 <div class="card">
     <nav class="nav nav-pills flex-column flex-sm-row">
-        <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="dados.php">Dados</a>
+        <a class="flex-sm-fill text-sm-center nav-link" aria-current="page" href="dados.php">Dados</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="formacao.php">Formação</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="cursos.php">Cursos</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="experiencia.php">Experiência</a>
@@ -25,22 +27,34 @@ ob_start();
             <div class="card card-body">
                 <form class="row g-3" id="uploadForm" enctype="multipart/form-data">
                     <div class="col-lg-4">
-                        <label for="nome" class="form-label">Curso</label>
-                        <input type="text" class="form-control" id="nome" required>
-                    </div>
-                    <div class="col-lg-4">
-                        <label for="setor" class="form-label">Setor</label>
-                        <input type="text" class="form-control" id="setor" required>
-                    </div>
-                    <div class="col-lg-4">
                         <label for="instittuicao" class="form-label">Instituição</label>
                         <input type="text" class="form-control" id="instittuicao" required>
                     </div>
-
                     <div class="col-lg-4">
                         <label for="nivel" class="form-label">Nível</label>
-                        <input type="text" class="form-control" id="nivel" required>
+                        <select type="text" class="form-control" id="nivel" required><?=$cursos->getNivel() ?></select>
                     </div>
+                    <div class="col-lg-4">
+                        <label for="curso" class="form-label">Curso</label>
+                        <select type="text" class="form-control" id="curso" required disabled> </select>
+                    </div>
+                    <!-- <div class="col-lg-4">
+                        <label for="estado" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="estado" required disabled>
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="cidade" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" id="cidade" required disabled>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="cep" class="form-label">CEP</label>
+                        <input type="number" class="form-control" id="cep" required disabled>
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="rua" class="form-label">Rua</label>
+                        <input type="text" class="form-control" id="rua" required disabled>
+                    </div> -->
+                                       
                     <div class="col-lg-2">
                         <label for="inicio" class="form-label">Inicio</label>
                         <input type="date" class="form-control" id="inicio" required>
@@ -82,21 +96,18 @@ ob_start();
             <div class="modal-body">
                 <form id="editForm">
                     <div class="form-group">
-                        <label for="cursoEdit">Curso</label>
-                        <input type="text" name="curso" id="cursoEdit" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="setorEdit" class="form-label">Setor</label>
-                        <input type="text" class="form-control" id="setorEdit" required>
-                    </div>
-                    <div class="form-group">
                         <label for="instituicaoEdit" class="form-label">Instituição</label>
                         <input type="text" class="form-control" id="instituicaoEdit" required>
                     </div>
                     <div class="form-group">
                         <label for="nivelEdit" class="form-label">Nível</label>
-                        <input type="text" class="form-control" id="nivelEdit" required>
+                        <select type="text" class="form-control" id="nivelEdit" required><?=$cursos->getNivel() ?></select>
                     </div>
+                    <div class="form-group">
+                        <label for="cursoEdit">Curso</label>
+                        <select type="text" name="curso" id="cursoEdit" class="form-control" required></select>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="inicioEdit" class="form-label">Inicio</label>
                         <input type="date" class="form-control" id="inicioEdit" required>

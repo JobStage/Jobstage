@@ -11,11 +11,13 @@ function cadastroAluno(){
         email: email,
         senha: senha
       },
-      success: function(data){
+      success: function (data) {
         Swal.fire({
           title: data.tittle,
           text: data.msg,
           icon: data.icon
+        }).then(() => {
+          window.location.replace('loginAluno.html');
         });
       },
       error: function(data){
@@ -47,7 +49,7 @@ function loginAluno(){
             title: data.tittle,
             text: data.msg,
             icon: data.icon
-            });
+          });
         }
         },
         error: function(xhr, error, status){
@@ -75,6 +77,8 @@ function cadastroEmpresa(){
           title: data.tittle,
           text: data.msg,
           icon: data.icon
+        }).then(() => {
+          window.location.replace('loginEmpresa.html');
         });
       },
       error: function(data){
