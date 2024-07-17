@@ -44,6 +44,7 @@ ob_start();
             </div>
             <div class="modal-body">
                 <form class="row g-3">
+                    <input type="hidden" value="idFilial"></input>
                     <div class="col-md-12">
                         <label for="nome" class="form-label">Nome</label>
                         <input type="text" class="form-control" id="nome">
@@ -72,14 +73,17 @@ ob_start();
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-success" onclick="salvar()">Salvar</button>
+                        <button type="button" class="btn btn-danger" onclick="closeModal()">Cancelar</button>
+                        <button type="button" class="btn btn-success" onclick="salvar()">Salvar</button>    
                     <div>
                 <form>
             </div>
         </div>
     </div>
 </div>
+
+
+
 <script src="../app/public/js/filiais.js"></script>
 
 <?php

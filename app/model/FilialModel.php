@@ -13,7 +13,7 @@ class FilialModel {
 
 
     public function getAllFiliais($id){
-        $sql = $this->conn->prepare("SELECT f.nome AS nome, GROUP_CONCAT(n.nivel) AS niveis
+        $sql = $this->conn->prepare("SELECT f.id_filial as id, f.nome AS nome, GROUP_CONCAT(n.nivel) AS niveis
                                          FROM filial as f
                                         INNER JOIN nivel as n 
                                         ON FIND_IN_SET(n.id, f.nivel) > 0
@@ -39,4 +39,40 @@ class FilialModel {
         return true;
     }
     
+    public function getDadoFilial($id, $idInstituicao){
+        $sql = $this->conn->prepare("SELECT nome, nivel, id_filial FROM filial
+                                        WHERE id_filial = :id
+                                        AND id_instituicao = :idINst");
+        $sql->bindParam(':id', $id);
+        $sql->bindParam(':idINst', $idInstituicao);
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function editarFilial($nome, $nivel, $idInstituicao, $id){
+        try {
+            $sql = $this->conn->prepare("UPDATE filial
+                                            SET nome = :nome,
+                                                nivel = :nivel
+                                            WHERE
+                                                id_filial = :id
+                                            AND 
+                                                id_instituicao = :idInst");
+        
+            $sql->bindParam(':nome', $nome);
+            $sql->bindParam(':nivel', $nivel);
+            $sql->bindParam(':id', $id);
+            $sql->bindParam(':idInst', $idInstituicao);
+            $sql->execute();
+            return true;
+        
+        } catch (PDOException $e) {
+            echo $e;
+            return false;
+        }
+        
+    }
 }

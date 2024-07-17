@@ -38,20 +38,42 @@ class FilialController {
                             <p>'.$value['niveis'].'</p>
                         </div>
                         <div class="icons">
-                            <img src="../app/public/img/editar-preto.png" width="48px" height="48px" style="cursor:pointer">
-
+                            <img src="../app/public/img/editar-preto.png" width="48px" height="48px" style="cursor:pointer" onclick="editar('.$value['id'].')">
                             <img src="../app/public/img/excluir.png" width="48px" height="48px"  style="cursor:pointer">
                         </div>
                     </div>
-                    <div class="more-info">
-                        <div class="collapse" id="collapseExample">
-                            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-                        </div>
-                    </div>
+                    <input type="hidden" id="idFilial" value="">
                 </div>
             ';
         }
         echo $html;
+    }
+
+    public function getDadosFilial($id){
+        $result = $this->filial->getDadoFilial($id, $_SESSION['id']);
+        $arr = array(   
+            'id'=>$result['id_filial'],
+            'nivel'=>$result['nivel'],
+            'nome'=>$result['nome'],
+        );
+        echo json_encode($arr);
+        return $arr;
+    }
+
+    public function editarFilial($nome, $id, $niveis){
+        $nivelInstituicao = implode(",", $niveis);
+
+        $result = $this->filial->editarFilial($nome, $nivelInstituicao, $_SESSION['id'], $id);
+
+        if($result){
+            $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Filial editada com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return;
+        }
+
+        $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Erro ao editar filial', 'icon' => 'danger');
+        echo json_encode($retorno);
+        return;
     }
 }
 
@@ -68,8 +90,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
             $filial->criarFilial($_POST['nome'], $valoresSelecionados);
         break;
-        case 'editar':
-            $result = $empresa->atualizarEmpresa();
+        case 'getDadosFilial':
+            $filial->getDadosFilial($_POST['id']);
+        break;
+        case 'editarFilial':
+            $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
+            $filial->editarFilial($_POST['nome'], $_POST['id'], $valoresSelecionados);
         break;
     }
 
