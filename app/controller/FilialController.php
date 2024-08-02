@@ -5,13 +5,16 @@ if(!isset($_SESSION))
 } 
 
 require_once __DIR__ . '/../model/FilialModel.php';
+require_once 'CursosCadastrados.php';
 
 
 class FilialController {
     private $filial;
+    private $cursos;
 
     public function __construct() {
         $this->filial = new FilialModel();
+        $this->cursos = new CursosCadastrados();
     }
 
     public function criarFilial($nome, $niveis){
@@ -29,9 +32,12 @@ class FilialController {
         foreach($this->filial->getAllFiliais($_SESSION['id']) as $value){
             $html .= ' 
                 <div class="card">
+                
                     <div class="conteudo-principal">
                         <div class="user">
-                            <h3>'.$value['nome'].'</h3>
+                            <a href="verFilial.php?id='.$value['id'].'" style="text-decoration: none; color: inherit;">
+                                <h3>'.$value['nome'].'</h3>
+                            </a>
                         </div>
                         <div class="formacao">
                             <h3>Nível</h3>
@@ -74,6 +80,42 @@ class FilialController {
         $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Erro ao editar filial', 'icon' => 'danger');
         echo json_encode($retorno);
         return;
+    }
+
+    public function listarCursosFilial($id){
+        $resultado = $this->filial->verNivielFilial($id, $_SESSION['id']);
+
+        // Acesse a string dos níveis
+        $niveis = $resultado['nivel'];
+        
+        // Divida a string em um array de números
+        $niveisArray = explode(',', $niveis);
+
+        $cursosCadastradosFilial = '';
+        if($niveis === 1){
+            $cursosCadastradosFilial .= '<div>Ensino Médio</div>';
+        }else{
+            if(in_array(1, $niveisArray)){
+                $cursosCadastradosFilial .= '<div>Ensino Médio</div>';
+            }
+            if(in_array(2, $niveisArray)){
+               $tecnico = $this->cursos->listarCursosNivelTecnico();
+               $cursosCadastradosFilial .= '<div>'.$tecnico.'</div>';
+            }
+            
+            if(in_array(3, $niveisArray)){
+               $superior = $this->cursos->listarCursosNivelSuperior();
+               $cursosCadastradosFilial .= '<div>'.$superior.'</div>';
+            }
+
+        }
+
+        $html = '<div style="display: flex; flex-direction:row; justify-content:space-around">
+                    '.$cursosCadastradosFilial.'
+                </div>';
+
+        return $html;
+       
     }
 }
 

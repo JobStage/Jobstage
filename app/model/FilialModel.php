@@ -40,15 +40,20 @@ class FilialModel {
     }
     
     public function getDadoFilial($id, $idInstituicao){
-        $sql = $this->conn->prepare("SELECT nome, nivel, id_filial FROM filial
-                                        WHERE id_filial = :id
-                                        AND id_instituicao = :idINst");
-        $sql->bindParam(':id', $id);
-        $sql->bindParam(':idINst', $idInstituicao);
-        $sql->execute();
+        try {
+            $sql = $this->conn->prepare("SELECT nome, nivel, id_filial FROM filial
+                                            WHERE id_filial = :id
+                                            AND id_instituicao = :idINst");
+            $sql->bindParam(':id', $id);
+            $sql->bindParam(':idINst', $idInstituicao);
+            $sql->execute();
 
-        $result = $sql->fetch(PDO::FETCH_ASSOC);
-        return $result;
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $e) {
+            return $e;
+        }
+        
     }
 
 
@@ -74,5 +79,17 @@ class FilialModel {
             return false;
         }
         
+    }
+
+    public function verNivielFilial($id, $idInstituicao){
+        $sql = $this->conn->prepare("SELECT nivel FROM filial
+                                        WHERE id_filial = :id
+                                        AND id_instituicao = :idINst");
+        $sql->bindParam(':id', $id);
+        $sql->bindParam(':idINst', $idInstituicao);
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        return $result;
     }
 }

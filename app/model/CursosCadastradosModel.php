@@ -55,4 +55,20 @@ class CursosCadastradosModel{
         $retorno = $sql->fetchAll(PDO::FETCH_ASSOC);
         return $retorno;
     }
+
+    public function getCursoNivelTecnico(){
+        $sql = $this->conn->prepare('SELECT * FROM curso_db 
+                                    WHERE nivel_id = 2');
+        $sql->execute();
+        $retorno = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $retorno;
+    }
+   
+    public function getCursoNivelSuperior(){
+        $sql = $this->conn->prepare('SELECT * FROM curso_db 
+                                    WHERE nivel_id = 3');
+        $sql->execute();
+        $retorno = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $retorno;
+    }
 }

@@ -36,10 +36,6 @@ function salvar() {
   });
 }
 
-
-
-
-  
 function editar(id) {  
   $('#staticBackdrop').modal('show');
   $('input[type="checkbox"]').prop('checked', false);
@@ -123,4 +119,33 @@ function editarFilial(){
         console.log("Erro ao receber os dados:", error);
     }
 });
+}
+
+function salvarDadosFilial($id){
+  var estado = $('#estado option:selected').val();
+  var cidade = $('#optionsListCidade option:selected').val();
+  var cep = $('#CEP').val();
+  var rua = $('#Rua').val();
+ 
+  
+}
+
+$('#estado').change(function(){
+  var valorSelecionado = $(this).val();
+  buscaCidade(valorSelecionado)
+});
+
+// funcao para procurar cidade de acordo com o estado selecionado
+function buscaCidade(params) {
+  $.ajax({
+      type: "post",
+      url: "../app/controller/CidadeEstado.php",
+      data: {
+          id: params
+      },
+      complete: function(response){
+          var cidades = JSON.stringify(response);
+          $('#optionsListCidade').html(cidades);
+      }
+  });
 }

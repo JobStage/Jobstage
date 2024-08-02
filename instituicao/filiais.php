@@ -88,6 +88,6 @@ ob_start();
 
 <?php
 $content = ob_get_clean(); 
-$pageTitle = "Candidaturas"; 
+$pageTitle = "Filiais"; 
 include('../app/public/html/template.php'); 
 ?>
