@@ -12,10 +12,24 @@ class vagaEmpresaModel{
         $this->conn = $conexao->conn();
     }
 
-    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null){
+    public function inserirPerguntas($idVaga, $perguntas){
         try {
-             
-        $sql = $this->conn->prepare("INSERT INTO vagas (nome, salario, modelo, nivel, descricao, requisitos, setor, cursos, id_empresa) 
+            $sql = $this->conn->prepare("INSERT INTO perguntas (pergunta, id_vaga) VALUES (:pergunta, :id_vaga)");
+                $sql->bindParam(':pergunta', $perguntas);
+                $sql->bindParam(':id_vaga', $idVaga);
+                $sql->execute();
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao inserir perguntas: " . $e->getMessage());
+        }
+    }
+
+    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null, $perguntas= null){
+        try {
+        
+        $this->conn->beginTransaction();
+        
+        $sql = $this->conn->prepare("INSERT INTO vagas (nome, salario, modelo, nivel, descricao, requisitos, setor, cursos,  id_empresa) 
                                      VALUES (:nome, :rs, :modelo, :nivel, :descricao, :requisitos, :area, :valores_selecionados, :id)");
 
         $sql->bindParam(':nome', $nome);
@@ -35,6 +49,14 @@ class vagaEmpresaModel{
         $sql->bindParam(':id', $idEmpresa);
         $sql->execute();
 
+        // Obter o ID da vaga recém-criada
+        $idVaga = $this->conn->lastInsertId();
+
+        if ($perguntas) {
+            $this->inserirPerguntas($idVaga, $perguntas);
+        }
+
+        $this->conn->commit();
         return true;
 
         } catch (PDOException $e) {

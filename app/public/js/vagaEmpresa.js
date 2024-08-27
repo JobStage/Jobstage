@@ -222,6 +222,7 @@ function salvar(){
     var valores = [];
 
     // Verifica se existem inputs
+    let perguntasSeparadosPorVirgula = ''
     if (inputs.length === 0) {
         // Se não houver inputs, continua a execução do jQuery
         console.log("Nenhum input encontrado, continuando...");
@@ -250,8 +251,8 @@ function salvar(){
         }
 
         // Se todos os inputs estiverem preenchidos, continua
-        var valoresSeparadosPorVirgula = valores.join(", ");
-        console.log("Valores: " + valoresSeparadosPorVirgula);
+        perguntasSeparadosPorVirgula = valores.join(",");
+        console.log("Valores: " + perguntasSeparadosPorVirgula);
     }
 
    
@@ -301,6 +302,7 @@ function salvar(){
                     req: req,
                     area: area,
                     cursos: JSON.stringify(valoresSelecionados),
+                    perguntas: JSON.stringify(perguntasSeparadosPorVirgula),
                     tipo: 'criarVaga'
                 },
                 success: function(data) {
@@ -348,6 +350,7 @@ function salvar(){
                     desc: desc,
                     req: req,
                     cursoMedio: curso,
+                    perguntas: JSON.stringify(perguntasSeparadosPorVirgula),
                     tipo: 'criarVaga'
                 },
                 success: function(data) {
