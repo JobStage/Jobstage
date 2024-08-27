@@ -93,10 +93,16 @@ class FilialController {
 
         $cursosCadastradosFilial = '';
         if($niveis === 1){
-            $cursosCadastradosFilial .= '<div>Ensino Médio</div>';
+            $cursosCadastradosFilial .= '<div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="1" id="ensino-medio" checked disabled/>
+                                            <label class="form-check-label" for="ensino-medio">Ensino Médio</label>
+                                        </div>';
         }else{
             if(in_array(1, $niveisArray)){
-                $cursosCadastradosFilial .= '<div>Ensino Médio</div>';
+                $cursosCadastradosFilial .= '<div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="1" id="ensino-medio" checked disabled/>
+                                                <label class="form-check-label" for="ensino-medio">Ensino Médio</label>
+                                            </div>';
             }
             if(in_array(2, $niveisArray)){
                $tecnico = $this->cursos->listarCursosNivelTecnico();
