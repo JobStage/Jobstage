@@ -45,5 +45,22 @@ class Login
         }
         return $result['id_empresa'];
     }
+
+    public function loginAdmin(string $emailAluno, string $senhaAluno)
+    {
+        $sql = "SELECT ID, email, senha FROM admin WHERE email = :email AND senha = :senhaAluno";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $emailAluno);
+        $stmt->bindParam(':senhaAluno', $senhaAluno);
+        $stmt->execute();
+
+      
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            
+            return false;  
+        }
+        return $result['ID'];
+    }
 }
 

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../model/matriculaModel.php';
+
  /*
 ------------------------------------------------------------------------------------------------------
                                                                                                      |
@@ -7,6 +9,12 @@
 ------------------------------------------------------------------------------------------------------
 */
 class matricula {
+    private $matricula;
+
+    public function __construct() {
+        $this->matricula = new matriculaModel();
+      
+     }
     public function inserirMatricula($arquivo): string | false{
         // verifica se o arquivo enviado é diferente de PDF
         if($arquivo['type'] != 'application/pdf'){
@@ -62,5 +70,46 @@ class matricula {
         }
         
         return false;
+    }
+
+    public function listarMatriculas(){
+        $html = '';
+        // foreach($this->matricula->getAllMatriculas() as $value){
+        //     $html .= '
+        //     <div style="display:flex; flex-direction:row;">
+        //         <embed src="../app/matricula/'.$value['matricula'].'" width="50%" height="600px" />
+        //         <div>
+        //             <p>'.$value['curso'].'</p>
+        //             <p>'.$value['instituicao'].'</p>
+        //             <p>'.$value['inicio'].'</p>
+        //             <p>'.$value['fim'].'</p>
+        //         </div>
+        //     </div>';
+        // }
+        foreach($this->matricula->getAllMatriculas() as $index => $value){
+            $html .= '
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading'.$index.'">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'.$index.'" aria-expanded="true" aria-controls="collapse'.$index.'">
+                            Matrícula: '.$value['curso'].'
+                        </button>
+                    </h2>
+                    <div id="collapse'.$index.'" class="accordion-collapse collapse" aria-labelledby="heading'.$index.'" data-bs-parent="#accordionExample">
+                        <div class="accordion-body" style="display:flex; flex-direction:row;">
+                            <embed src="../app/matricula/'.$value['matricula'].'" width="50%" height="600px" />
+                            <div>
+                                <p><strong>Curso:</strong> '.$value['curso'].'</p>
+                                <p><strong>Instituição:</strong> '.$value['instituicao'].'</p>
+                                <p><strong>Início:</strong> '.$value['inicio'].'</p>
+                                <p><strong>Fim:</strong> '.$value['fim'].'</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        echo $html;
     }
 }
