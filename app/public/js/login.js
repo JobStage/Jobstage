@@ -1,122 +1,154 @@
 function cadastroAluno(){
-    event.preventDefault();
-    var email = $('.email').val();
-    var senha = $('.senha').val();
-    
-    $.ajax({
-      type: 'POST',
-      url: '../app/controller/cadastroAluno.php',
-      dataType: 'JSON',
-      data: {
-        email: email,
-        senha: senha
-      },
-      success: function (data) {
-        Swal.fire({
-          title: data.tittle,
-          text: data.msg,
-          icon: data.icon
-        }).then(() => {
-          window.location.replace('loginAluno.html');
-        });
-      },
-      error: function(data){
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
   
-      }
-  
-    }) 
+  $.ajax({
+    type: 'POST',
+    url: '../app/controller/cadastroAluno.php',
+    dataType: 'JSON',
+    data: {
+      email: email,
+      senha: senha
+    },
+    success: function (data) {
+      Swal.fire({
+        title: data.tittle,
+        text: data.msg,
+        icon: data.icon
+      }).then(() => {
+        window.location.replace('loginAluno.html');
+      });
+    },
+    error: function(data){
+
+    }
+
+  }) 
 }
 
 function loginAluno(){
-    event.preventDefault();
-    var email = $('.email').val();
-    var senha = $('.senha').val();
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
 
-    $.ajax({
-        type: 'POST',
-        url: '../app/controller/loginAluno.php',
-        dataType: 'JSON',
-        data: {
-        email: email,
-        senha: senha
-        },
-        success: function(data){
-        if(data.sucesso){
-            window.location.replace(data.redirecionar);
+  $.ajax({
+      type: 'POST',
+      url: '../app/controller/loginAluno.php',
+      dataType: 'JSON',
+      data: {
+      email: email,
+      senha: senha
+      },
+      success: function(data){
+      if(data.sucesso){
+          window.location.replace(data.redirecionar);
 
-        }else{
-            Swal.fire({
-            title: data.tittle,
-            text: data.msg,
-            icon: data.icon
-          });
-        }
-        },
-        error: function(xhr, error, status){
-        console.log(xhr, error, status);
-        }
+      }else{
+          Swal.fire({
+          title: data.tittle,
+          text: data.msg,
+          icon: data.icon
+        });
+      }
+      },
+      error: function(xhr, error, status){
+      console.log(xhr, error, status);
+      }
 
-    }) 
+  }) 
 }
 
 function cadastroEmpresa(){
-    event.preventDefault();
-    var email = $('.email').val();
-    var senha = $('.senha').val();
-    
-    $.ajax({
-      type: 'POST',
-      url: '../app/controller/cadastroEmpresa.php',
-      dataType: 'JSON',
-      data: {
-        email: email,
-        senha: senha
-      },
-      success: function(data){
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
+  
+  $.ajax({
+    type: 'POST',
+    url: '../app/controller/cadastroEmpresa.php',
+    dataType: 'JSON',
+    data: {
+      email: email,
+      senha: senha
+    },
+    success: function(data){
+      Swal.fire({
+        title: data.tittle,
+        text: data.msg,
+        icon: data.icon
+      }).then(() => {
+        window.location.replace('loginEmpresa.html');
+      });
+    },
+    error: function(data){
+
+    }
+
+  }) 
+}
+
+function loginEmpresa(){
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
+  
+  $.ajax({
+    type: 'POST',
+    url: '../app/controller/loginEmpresa.php',
+    dataType: 'json',
+    data: {
+      email: email,
+      senha: senha
+    },
+    success: function(data){
+      if(data.sucesso){
+        window.location.replace(data.redirecionar);
+
+      }else{
         Swal.fire({
           title: data.tittle,
           text: data.msg,
           icon: data.icon
-        }).then(() => {
-          window.location.replace('loginEmpresa.html');
         });
-      },
-      error: function(data){
-  
       }
-  
-    }) 
+      
+    },
+    error: function(xhr, error, status){
+      console.log(xhr, error, status);
+    }
+
+  }) 
 }
 
-  function loginEmpresa(){
-    event.preventDefault();
-    var email = $('.email').val();
-    var senha = $('.senha').val();
-    
-    $.ajax({
-      type: 'POST',
-      url: '../app/controller/loginEmpresa.php',
-      dataType: 'json',
-      data: {
-        email: email,
-        senha: senha
-      },
-      success: function(data){
-        if(data.sucesso){
-          window.location.replace(data.redirecionar);
+function loginAdmin(){
+event.preventDefault();
+var email = $('.email').val();
+var senha = $('.senha').val();
 
-        }else{
-          Swal.fire({
-            title: data.tittle,
-            text: data.msg,
-            icon: data.icon
-          });
-        }
-        
-      },
-      error: function(xhr, error, status){
-        console.log(xhr, error, status);
-      }
-  
-    }) 
+$.ajax({
+    type: 'POST',
+    url: '../app/controller/loginAdmin.php',
+    dataType: 'JSON',
+    data: {
+    email: email,
+    senha: senha
+    },
+    success: function(data){
+    if(data.sucesso){
+        window.location.replace(data.redirecionar);
+
+    }else{
+        Swal.fire({
+        title: data.tittle,
+        text: data.msg,
+        icon: data.icon
+      });
+    }
+    },
+    error: function(xhr, error, status){
+    console.log(xhr, error, status);
+    }
+
+}) 
 }

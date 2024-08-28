@@ -29,7 +29,7 @@ class CurriculoModel {
                             INNER JOIN estados AS es ON es.id = al.estado
                         WHERE 
                             al.ID = :id;
-");
+            ");
     $sql->bindParam(':id',$id);
     $sql->execute();
     $result = $sql->fetchAll(PDO::FETCH_ASSOC);

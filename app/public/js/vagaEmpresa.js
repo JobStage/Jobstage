@@ -69,6 +69,26 @@ $(document).ready(function(){
         $('#avisoCursoCollapseEdit').collapse('hide');
         $('#staticBackdrop').modal('hide');
     });
+
+    var contador = 0; // Contador para gerar IDs únicos
+
+    $('#add').on('click', function(){
+        contador++; // Incrementa o contador a cada clique
+
+        var newContent = `
+        <div class="card" style="margin: 10px 0">
+                <div style="display: flex; flex-direction: row; align-items: center; text-align: center; height: 50px">
+                    <input type="text" placeholder="Digite sua pergunta" class="pergunta-input" style="margin: 0 40px 0 0; border: none; outline: none; background: transparent;" id="pergunta-${contador}">
+                    <img src="../app/public/img/excluir.png" width="35px" height="35px" class="excluir-img">
+                </div>
+            </div>
+        `;
+        $(this).before(newContent);
+    });
+    
+    $(document).on('click', '.excluir-img', function(){
+        $(this).closest('.card').remove(); // Remove a div .card correspondente
+    });
 });
 
 
@@ -198,6 +218,45 @@ function sendAjaxRequesEdit(areaId) {
 // funcao para ler os checkbox selecionados
 function salvar(){
     event.preventDefault();
+    var inputs = $('.pergunta-input');
+    var valores = [];
+
+    // Verifica se existem inputs
+    let perguntasSeparadosPorVirgula = ''
+    if (inputs.length === 0) {
+        // Se não houver inputs, continua a execução do jQuery
+        console.log("Nenhum input encontrado, continuando...");
+    }else{
+        // Lê cada input e separa os valores por vírgula
+        inputs.each(function(){
+            var valor = $(this).val().trim(); // Trim para remover espaços em branco
+
+            if (valor === "") {
+                // Se algum input estiver vazio, retorna e para a execução
+                console.log("Um dos inputs está vazio.");
+                Swal.fire({
+                    title: 'Atenção!',
+                    text: 'As perguntas não podem estar vazias!',
+                    icon: 'warning'
+                });
+                return false; // Para o loop each
+            }
+
+            valores.push(valor);
+        });
+
+        // Verifica se algum input estava vazio
+        if (valores.length !== inputs.length) {
+            return; // Termina a execução se algum input estava vazio
+        }
+
+        // Se todos os inputs estiverem preenchidos, continua
+        perguntasSeparadosPorVirgula = valores.join(",");
+        console.log("Valores: " + perguntasSeparadosPorVirgula);
+    }
+
+   
+
     let nome = $('#nome').val();
     let rs = $('#rs').val();
     let modelo = $('#modelo').val();
@@ -243,6 +302,7 @@ function salvar(){
                     req: req,
                     area: area,
                     cursos: JSON.stringify(valoresSelecionados),
+                    perguntas: JSON.stringify(perguntasSeparadosPorVirgula),
                     tipo: 'criarVaga'
                 },
                 success: function(data) {
@@ -290,6 +350,7 @@ function salvar(){
                     desc: desc,
                     req: req,
                     cursoMedio: curso,
+                    perguntas: JSON.stringify(perguntasSeparadosPorVirgula),
                     tipo: 'criarVaga'
                 },
                 success: function(data) {

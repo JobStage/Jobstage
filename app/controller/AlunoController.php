@@ -19,7 +19,6 @@ class AlunoController{
     private string $numero; 
     private string $linkedin; 
     private string $descricao; 
-
     private $alunoModel;
 
     public function __construct(int $idAluno) {
