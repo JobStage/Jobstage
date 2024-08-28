@@ -14,12 +14,12 @@ class VagaEmpresaController{
     }
     
     
-    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area = null, $valoresSelecionados = null, $ensinoMedio= null){
+    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area = null, $valoresSelecionados = null, $ensinoMedio= null, $perguntas = null){
         if($valoresSelecionados){
             $valoresSelecionados =  implode(',', $valoresSelecionados);
         }
        
-        if($this->vagaModel->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $_SESSION['id'], $area , $valoresSelecionados, $ensinoMedio)){
+        if($this->vagaModel->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $_SESSION['id'], $area , $valoresSelecionados, $ensinoMedio, $perguntas)){
             $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Vaga criada com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return;
@@ -136,10 +136,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $req =  $_POST['req'];
             $ensinoMedio =  $_POST['cursoMedio'] ?? null;
             $area =  $_POST['area'] ?? null;
+            $perguntas = json_decode($_POST['perguntas']);
             $valoresSelecionados =  $_POST['cursos'] ?? null;
-
+            
             $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
-            $vaga->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area, $valoresSelecionados, $ensinoMedio);
+            $vaga->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area, $valoresSelecionados, $ensinoMedio, $perguntas);
         break;
         case 'excluir';
             $vaga->excluirVaga($_POST['idVaga']);
