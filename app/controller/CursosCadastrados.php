@@ -45,12 +45,12 @@ class CursosCadastrados{
     }
 
     public function listaCursosEdit($id){
-    $html = '<option id= "medioEdit" > </option>';
-    foreach($this->cursosModel->getAllCursos($id) as $value){
-        $html.='<option value='. $value['ID'] .'>'. $value['curso'] .'</option>';
-    }
-    echo json_encode($html);
-    return $html;
+        $html = '<option id= "medioEdit" > </option>';
+        foreach($this->cursosModel->getAllCursos($id) as $value){
+            $html.='<option value='. $value['ID'] .'>'. $value['curso'] .'</option>';
+        }
+        echo json_encode($html);
+        return $html;
     }
 
     public function getNivel(){
@@ -59,12 +59,37 @@ class CursosCadastrados{
         }
     }
     
+    public function listarCursosNivelTecnico(){
+        $html = "";
+        foreach($this->cursosModel->getCursoNivelTecnico() as $value){
+            $html .= '<div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="'. $value['ID'] .'" id="'. $value['ID'] .'"/>
+                        <label class="form-check-label" for="'. $value['ID'] .'">'. $value['curso'] .'</label>
+                    </div>';
+        }
+
+        json_encode($html);
+        return $html;
+    }
+
+    public function listarCursosNivelSuperior(){
+        $html = "";
+        foreach($this->cursosModel->getCursoNivelSuperior() as $value){
+            $html .= '<div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="'. $value['ID'] .'" id="'. $value['ID'] .'"/>
+                        <label class="form-check-label" for="'. $value['ID'] .'">'. $value['curso'] .'</label>
+                    </div>';
+        }
+
+        json_encode($html);
+        return $html;
+    }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $nivel = $_POST['nivel'];
+    $nivel = $_POST['nivel'] ?? '';
     $area = $_POST['area'] ?? '';
-    $tipo = $_POST['tipo'];
+    $tipo = $_POST['tipo'] ?? '';
     $curso = new CursosCadastrados();
 
     switch($tipo){
