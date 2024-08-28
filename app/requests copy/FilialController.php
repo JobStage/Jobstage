@@ -1,8 +1,8 @@
 <?php
-// if(!isset($_SESSION)) 
-// { 
-//     session_start(); 
-// } 
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
 require_once __DIR__ . '/../model/FilialModel.php';
 require_once 'CursosCadastrados.php';
@@ -124,3 +124,31 @@ class FilialController {
        
     }
 }
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $acao = $_POST['acao'];   
+    $filial = new FilialController($_SESSION['id']);
+    $valoresSelecionados =  $_POST['niveis'] ?? null;
+
+    switch($acao){
+        case 'criarFilial':
+            $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
+
+            $filial->criarFilial($_POST['nome'], $valoresSelecionados);
+        break;
+        case 'getDadosFilial':
+            $filial->getDadosFilial($_POST['id']);
+        break;
+        case 'editarFilial':
+            $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
+            $filial->editarFilial($_POST['nome'], $_POST['id'], $valoresSelecionados);
+        break;
+    }
+
+
+
+}
+
+?>

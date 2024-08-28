@@ -105,7 +105,7 @@ function sendAjaxRequestArea() {
         $('#area').removeAttr('disabled');
         
         $.ajax({
-            url: '../app/controller/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {
@@ -132,7 +132,7 @@ function sendAjaxRequest() {
         $('#selecCursos').removeClass('btn-secondary disabled').addClass('btn-primary');
         
         $.ajax({
-            url: '../app/controller/cursosCadastrados.php',
+            url: '../app/requests/cursosCadastrados.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -164,7 +164,7 @@ function sendAjaxRequestAreaEdit() {
     
     if(nivel > 1){        
         $.ajax({
-            url: '../app/controller/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {
@@ -190,7 +190,7 @@ function sendAjaxRequesEdit(areaId) {
         $('#selecCursosEdit').removeClass('btn-secondary disabled').addClass('btn-primary');
         
         $.ajax({
-            url: '../app/controller/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {
@@ -290,7 +290,7 @@ function salvar(){
               });
         }else{
             $.ajax({
-                url: '../app/controller/vagaEmpresaController.php',
+                url: '../app/requests/vagaEmpresaController.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -339,7 +339,7 @@ function salvar(){
             curso = 218;
            
             $.ajax({
-                url: '../app/controller/vagaEmpresaController.php',
+                url: '../app/requests/vagaEmpresaController.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -392,7 +392,7 @@ function excluirVaga(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: "../app/controller/vagaEmpresaController.php",
+                url: "../app/requests/vagaEmpresaController.php",
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -430,7 +430,7 @@ function getEditarVaga(id){
         // AJAX -----------------------------------------
         $.ajax({
             type: "post",
-            url: "../app/controller/vagaEmpresaController.php",
+            url: "../app/requests/vagaEmpresaController.php",
             dataType: 'json',
             data: {
                 tipo: 'getEditVaga',
@@ -500,7 +500,7 @@ function salvarEdicao(){
         }
         
         $.ajax({
-            url: '../app/controller/vagaEmpresaController.php',
+            url: '../app/requests/vagaEmpresaController.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -536,7 +536,7 @@ function salvarEdicao(){
         });
     }else{
         $.ajax({
-            url: '../app/controller/vagaEmpresaController.php',
+            url: '../app/requests/vagaEmpresaController.php',
             type: 'POST',
             dataType: 'json',
             data: {

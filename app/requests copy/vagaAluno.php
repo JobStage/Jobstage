@@ -1,8 +1,8 @@
 <?php
-// if(!isset($_SESSION)) 
-// { 
-//     session_start(); 
-// } 
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
 require_once __DIR__ . '/../model/vagasModel.php';
 require_once __DIR__ . '/../controller/FormacaoController.php';
@@ -139,3 +139,12 @@ public function candidatar($idVaga, $idEmpresa){
 //   }
 //   exit;
 // }
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $tipo = $_POST['tipo'];  
+    $listaVagas = new VagasController();
+    switch ($tipo) {        
+        case 'candidatar':
+           $listaVagas->candidatar($_POST['idVaga'], $_POST['idEmpresa']);
+            break;
+    }
+}

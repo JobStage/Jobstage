@@ -5,7 +5,7 @@ $(document).ready(function() {
         console.log(id);
         $.ajax({
             type: "post",
-            url: "../app/controller/ExperienciaController.php",
+            url: "../app/requests/ExperienciaController.php",
             dataType: 'json',
             data: {
                 acao: 'getAll',
@@ -45,7 +45,7 @@ function salvarExperiencia() {
     var atividade = $('#atividade').val();
     $.ajax({
         type: "post",
-        url: "../app/controller/ExperienciaController.php",
+        url: "../app/requests/ExperienciaController.php",
         dataType: 'json',
         data: {
             acao: 'salvar',
@@ -80,7 +80,7 @@ function editarExperiencia(){
     var tipo = $('#tipoEdit').val();
     var atividade = $('#atividadeEdit').val();
     $.ajax({
-        url: "../app/controller/ExperienciaController.php",
+        url: "../app/requests/ExperienciaController.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -130,7 +130,7 @@ function excluirExperiencia(id) {
     }).then((result) => {
     if (result.isConfirmed) {
         $.ajax({
-            url: "../app/controller/ExperienciaController.php",
+            url: "../app/requests/ExperienciaController.php",
             type: 'POST',
             dataType: 'json',
             data: {
