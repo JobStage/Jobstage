@@ -572,3 +572,34 @@ function salvarEdicao(){
     }
 
 }
+
+function gerarContrato(idAluno, idVaga){
+    $.ajax({
+        url: '../app/requests/vagaEmpresaController.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            idAluno: idAluno,
+            idVaga: idVaga,
+            tipo: 'gerarContratoEmpresa'
+        },
+        success: function(data) {
+            if(data.success){
+                Swal.fire({
+                    text: data.msg,
+                    icon: data.icon
+                }).then(() => {
+                    window.location.reload();
+                });
+            }else{
+                Swal.fire({
+                    text: data.msg,
+                    icon: data.icon
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ' + status + error);
+        }
+    });
+}
