@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a3d6433f6b4a7d2e4e239ca51e0d59cf4a7c7113',
+        'reference' => '4a2d718df63c144925b34682e7dfeaeb88aa9b3e',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,11 +13,17 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a3d6433f6b4a7d2e4e239ca51e0d59cf4a7c7113',
+            'reference' => '4a2d718df63c144925b34682e7dfeaeb88aa9b3e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'lastcraft/simpletest' => array(
+            'dev_requirement' => true,
+            'replaced' => array(
+                0 => 'v1.1.7',
+            ),
         ),
         'phpmailer/phpmailer' => array(
             'pretty_version' => 'v6.9.1',
@@ -27,6 +33,21 @@
             'install_path' => __DIR__ . '/../phpmailer/phpmailer',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'simpletest/simpletest' => array(
+            'pretty_version' => 'v1.1.7',
+            'version' => '1.1.7.0',
+            'reference' => '2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../simpletest/simpletest',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+        'vierbergenlars/simpletest' => array(
+            'dev_requirement' => true,
+            'replaced' => array(
+                0 => 'v1.1.7',
+            ),
         ),
     ),
 );

@@ -6,7 +6,7 @@ $(document).ready(function() {
         // AJAX -----------------------------------------
         $.ajax({
             type: "post",
-            url: "../app/controller/CursosController.php",
+            url: "../app/requests/CursosController.php",
             dataType: 'json',
             data: {
                 acao: 'getAll',
@@ -46,7 +46,7 @@ function salvarCurso() {
     var status = $('#status').val();
     $.ajax({
         type: "post",
-        url: "../app/controller/CursosController.php",
+        url: "../app/requests/CursosController.php",
         dataType: 'json',
         data: {
             acao: 'salvar',
@@ -85,7 +85,7 @@ function editarCurso(){
 
     // CRIAR AJAX -----------
     $.ajax({
-        url: "../app/controller/CursosController.php",
+        url: "../app/requests/CursosController.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -136,7 +136,7 @@ function excluirCurso(id) {
     if (result.isConfirmed) {
             // CRIAR AJAX -----------------
         $.ajax({
-            url: "../app/controller/CursosController.php",
+            url: "../app/requests/CursosController.php",
             type: 'POST',
             dataType: 'json',
             data: {

@@ -1,7 +1,7 @@
 //recupera os dados cadastrados no banco de dados
 $(document).ready(function(){
     $.ajax({
-        url: "../app/controller/AlunoController.php",
+        url: "../app/requests/AlunoController.php",
         type: 'POST',
         dataType: 'json',
         data:{
@@ -28,8 +28,7 @@ $(document).ready(function(){
             };
         },
         error: function(xhr, status, error) {
-            console.log('error');
-        }
+git         }
     });
 });
 
@@ -70,7 +69,7 @@ function salvar() {
     var sobre = $('#sobre').val();
     $.ajax({
         type: "post",
-        url: "../app/controller/AlunoController.php",
+        url: "../app/requests/AlunoController.php",
         dataType: 'json',
         data: {
             acao: 'editar',

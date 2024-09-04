@@ -7,7 +7,7 @@ $(document).ready(function() {
         // AJAX -----------------------------------------
         $.ajax({
             type: "post",
-            url: "../app/controller/FormacaoController.php",
+            url: "../app/requests/FormacaoController.php",
             dataType: 'json',
             data: {
                 acao: 'getAll',
@@ -97,7 +97,7 @@ function salvarFormacao() {
     formData.append('file', file);
 
     $.ajax({
-        url: '../app/controller/FormacaoController.php',
+        url: '../app/requests/FormacaoController.php',
         type: 'POST',
         dataType: 'json',
         data: formData,
@@ -170,7 +170,7 @@ function editarFormacao(){
     }
     formData.append('file', file);
     $.ajax({
-        url: '../app/controller/FormacaoController.php',
+        url: '../app/requests/FormacaoController.php',
         type: 'POST',
         dataType: 'json',
         data: formData,
@@ -214,7 +214,7 @@ function excluirFormacao(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '../app/controller/FormacaoController.php',
+                url: '../app/requests/FormacaoController.php',
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -283,7 +283,7 @@ function sendAjaxRequestCursoEdit(nivel) {
         $('#cursoEdit').removeAttr('disabled');
 
         $.ajax({
-            url: '../app/controller/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "baf0b1b659e688a64051c5ee9742a77e",
+    "content-hash": "8ee3b13ecc2f8f46f1db6337ba6c365a",
     "packages": [
         {
             "name": "phpmailer/phpmailer",
@@ -88,7 +88,85 @@
             "time": "2023-11-25T22:23:28+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "simpletest/simpletest",
+            "version": "v1.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simpletest/simpletest.git",
+                "reference": "2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simpletest/simpletest/zipball/2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc",
+                "reference": "2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.5"
+            },
+            "replace": {
+                "lastcraft/simpletest": "self.version",
+                "vierbergenlars/simpletest": "self.version"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "."
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Vierbergen",
+                    "email": "vierbergenlars@gmail.com"
+                },
+                {
+                    "name": "Lachlan Donald",
+                    "email": "lachlan@ljd.cc"
+                },
+                {
+                    "name": "Marcus Baker",
+                    "email": "marcus@lastcraft.com",
+                    "role": "Original project lead"
+                },
+                {
+                    "name": "Jason Sweat",
+                    "role": "Original developer"
+                },
+                {
+                    "name": "Travis Swicegood",
+                    "role": "Original developer"
+                },
+                {
+                    "name": "Perrick Penet",
+                    "role": "Original developer"
+                },
+                {
+                    "name": "Edward Z. Yang",
+                    "role": "Original developer"
+                }
+            ],
+            "description": "Unit testing, mock objects and web testing framework for PHP built around test cases.",
+            "homepage": "http://simpletest.org/",
+            "keywords": [
+                "SimpleTest",
+                "code-coverage",
+                "selenium",
+                "testing",
+                "unit-test"
+            ],
+            "support": {
+                "issues": "https://github.com/simpletest/simpletest/issues",
+                "source": "https://github.com/simpletest/simpletest/tree/master"
+            },
+            "time": "2015-09-21T18:19:52+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
@@ -96,5 +174,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

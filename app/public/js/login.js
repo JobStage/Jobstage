@@ -5,7 +5,7 @@ function cadastroAluno(){
   
   $.ajax({
     type: 'POST',
-    url: '../app/controller/cadastroAluno.php',
+    url: '../app/requests/cadastroAluno.php',
     dataType: 'JSON',
     data: {
       email: email,
@@ -34,7 +34,7 @@ function loginAluno(){
 
   $.ajax({
       type: 'POST',
-      url: '../app/controller/loginAluno.php',
+      url: '../app/requests/loginAluno.php',
       dataType: 'JSON',
       data: {
       email: email,
@@ -66,7 +66,7 @@ function cadastroEmpresa(){
   
   $.ajax({
     type: 'POST',
-    url: '../app/controller/cadastroEmpresa.php',
+    url: '../app/requests/cadastroEmpresa.php',
     dataType: 'JSON',
     data: {
       email: email,
@@ -95,7 +95,7 @@ function loginEmpresa(){
   
   $.ajax({
     type: 'POST',
-    url: '../app/controller/loginEmpresa.php',
+    url: '../app/requests/loginEmpresa.php',
     dataType: 'json',
     data: {
       email: email,
@@ -128,7 +128,7 @@ var senha = $('.senha').val();
 
 $.ajax({
     type: 'POST',
-    url: '../app/controller/loginAdmin.php',
+    url: '../app/requests/loginAdmin.php',
     dataType: 'JSON',
     data: {
     email: email,

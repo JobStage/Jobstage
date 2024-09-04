@@ -39,7 +39,7 @@ function candidatar(idEmpresa, idVaga) {
 
   $.ajax({
       type: "POST",
-      url: "../app/controller/vagaAluno.php",
+      url: "../app/requests/vagaAluno.php",
       dataType: 'JSON',
       data: {
           tipo: 'candidatar',
