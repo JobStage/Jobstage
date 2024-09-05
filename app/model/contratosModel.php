@@ -27,4 +27,18 @@ class contratosModel{
         }
         
     }
+
+    public function getAllSolicitacoesContratoModel(){
+        try {
+            $sql = $this->conn->prepare("SELECT * FROM contratacoes
+                                            WHERE contratoGerado = :contratoGerado");
+            $sql->bindValue(':contratoGerado', 0);
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (Exception $e) {
+            return false;
+        }
+        
+    }
 }
