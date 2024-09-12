@@ -10,12 +10,11 @@ ob_start();
 <div class="card">
     <div class="card-body">
         <div style="display: flex; flex-direction:column;">
-            <?= $contratos->listarSolicitacoesContrato() ?>
+            <?= $contratos->listarSolicitacoesContrato() ?> 
         </div>
     </div>
 </div>
-<script src="../app/public/js/"></script>
-
+<script src="../app/public/js/contratos.js"></script>
 <?php
 $content = ob_get_clean(); 
 $pageTitle = "Contratos"; 
