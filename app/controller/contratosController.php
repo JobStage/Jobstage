@@ -63,9 +63,18 @@ class contratosController{
         $idAluno = $contratacao['idAluno'];
         $idEmpresa = $contratacao['idEmpresa'];
 
-        $vaga = $this->contratos->getDadosParaContatoModel($idVaga);
+        $vaga = $this->contratos->getDadosParaContatoModel($idVaga, $idAluno, $idEmpresa);
+        
+        foreach($vaga as $value){
 
-        $this->contratos->gerarContratoModel($idVaga, $idAluno, $idEmpresa, $id);
-
+            $textoDoContrato = 'O aluno ' .$value['nomeAluno']. ' 
+                                que está no curso ' . $value['nomeCurso'] . ' 
+                                irá iniciar seu estagio com as atividades '. $value['descricaoVaga'] .'
+                                com salário de '. $value['salarioVaga'] .'
+                                na empresa '. $value['nomeEmpresa'] .'
+                                com o CNPJ: '. $value['cnpjEmpresa'].' 
+                                em '. $value['cidade'] . ' '.  $value['estado'] .'';
+            }
+      
     }
 }
