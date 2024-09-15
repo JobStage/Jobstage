@@ -66,15 +66,25 @@ class contratosController{
         $vaga = $this->contratos->getDadosParaContatoModel($idVaga, $idAluno, $idEmpresa);
         
         foreach($vaga as $value){
+            $textoDoContrato = '
+                O aluno ' .$value['nomeAluno']. ' 
+                que está no curso ' . $value['nomeCurso'] . ' 
+                irá iniciar seu estagio com as atividades '. $value['descricaoVaga'] .'
+                com salário de '. $value['salarioVaga'] .'
+                na empresa '. $value['nomeEmpresa'] .'
+                com o CNPJ: '. $value['cnpjEmpresa'].' 
+                em '. $value['cidade'] . ' '.  $value['estado'] .'
+            ';
+        }
 
-            $textoDoContrato = 'O aluno ' .$value['nomeAluno']. ' 
-                                que está no curso ' . $value['nomeCurso'] . ' 
-                                irá iniciar seu estagio com as atividades '. $value['descricaoVaga'] .'
-                                com salário de '. $value['salarioVaga'] .'
-                                na empresa '. $value['nomeEmpresa'] .'
-                                com o CNPJ: '. $value['cnpjEmpresa'].' 
-                                em '. $value['cidade'] . ' '.  $value['estado'] .'';
-            }
-      
+        if($this->contratos->gerarContratoModel($id, $textoDoContrato)){
+            $retorno = array('tittle' => 'Sucesso!', 'msg' => 'O contrato de estágio foi gerado!', 'icon' => 'success' , 'success' => true);
+            echo json_encode($retorno);
+            return $retorno;
+        }else{
+            $retorno = array('tittle' => 'Erro!', 'msg' => 'Ocorreu um erro ao gerar um contrato!', 'icon' => 'error' , 'success' => false);
+            echo json_encode($retorno);
+            return $retorno;
+        }
     }
 }

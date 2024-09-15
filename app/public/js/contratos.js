@@ -9,9 +9,19 @@ function gerarContrato(id){
         },
         success: function(data) {
             if(data.success) {
-
+                Swal.fire({
+                    title: data.tittle,
+                    text: data.msg,
+                    icon: data.icon
+                }).then(() => {
+                    location.reload();
+                });
             } else {
-
+                Swal.fire({
+                    title: data.tittle,
+                    text: data.msg,
+                    icon: data.icon
+                });
             };
         },
         error: function(xhr, status, error) {

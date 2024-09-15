@@ -91,8 +91,36 @@ class contratosModel{
       
     }
 // funcao que irá gerar um contrato com as informacoes do contrato de estagio e o id da solicitacao
-    public function gerarContratoModel($idVaga, $idAluno, $idEmpresa, $id){
-        $sql = $this->conn->prepare("INSERT INTO contratosestagio (contrato, idContratacoes) 
-                                        VALUES(:contrato, :idCpntratacao)");
+    public function gerarContratoModel($id, $textoDoContrato){
+        try {
+            // Iniciar a transação
+            $this->conn->beginTransaction();
+    
+            // Inserir na tabela contratosEstagio
+            $sql = $this->conn->prepare("INSERT INTO contratosestagio (contrato) VALUES (:textoDoContrato)");
+            $sql->bindParam(':textoDoContrato', $textoDoContrato);
+            $sql->execute();
+            $idContrato = $this->conn->lastInsertId();
+    
+            // Atualizar a tabela contratacoes
+            $sql = $this->conn->prepare("UPDATE contratacoes 
+                                        SET idContrato = :idContrato, 
+                                            contratoGerado = 1 
+                                        WHERE ID = :id");
+            $sql->bindParam(':idContrato', $idContrato);
+            $sql->bindParam(':id', $id);
+            $sql->execute();
+    
+            // Commit na transação
+            $this->conn->commit();
+    
+            return true;
+        } catch (PDOException $e) {
+            // Rollback em caso de erro
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            return false;
+        }
     }
 }
