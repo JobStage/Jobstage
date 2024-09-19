@@ -12,7 +12,7 @@ function salvarEmpresa() {
 
     $.ajax({
         type: "POST",
-        url: "../app/controller/EmpresaController.php",
+        url: "../app/requests/EmpresaController.php",
         dataType: 'json',
         data: {
             acao: "editar",
@@ -51,7 +51,7 @@ function salvarEmpresa() {
 
 $(document).ready(function(){
     $.ajax({
-        url: "../app/controller/EmpresaController.php",
+        url: "../app/requests/EmpresaController.php",
         type: 'POST',
         dataType: 'json',
         data:{

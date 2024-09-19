@@ -30,6 +30,7 @@ ob_start();
         justify-content: space-around;
     }
 </style>
+<script src="../app/public/js/vagaEmpresa.js"></script>
 <?php
 $content = ob_get_clean(); 
 $pageTitle = "Dados pessoais"; 

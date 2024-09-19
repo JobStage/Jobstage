@@ -18,7 +18,7 @@ function salvar() {
 
   $.ajax({
     type: "post",
-    url: "../app/controller/FilialController.php",
+    url: "../app/requests/FilialController.php",
     dataType: 'json',
     data: {
         acao: 'criarFilial',
@@ -46,7 +46,7 @@ function editar(id) {
 
   $.ajax({
     type: "post",
-    url: "../app/controller/FilialController.php",
+    url: "../app/requests/FilialController.php",
     dataType: 'json',
     data: {
         acao: 'getDadosFilial',
@@ -90,7 +90,7 @@ function editarFilial(){
 
   $.ajax({
     type: "post",
-    url: "../app/controller/FilialController.php",
+    url: "../app/requests/FilialController.php",
     dataType: 'json',
     data: {
         acao: 'editarFilial',
