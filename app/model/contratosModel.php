@@ -90,7 +90,7 @@ class contratosModel{
         }
       
     }
-// funcao que irá gerar um contrato com as informacoes do contrato de estagio e o id da solicitacao
+    // funcao que irá gerar um contrato com as informacoes do contrato de estagio e o id da solicitacao
     public function gerarContratoModel($id, $textoDoContrato){
         try {
             // Iniciar a transação
@@ -122,5 +122,19 @@ class contratosModel{
             }
             return false;
         }
+    }
+
+    public function getContratos($idAluno){
+        $sql = $this->conn->prepare("SELECT * FROM contratacoes as ctr
+                                        INNER JOIN contratosestagio as ce
+                                            ON ctr.idContrato = ce.id
+                                        INNER JOIN empresa as e
+                                        on e.id_empresa = ctr.idEmpresa
+                                        WHERE ctr.idAluno = :idAluno" );
+        $sql->bindParam(":idAluno", $idAluno);
+        $sql->execute();
+
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }

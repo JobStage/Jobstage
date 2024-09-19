@@ -87,4 +87,35 @@ class contratosController{
             return $retorno;
         }
     }
+
+    public function getAllContratos($idAluno){
+        $html = '';
+        echo "<pre>";
+        var_dump($this->contratos->getContratos($idAluno));
+        echo "<pre>";
+        foreach($this->contratos->getContratos($idAluno) as $value){
+            $html .= '
+                    <div class="card">
+                        <div class="conteudo-principal">
+                            <div class="user">
+                               '.$value['nome'].'
+                            </div>
+                            <div class="contrato">
+                                Contrato: 
+                                <img src="../app/public/img/anexo.png" width="20px" height="20px"  style="margin-right: 5px;">
+                                ///////////////////
+                                    (criar no banco hash para mostrar a matricula)
+                                ///////////////////
+                            </div>
+                             <div class="status">
+                                Status: 
+                                ////////////////////
+                                    (criar no banco campo para status)
+                                ////////////////////
+                            </div>
+                        </div>
+                    </div>';
+        }
+        echo $html;
+    }
 }
