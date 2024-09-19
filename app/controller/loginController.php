@@ -63,12 +63,12 @@ class LoginController{
           $_SESSION['idSessao'] = 2;
 
           $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
-          //echo json_encode($retorno);
+          echo json_encode($retorno);
           return $retorno;
         
         }
         $retorno = array('title' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
-       // echo json_encode($retorno);
+       echo json_encode($retorno);
         return $retorno;
     }
 }

@@ -5,10 +5,13 @@ if(!isset($_SESSION))
 } 
 
 require_once '../controller/vagaEmpresaController.php';
+require_once '../controller/contratosController.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $tipo = $_POST['tipo'];
+    $idEmpresa = $_SESSION['id'];
     $vaga = new VagaEmpresaController();
+    $contrato = new contratosController();
 
     switch($tipo){
         case 'criarVaga':
@@ -42,6 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $valoresSelecionados =  $_POST['cursos'] ?? null;
             $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
             $vaga->atualizarVaga($idVaga, $nome, $rs, $modelo, $desc, $req, $valoresSelecionados);
+        break;
+        case 'gerarContratoEmpresa':
+            $idAluno = $_POST['idAluno'];
+            $idVaga = $_POST['idVaga'];
+            $contrato->gerarContratoEmpresa($idAluno, $idVaga, $idEmpresa);
         break;
     }
 }
