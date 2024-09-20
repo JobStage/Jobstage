@@ -62,7 +62,7 @@ class contratosController{
         $idVaga = $contratacao['idVaga'];
         $idAluno = $contratacao['idAluno'];
         $idEmpresa = $contratacao['idEmpresa'];
-
+        $hash = md5($idEmpresa . time() . $idAluno . $idVaga);
         $vaga = $this->contratos->getDadosParaContatoModel($idVaga, $idAluno, $idEmpresa);
         
         foreach($vaga as $value){
@@ -77,7 +77,7 @@ class contratosController{
             ';
         }
 
-        if($this->contratos->gerarContratoModel($id, $textoDoContrato)){
+        if($this->contratos->gerarContratoModel($id, $textoDoContrato, $hash)){
             $retorno = array('tittle' => 'Sucesso!', 'msg' => 'O contrato de estágio foi gerado!', 'icon' => 'success' , 'success' => true);
             echo json_encode($retorno);
             return $retorno;
@@ -90,10 +90,19 @@ class contratosController{
 
     public function getAllContratos($idAluno){
         $html = '';
-        echo "<pre>";
-        var_dump($this->contratos->getContratos($idAluno));
-        echo "<pre>";
+        $status = '';
         foreach($this->contratos->getContratos($idAluno) as $value){
+            if($value['assinadoAluno'] == 0){
+                $status .= '
+                    <a href="assinatura.php?contrato='.$value['hashContrato'].'">
+                        <img src="../app/public/img/elipse.png" width="20px" height="20px" style="margin-right: 5px;">
+                    </a>'
+                ;
+            }elseif ($value['assinadoEmpresa'] == 0 || $value['assinadoInstituicao'] == 0) {
+                $status .='<img src="../app/public/img/alerta.png" width="20px" height="20px" style="margin-right: 5px;">';
+            }
+
+
             $html .= '
                     <div class="card">
                         <div class="conteudo-principal">
@@ -102,20 +111,39 @@ class contratosController{
                             </div>
                             <div class="contrato">
                                 Contrato: 
-                                <img src="../app/public/img/anexo.png" width="20px" height="20px"  style="margin-right: 5px;">
-                                ///////////////////
-                                    (criar no banco hash para mostrar a matricula)
-                                ///////////////////
+                                <a href="verContrato.php?contrato='.$value['hashContrato'].'">
+                                    <img src="../app/public/img/anexo.png" width="20px" height="20px" style="margin-right: 5px;">
+                                </a>
                             </div>
                              <div class="status">
-                                Status: 
-                                ////////////////////
-                                    (criar no banco campo para status)
-                                ////////////////////
+                                Status: '.$status.'
                             </div>
                         </div>
                     </div>';
         }
         echo $html;
+    }
+
+    public function listarContrato($hash){
+        $html = $this->contratos->getContratoPorHash($hash);
+        echo '
+            <div class="card" id="contrato-texto">
+                '.$html['contrato'].'
+            </div>';
+    }
+
+    public function listarContratoAssinatura($hash){
+        $html = $this->contratos->getContratoPorHash($hash);
+
+        echo '
+            <div class="card">
+                '.$html['contrato'].'
+            </div>
+            <br>
+            <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            
+            <br>
+            <button class="btn btn-primary">Assinar</button>
+            ';
     }
 }

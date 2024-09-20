@@ -16,9 +16,10 @@ ob_start();
     }
 
     .conteudo-principal {
-       display: flex;
-       flex-direction: row;
-       align-items: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         background-color: #7474776b;
     }
 </style>

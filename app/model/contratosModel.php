@@ -91,14 +91,15 @@ class contratosModel{
       
     }
     // funcao que irá gerar um contrato com as informacoes do contrato de estagio e o id da solicitacao
-    public function gerarContratoModel($id, $textoDoContrato){
+    public function gerarContratoModel($id, $textoDoContrato, $hash){
         try {
             // Iniciar a transação
             $this->conn->beginTransaction();
     
             // Inserir na tabela contratosEstagio
-            $sql = $this->conn->prepare("INSERT INTO contratosestagio (contrato) VALUES (:textoDoContrato)");
+            $sql = $this->conn->prepare("INSERT INTO contratosestagio (contrato, hashContrato) VALUES (:textoDoContrato, :hashC)");
             $sql->bindParam(':textoDoContrato', $textoDoContrato);
+            $sql->bindParam(':hashC', $hash);
             $sql->execute();
             $idContrato = $this->conn->lastInsertId();
     
@@ -135,6 +136,17 @@ class contratosModel{
         $sql->execute();
 
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getContratoPorHash($hash){
+        $sql = $this->conn->prepare("SELECT contrato FROM contratosestagio
+                                    WHERE hashContrato = :hsh");
+
+        $sql->bindParam(':hsh', $hash);
+        $sql->execute();
+
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 }
