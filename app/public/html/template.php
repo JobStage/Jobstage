@@ -1,7 +1,6 @@
 <?php 
     if(empty($_SESSION)){
         header('Location:../index.php');
-        
     }
     switch($_SESSION['idSessao']){
         case '1':
