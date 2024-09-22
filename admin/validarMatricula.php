@@ -14,7 +14,7 @@ ob_start();
         </div>
     </div>
 </div>
-<script src="../app/public/js/dadosAluno.js"></script>
+<script src="../app/public/js/matricula.js"></script>
 
 <?php
 $content = ob_get_clean(); 

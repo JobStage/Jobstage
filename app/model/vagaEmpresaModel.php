@@ -24,13 +24,13 @@ class vagaEmpresaModel{
         }
     }
 
-    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null, $perguntas= null){
+    public function criarVaga($supervisor, $nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null, $perguntas= null){
         try {
         
         $this->conn->beginTransaction();
         
-        $sql = $this->conn->prepare("INSERT INTO vagas (nome, salario, modelo, nivel, descricao, requisitos, setor, cursos,  id_empresa) 
-                                     VALUES (:nome, :rs, :modelo, :nivel, :descricao, :requisitos, :area, :valores_selecionados, :id)");
+        $sql = $this->conn->prepare("INSERT INTO vagas (nome, salario, modelo, nivel, descricao, requisitos, setor, cursos,  id_empresa, id_funcionario) 
+                                     VALUES (:nome, :rs, :modelo, :nivel, :descricao, :requisitos, :area, :valores_selecionados, :id, :funcionario)");
 
         $sql->bindParam(':nome', $nome);
         $sql->bindParam(':rs', $rs);
@@ -39,6 +39,7 @@ class vagaEmpresaModel{
         $sql->bindParam(':descricao', $desc);
         $sql->bindParam(':requisitos', $req);
         $sql->bindParam(':area', $area);
+        $sql->bindParam(':funcionario', $supervisor);
 
         if($valoresSelecionados){
             $sql->bindParam(':valores_selecionados', $valoresSelecionados);
@@ -60,6 +61,7 @@ class vagaEmpresaModel{
         return true;
 
         } catch (PDOException $e) {
+            echo $e;
             return false;
         }
     }
@@ -103,6 +105,8 @@ class vagaEmpresaModel{
 
     public function getVagaFiltado($id){
         $sql = $this->conn->prepare('SELECT * FROM vagas as v
+                                    LEFT JOIN funcionarios as f
+                                    ON v.id_funcionario = f.id
                                     WHERE v.idVaga = :id');
 
         $sql->bindParam(':id', $id);

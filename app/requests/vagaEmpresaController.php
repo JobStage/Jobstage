@@ -21,13 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $nivel =  $_POST['nivel'];
             $desc =  $_POST['desc'];
             $req =  $_POST['req'];
+            $supervisor =  $_POST['supervisor'];
             $ensinoMedio =  $_POST['cursoMedio'] ?? null;
             $area =  $_POST['area'] ?? null;
             $perguntas = json_decode($_POST['perguntas']);
             $valoresSelecionados =  $_POST['cursos'] ?? null;
             
             $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
-            $vaga->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area, $valoresSelecionados, $ensinoMedio, $perguntas);
+            $vaga->criarVaga($supervisor, $nome, $rs, $modelo, $nivel, $desc, $req, $area, $valoresSelecionados, $ensinoMedio, $perguntas);
         break;
         case 'excluir';
             $vaga->excluirVaga($_POST['idVaga']);

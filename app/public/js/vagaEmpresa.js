@@ -89,6 +89,7 @@ $(document).ready(function(){
     $(document).on('click', '.excluir-img', function(){
         $(this).closest('.card').remove(); // Remove a div .card correspondente
     });
+    listarFuncionarios();
 });
 
 
@@ -263,9 +264,17 @@ function salvar(){
     let nivel = $('#nivel').val();
     let desc = $('#desc').val();
     let req = $('#req').val();
-    
-    
-    
+    let supervisor = $('#supervisor').val();
+
+    if(!supervisor){
+        Swal.fire({
+            title: "Erro!",
+            text: "Supervisor obrigatório, crie um novo supervisor na aba de funcionários!",
+            icon: "warning"
+          });
+        return;
+    }
+
     if(!$('#area').is(':disabled')){
         var area = $('#area').val();   
     }
@@ -282,7 +291,7 @@ function salvar(){
 
     // se a area não estiver desativada os campos area e de escolher cursos são obrigatórios
     if(!$('#area').is(':disabled')){
-        if (!nome || !modelo || !rs || !nivel || !area || !desc || !req || valoresSelecionados.length === 0) {
+        if (!nome || !modelo || !supervisor || !rs || !nivel || !area || !desc || !req || valoresSelecionados.length === 0) {
             Swal.fire({
                 title: "Erro!",
                 text: "Todos os campos são obrigatórios!",
@@ -301,6 +310,7 @@ function salvar(){
                     desc: desc,
                     req: req,
                     area: area,
+                    supervisor: supervisor,
                     cursos: JSON.stringify(valoresSelecionados),
                     perguntas: JSON.stringify(perguntasSeparadosPorVirgula),
                     tipo: 'criarVaga'
@@ -328,7 +338,7 @@ function salvar(){
             });
         }
     }else{
-        if (!nome || !modelo || !rs  || !nivel || !desc || !req) {
+        if (!nome || !modelo || !rs  || !supervisor|| !nivel || !desc || !req) {
             Swal.fire({
                 title: "Erro!",
                 text: "Todos os campos são obrigatórios!",
@@ -350,6 +360,7 @@ function salvar(){
                     desc: desc,
                     req: req,
                     cursoMedio: curso,
+                    supervisor: supervisor,
                     perguntas: JSON.stringify(perguntasSeparadosPorVirgula),
                     tipo: 'criarVaga'
                 },
@@ -442,6 +453,7 @@ function getEditarVaga(id){
                 $('#rsEdit').val(data.salario);
                 $('#modeloEdit').val(data.modelo);
                 $('#nivelEdit').val(data.nivel);
+                $('#editSupervisor').val(data.nomeFunc);
                 console.log(data.nivel);
                 if(data.nivel > 1){
                     sendAjaxRequestAreaEdit()
@@ -600,6 +612,20 @@ function gerarContrato(idAluno, idVaga){
         },
         error: function(xhr, status, error) {
             console.error('AJAX Error: ' + status + error);
+        }
+    });
+}
+
+function listarFuncionarios(){
+    $.ajax({
+        type: "POST",
+        url: '../app/requests/funcionario.php',
+        dataType: "html",
+        data: {
+          acao: 'listarFuncionariosSupervisor'  
+        },
+        success: function (response) {
+            $('#supervisor').html(response);
         }
     });
 }
