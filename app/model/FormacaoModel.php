@@ -58,7 +58,7 @@ class FormacaoModel{
     public function editarFormacao(int $idAluno, int $idFormacao, string $curso, string $instituicao, string $nivel, $inicio, $fim, $status, $arquivo = null): bool{
         
         try {
-            $sql = 'UPDATE formacao SET curso = :curso, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status';
+            $sql = 'UPDATE formacao SET curso = :curso, instituicao = :instituicao, nivel = :nivel, inicio = :inicio, fim = :fim, status = :status, matricula_valida = 0';
 
         if($arquivo){
             $sql .= ', matricula = :arquivo';

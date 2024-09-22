@@ -14,12 +14,12 @@ class VagaEmpresaController{
     }
     
     
-    public function criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $area = null, $valoresSelecionados = null, $ensinoMedio= null, $perguntas = null){
+    public function criarVaga($supervisor, $nome, $rs, $modelo, $nivel, $desc, $req, $area = null, $valoresSelecionados = null, $ensinoMedio= null, $perguntas = null){
         if($valoresSelecionados){
             $valoresSelecionados =  implode(',', $valoresSelecionados);
         }
        
-        if($this->vagaModel->criarVaga($nome, $rs, $modelo, $nivel, $desc, $req, $_SESSION['id'], $area , $valoresSelecionados, $ensinoMedio, $perguntas)){
+        if($this->vagaModel->criarVaga($supervisor, $nome, $rs, $modelo, $nivel, $desc, $req, $_SESSION['id'], $area , $valoresSelecionados, $ensinoMedio, $perguntas)){
             $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Vaga criada com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return;
@@ -98,6 +98,7 @@ class VagaEmpresaController{
             'descricao'=>$result['descricao'],  
             'requisitos'=>$result['requisitos'],  
             'id_empresa'=>$result['id_empresa'], 
+            'nomeFunc'=>$result['nome'], 
         );
  
         echo json_encode($array);
