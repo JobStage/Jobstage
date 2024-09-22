@@ -92,7 +92,7 @@ class matricula {
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading'.$index.'">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse'.$index.'" aria-expanded="true" aria-controls="collapse'.$index.'">
-                            Matrícula: '.$value['curso'].'
+                            Matrícula: '.$value['nome'].'
                         </button>
                     </h2>
                     <div id="collapse'.$index.'" class="accordion-collapse collapse" aria-labelledby="heading'.$index.'" data-bs-parent="#accordionExample">
@@ -103,13 +103,29 @@ class matricula {
                                 <p><strong>Instituição:</strong> '.$value['instituicao'].'</p>
                                 <p><strong>Início:</strong> '.$value['inicio'].'</p>
                                 <p><strong>Fim:</strong> '.$value['fim'].'</p>
+                                <div>
+                                    <button class="btn btn-danger" onclick="reprovar('.$value['ID'].', '.$value['id_formacao'].')">Reprovar</button>
+                                    <button class="btn btn-primary" onclick="reprovar('.$value['ID'].', '.$value['id_formacao'].')">Aprovar</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>';
+                        </div>
+                        </div>
+            </div>
+            ';
         }
 
         echo $html;
+    }
+
+    public function aprovarMatricula($id){
+        if($this->matricula->aprovarMatricula($id)){
+            $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Matrícula aprovada', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+        }
+        $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Matrícula reprovada', 'icon' => 'success');
+        echo json_encode($retorno);
+        return $retorno;
     }
 }
