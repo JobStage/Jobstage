@@ -105,7 +105,7 @@ class matricula {
                                 <p><strong>Fim:</strong> '.$value['fim'].'</p>
                                 <div>
                                     <button class="btn btn-danger" onclick="reprovar('.$value['ID'].', '.$value['id_formacao'].')">Reprovar</button>
-                                    <button class="btn btn-primary" onclick="reprovar('.$value['ID'].', '.$value['id_formacao'].')">Aprovar</button>
+                                    <button class="btn btn-primary" onclick="aprovar('.$value['ID'].', '.$value['id_formacao'].')">Aprovar</button>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,18 @@ class matricula {
             echo json_encode($retorno);
             return $retorno;
         }
-        $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Matrícula reprovada', 'icon' => 'success');
+        $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'ERRO', 'icon' => 'error');
+        echo json_encode($retorno);
+        return $retorno;
+        
+    }
+    public function reprovarMatricula($id){
+        if($this->matricula->reprovarMatricula($id)){
+            $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Matrícula reprovada', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+        }
+        $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'ERRO', 'icon' => 'error');
         echo json_encode($retorno);
         return $retorno;
     }

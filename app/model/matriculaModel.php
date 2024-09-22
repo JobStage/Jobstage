@@ -32,5 +32,14 @@ class matriculaModel{
         $sql->execute();
         return true;
     }
+
+    public function reprovarMatricula($id){
+        $sql = $this->conn->prepare("UPDATE formacao
+                                        SET matricula_valida = 2
+                                     WHERE id_formacao = :id");
+        $sql->bindParam(':id', $id);
+        $sql->execute();
+        return true;
+    }
 }
 

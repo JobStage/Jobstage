@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email']) && isset($_PO
   $resultLogin = $login->loginAdmin($email, $senha);
   if($resultLogin){
     
-    $_SESSION['ID'] = $resultLogin;
+    $_SESSION['id'] = $resultLogin;
     $_SESSION['idSessao'] = 3;
    
   
