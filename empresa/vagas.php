@@ -88,7 +88,7 @@ ob_start();
                 <div class="col-lg-12" style="padding:10px;">
                     <label for="supervisor" class="form-label">Supervisor</label>
                     <select class="form-select" id="supervisor" required>
-                        
+                        <option value=''></option>
                     </select>
                 </div>
                 <div class="col-lg-12" style="padding:10px;">
@@ -190,6 +190,10 @@ ob_start();
                         <label for="req" class="form-label">Requisitos</label>
                         <textarea id="reqEdit" type="text" class="form-control"></textarea>
                     </div>
+                    <div class="col-lg-12" style="padding:10px;">
+                    <label for="supervisor" class="form-label">Supervisor</label>
+                        <input class="form-select" id="editSupervisor" disabled>
+                </div>
                     <input type="hidden" id="idVaga">
                 </form>
             </div>
