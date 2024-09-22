@@ -92,13 +92,13 @@ class contratosController{
         $html = '';
         $status = '';
         foreach($this->contratos->getContratos($idAluno) as $value){
-            if($value['assinadoAluno'] == 0){
+            if($value['assinado_aluno'] == 0){
                 $status .= '
                     <a href="assinatura.php?contrato='.$value['hashContrato'].'">
                         <img src="../app/public/img/elipse.png" width="20px" height="20px" style="margin-right: 5px;">
                     </a>'
                 ;
-            }elseif ($value['assinadoEmpresa'] == 0 || $value['assinadoInstituicao'] == 0) {
+            }elseif ($value['assinado_empresa'] == 0 || $value['assinado_instituicao'] == 0) {
                 $status .='<img src="../app/public/img/alerta.png" width="20px" height="20px" style="margin-right: 5px;">';
             }
 

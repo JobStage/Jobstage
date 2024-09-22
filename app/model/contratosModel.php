@@ -130,8 +130,8 @@ class contratosModel{
                                         INNER JOIN contratosestagio as ce
                                             ON ctr.idContrato = ce.id
                                         INNER JOIN empresa as e
-                                        on e.id_empresa = ctr.idEmpresa
-                                        WHERE ctr.idAluno = :idAluno" );
+                                        on e.id_empresa = ctr.id_empresa
+                                        WHERE ctr.id_aluno = :idAluno" );
         $sql->bindParam(":idAluno", $idAluno);
         $sql->execute();
 
