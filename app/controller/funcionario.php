@@ -37,10 +37,15 @@ class funcionarioController{
         if($funcionario){
             foreach($funcionario as $value){
                 $html .= '
-                    <div>
-                        Nome: '.$value['nome'].'
-                        E-mail: '.$value['email'].'
-                    </div>';
+
+                <div class="conteudo-principal">
+                    <div class="user">
+                        <h5>Nome: '.$value['nome'].'</h5>
+                    </div>
+                    <div class="formacao">
+                        <h5>E-mail: '.$value['email'].'</h5>
+                    </div>
+                </div>';
             }
             return $html;
         }
@@ -49,6 +54,12 @@ class funcionarioController{
                 </div>';
 
         return $html;
+    }
+
+    public function listarFuncionarioSupervisor($idEmpresa){
+        foreach($this->funcionario->listarFuncionarios($idEmpresa) as $value){
+            echo '<option value="' . $value['id'] . '">' . $value['nome'] . '</option>';
+        }
     }
 
 }

@@ -63,7 +63,27 @@ ob_start();
 </div>
 
 <script src="../app/public/js/funcionario.js"></script>
+<style>
+  /* style para criar um grid */
+  .card {
+        padding: 10px;
+    }
 
+    .conteudo-principal {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+        background-color: #7474776b;
+    }
+
+    /* .icons {
+        display: flex;
+        justify-content: space-around;
+    } */
+
+</style>
 <?php
 $content = ob_get_clean(); 
 $pageTitle = "Funcionario"; 

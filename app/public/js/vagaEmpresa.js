@@ -89,6 +89,7 @@ $(document).ready(function(){
     $(document).on('click', '.excluir-img', function(){
         $(this).closest('.card').remove(); // Remove a div .card correspondente
     });
+    listarFuncionarios();
 });
 
 
@@ -600,6 +601,20 @@ function gerarContrato(idAluno, idVaga){
         },
         error: function(xhr, status, error) {
             console.error('AJAX Error: ' + status + error);
+        }
+    });
+}
+
+function listarFuncionarios(){
+    $.ajax({
+        type: "POST",
+        url: '../app/requests/funcionario.php',
+        dataType: "html",
+        data: {
+          acao: 'listarFuncionariosSupervisor'  
+        },
+        success: function (response) {
+            $('#supervisor').html(response);
         }
     });
 }

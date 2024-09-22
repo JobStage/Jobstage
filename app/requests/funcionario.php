@@ -15,7 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         case 'salvar':
            $formacao->salvar($nome, $email, $_SESSION['id']);
         break;
-        case 'editar':
+        case 'listarFuncionariosSupervisor':
+            $formacao->listarFuncionarioSupervisor($_SESSION['id']);
         break;
     }
 }
