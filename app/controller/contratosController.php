@@ -146,4 +146,30 @@ class contratosController{
             <button class="btn btn-primary">Assinar</button>
             ';
     }
+
+    public function listarAlunosContratados($id){
+        $html = '';
+        foreach($this->contratos->getAlunosContratadosEmpresa($id) as $value){
+            $html .= '
+                    <div class="row g-3">
+                        <div class="card">
+                            <div class="conteudo-principal">
+                                <div class="user">
+                                    '.$value['nome'].'
+                                </div>
+                                <div class="contrato">
+                                    Contratos
+                                    <a data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <img src="../app/public/img/anexo.png" width="20px" height="20px" style="margin-right: 5px;" id="abrirContratos">
+                                    </a>
+                                </div>
+                                    <div class="status">
+                                    Status:
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+        }
+        echo $html;
+    }
 }
