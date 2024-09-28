@@ -1,3 +1,16 @@
+$(document).ready(function() {
+    $('img[id^="abrirContratos"]').on('click', function() {
+        // Pegar o idContrato do input relacionado
+        var idContrato = $(this).closest('a').prevAll('input[id^="idContrato"]').val();
+        var idAluno = $(this).closest('a').prevAll('input[id^="id_aluno"]').val();
+
+        $('#verContratoLink').attr('href', 'verContrato.php?idContrato=' + idContrato);
+        $('#verRelatorioLink').attr('href', 'relatorios.php?idAluno=' + idAluno);
+    });
+});
+
+
+
 function gerarContrato(id){
     $.ajax({
         url: "../app/requests/contratos.php",

@@ -22,13 +22,13 @@ ob_start();
         <div class="contratos" style="display: flex; justify-content:space-evenly; align-items: center;">
             <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
                 <p>Contrato estágio</p>
-                <a href="verContrato.php?idContrato=">
+                <a href="verContrato.php?idContrato=" id="verContratoLink">
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>
             </div>
             <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
                 <p>Relatórios</p>
-                <a href="relatorios.php?idAluno=">
+                <a href="relatorios.php?idAluno=" id="verRelatorioLink">
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>    
             </div>
@@ -56,6 +56,8 @@ ob_start();
         background-color: #7474776b;
     }
 </style>
+
+<script src="../app/public/js/contratos.js"></script>
 <?php
 $content = ob_get_clean(); 
 $pageTitle = "Contratos"; 

@@ -144,6 +144,8 @@ class contratosModel{
         $sql = $this->conn->prepare("SELECT * FROM contratacoes as c
                                     INNER JOIN aluno as a
                                     ON c.id_aluno = a.ID
+                                    INNER JOIN contratosestagio as ct
+                                    ON ct.ID = c.idContrato
                                         WHERE c.id_empresa = :idEmpresa" );
         $sql->bindParam(":idEmpresa", $id);
         $sql->execute();

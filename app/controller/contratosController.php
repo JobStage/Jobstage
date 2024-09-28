@@ -150,6 +150,20 @@ class contratosController{
     public function listarAlunosContratados($id){
         $html = '';
         foreach($this->contratos->getAlunosContratadosEmpresa($id) as $value){
+            $statusContrato = '';
+            $assinado = '';
+            if($value['contratoAtivo'] === 0){
+                $statusContrato = '<img src="../app/public/img/elipse.png" width="25px" height="25px">';
+            } elseif($value['contratoAtivo'] == 2){
+                $statusContrato = '<img src="../app/public/img/OK.png" width="25px" height="25px">';
+            } else {
+                $statusContrato = '<img src="../app/public/img/X.png" width="25px" height="25px">';
+            }
+
+            if(empty($value['assinado_empresa'])){
+                $assinado = '<img src="../app/public/img/alerta.png" width="25px" height="25px">';
+            }
+
             $html .= '
                     <div class="row g-3">
                         <div class="card">
@@ -158,13 +172,17 @@ class contratosController{
                                     '.$value['nome'].'
                                 </div>
                                 <div class="contrato">
-                                    Contratos
+                                    <input type="hidden" value="'.$value['hashContrato'].'" id="idContrato'.$value['hashContrato'].'">
+                                    <input type="hidden" value="'.$value['id_aluno'].'" id="id_aluno'.$value['id_aluno'].'">
+                                    Contratos 
                                     <a data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <img src="../app/public/img/anexo.png" width="20px" height="20px" style="margin-right: 5px;" id="abrirContratos">
+                                        <img src="../app/public/img/anexo.png" width="20px" height="20px" style="margin-right: 5px;" id="abrirContratos'.$value['idContrato'].'">
                                     </a>
+                                    '.$assinado.'
                                 </div>
                                     <div class="status">
-                                    Status:
+                                        Contrato: ' .$statusContrato.'
+                                    </div>
                                 </div>
                             </div>
                         </div>
