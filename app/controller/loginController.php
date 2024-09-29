@@ -17,12 +17,12 @@ class LoginController{
     public function cadastroAluno($email, $senha){
         if(!$this->cadastro->getEmailAluno($email)){
             $this->cadastro->inserirAluno($email, $senha);
-            $retorno = array('title' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
+            $retorno = array('tittle' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return $retorno;
         }
         
-        $retorno = array('title' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
+        $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
         echo json_encode($retorno);
         return $retorno;
     }
@@ -31,12 +31,12 @@ class LoginController{
         if(!$this->cadastro->getEmailEmpresa($email)){
         
             $this->cadastro->inserirEmpresa($email, $senha);
-            $retorno = array('title' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
+            $retorno = array('tittle' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return $retorno;
              
         }
-        $retorno = array('title' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
+        $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
         echo json_encode($retorno);
         return $retorno;
     }
@@ -51,7 +51,7 @@ class LoginController{
             echo json_encode($retorno);
             return $retorno;
         }
-        $retorno = array('title' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
+        $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
         echo json_encode($retorno);
         return $retorno;
     }
@@ -63,12 +63,12 @@ class LoginController{
           $_SESSION['idSessao'] = 2;
 
           $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
-          //echo json_encode($retorno);
+          echo json_encode($retorno);
           return $retorno;
         
         }
-        $retorno = array('title' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
-       // echo json_encode($retorno);
+        $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
+       echo json_encode($retorno);
         return $retorno;
     }
 }

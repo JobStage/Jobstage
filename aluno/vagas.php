@@ -41,6 +41,37 @@ ob_start();
         <p id="modalDescricao"></p>
         <p id="modalRequisitos"></p>
       </div>
+      <!-- onde o aluno podera colocar de 1 a 5 estrela em relacao as perguntas -->
+       <!-- Modal para exibir perguntas -->
+      <div class="modal fade" id="modalPerguntas" tabindex="-1" aria-labelledby="modalPerguntasLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="modalPerguntasLabel">Perguntas da Vaga</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" id="modalPerguntasBody">
+                      <!-- Perguntas serão injetadas aqui via JS -->
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" id="btnResponder">Responder e Enviar</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- <div class="rate">
+        <input type="radio" id="star5" name="rate" value="5" />
+        <label for="star5" title="text">5 stars</label>
+        <input type="radio" id="star4" name="rate" value="4" />
+        <label for="star4" title="text">4 stars</label>
+        <input type="radio" id="star3" name="rate" value="3" />
+        <label for="star3" title="text">3 stars</label>
+        <input type="radio" id="star2" name="rate" value="2" />
+        <label for="star2" title="text">2 stars</label>
+        <input type="radio" id="star1" name="rate" value="1" />
+        <label for="star1" title="text">1 star</label>
+      </div> -->
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
