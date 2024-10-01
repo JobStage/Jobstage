@@ -1,13 +1,16 @@
 <?php
 require_once __DIR__ . '/../model/contratosModel.php';
 require_once __DIR__ . '/../model/VagasModel.php';
+require_once __DIR__ . '/../../email.php';
 
 class contratosController{
     private $contratos;
+    private $email;
     private $dadosVaga;
     public function __construct() {
         $this->contratos = new contratosModel();
         $this->dadosVaga = new Vagas();
+        $this->email = new email();
     }
     // funcao para a empresa slicitar um contrato
     public function gerarContratoEmpresa($idAluno, $idVaga, $idEmpresa){
@@ -64,8 +67,11 @@ class contratosController{
         $idEmpresa = $contratacao['id_empresa'];
         $hash = md5($idEmpresa . time() . $idAluno . $idVaga);
         $vaga = $this->contratos->getDadosParaContatoModel($idVaga, $idAluno, $idEmpresa);
-        
+
         foreach($vaga as $value){
+            $nomeFunc = $value['nomeFunc'];
+            $emailFunc = $value['emailFunc'];
+
             $textoDoContrato = '
                 O aluno ' .$value['nomeAluno']. ' 
                 que está no curso ' . $value['nomeCurso'] . ' 
@@ -78,9 +84,16 @@ class contratosController{
         }
 
         if($this->contratos->gerarContratoModel($id, $textoDoContrato, $hash)){
-            $retorno = array('tittle' => 'Sucesso!', 'msg' => 'O contrato de estágio foi gerado!', 'icon' => 'success' , 'success' => true);
+            if($this->email->enviarEmailAssinaturaFuncionario($hash, $nomeFunc, $emailFunc)){
+                $retorno = array('tittle' => 'Sucesso!', 'msg' => 'O contrato de estágio foi gerado!', 'icon' => 'success' , 'success' => true);
+                echo json_encode($retorno);
+                return $retorno;
+            }
+            
+            $retorno = array('tittle' => 'Erro!', 'msg' => 'Ocorreu um erro ao gerar um contrato!', 'icon' => 'error' , 'success' => false);
             echo json_encode($retorno);
             return $retorno;
+
         }else{
             $retorno = array('tittle' => 'Erro!', 'msg' => 'Ocorreu um erro ao gerar um contrato!', 'icon' => 'error' , 'success' => false);
             echo json_encode($retorno);
@@ -145,49 +158,5 @@ class contratosController{
             <br>
             <button class="btn btn-primary">Assinar</button>
             ';
-    }
-
-    public function listarAlunosContratados($id){
-        $html = '';
-        foreach($this->contratos->getAlunosContratadosEmpresa($id) as $value){
-            $statusContrato = '';
-            $assinado = '';
-            if($value['contratoAtivo'] === 0){
-                $statusContrato = '<img src="../app/public/img/elipse.png" width="25px" height="25px">';
-            } elseif($value['contratoAtivo'] == 2){
-                $statusContrato = '<img src="../app/public/img/OK.png" width="25px" height="25px">';
-            } else {
-                $statusContrato = '<img src="../app/public/img/X.png" width="25px" height="25px">';
-            }
-
-            if(empty($value['assinado_empresa'])){
-                $assinado = '<img src="../app/public/img/alerta.png" width="25px" height="25px">';
-            }
-
-            $html .= '
-                    <div class="row g-3">
-                        <div class="card">
-                            <div class="conteudo-principal">
-                                <div class="user">
-                                    '.$value['nome'].'
-                                </div>
-                                <div class="contrato">
-                                    <input type="hidden" value="'.$value['hashContrato'].'" id="idContrato'.$value['hashContrato'].'">
-                                    <input type="hidden" value="'.$value['id_aluno'].'" id="id_aluno'.$value['id_aluno'].'">
-                                    Contratos 
-                                    <a data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <img src="../app/public/img/anexo.png" width="20px" height="20px" style="margin-right: 5px;" id="abrirContratos'.$value['idContrato'].'">
-                                    </a>
-                                    '.$assinado.'
-                                </div>
-                                    <div class="status">
-                                        Contrato: ' .$statusContrato.'
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>';
-        }
-        echo $html;
     }
 }

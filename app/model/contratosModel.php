@@ -64,7 +64,9 @@ class contratosModel{
                                             est.nome as estado,
                                             e.nome as nomeEmpresa,
                                             e.cnpj as cnpjEmpresa,
-                                            cdb.curso as nomeCurso
+                                            cdb.curso as nomeCurso,
+                                            func.nome as nomeFunc,
+                                            func.email as emailFunc
                                         FROM vagas as v
                         INNER JOIN empresa as e
                         ON v.id_empresa = e.id_empresa
@@ -80,6 +82,8 @@ class contratosModel{
                         ON c.id_vaga = v.idVaga
                         INNER JOIN aluno as a
                         ON a.id = c.id_aluno
+                        INNER JOIN funcionarios as func
+                        ON func.id = v.id_funcionario
                         WHERE v.idVaga = $idVaga
                         AND v.id_empresa = $idEmpresa
                         AND c.id_aluno = $idAluno");
@@ -134,20 +138,6 @@ class contratosModel{
                                         on e.id_empresa = ctr.id_empresa
                                         WHERE ctr.id_aluno = :idAluno" );
         $sql->bindParam(":idAluno", $idAluno);
-        $sql->execute();
-
-        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    public function getAlunosContratadosEmpresa($id){
-        $sql = $this->conn->prepare("SELECT * FROM contratacoes as c
-                                    INNER JOIN aluno as a
-                                    ON c.id_aluno = a.ID
-                                    INNER JOIN contratosestagio as ct
-                                    ON ct.ID = c.idContrato
-                                        WHERE c.id_empresa = :idEmpresa" );
-        $sql->bindParam(":idEmpresa", $id);
         $sql->execute();
 
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);

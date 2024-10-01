@@ -11,6 +11,7 @@ $(document).ready(function() {
 
 
 function gerarContrato(id){
+    $('#loadingModal').modal('show');
     $.ajax({
         url: "../app/requests/contratos.php",
         type: 'POST',
@@ -20,6 +21,7 @@ function gerarContrato(id){
             id: id
         },
         success: function(data) {
+            $('#loadingModal').modal('hide');
             if(data.success) {
                 Swal.fire({
                     title: data.tittle,
@@ -37,6 +39,7 @@ function gerarContrato(id){
             };
         },
         error: function(xhr, status, error) {
+            $('#loadingModal').modal('hide');
             console.error(xhr.responseText);
         }
     });
