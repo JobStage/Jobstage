@@ -40,13 +40,13 @@ class LoginController{
         echo json_encode($retorno);
         return $retorno;
     }
-
+    
     public function loginAluno($email, $senha){
         $resultLogin = $this->login->loginAluno($email, $senha);
         if($resultLogin){
             $_SESSION['id'] = $resultLogin;
             $_SESSION['idSessao'] = 1;
-
+            
             $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
             echo json_encode($retorno);
             return $retorno;
@@ -55,20 +55,33 @@ class LoginController{
         echo json_encode($retorno);
         return $retorno;
     }
-
+    
     public function loginEmpresa($email, $senha){
         $resultLogin = $this->login->loginEmpresa($email, $senha);
         if($resultLogin){
-          $_SESSION['id'] = $resultLogin;
-          $_SESSION['idSessao'] = 2;
-
-          $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
-          echo json_encode($retorno);
-          return $retorno;
-        
+            $_SESSION['id'] = $resultLogin;
+            $_SESSION['idSessao'] = 2;
+            
+            $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
+            echo json_encode($retorno);
+            return $retorno;
+            
         }
         $retorno = array('title' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
-       echo json_encode($retorno);
+        echo json_encode($retorno);
+        return $retorno;
+    }
+    public function cadastroInstituicao($email, $senha){
+        if(!$this->cadastro->getEmailInstituicao($email)){
+        
+            $this->cadastro->inserirInstituicao($email, $senha);
+            $retorno = array('title' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+             
+        }
+        $retorno = array('title' => 'Erro', 'msg' => 'E-mail já existe', 'icon' => 'error');
+        echo json_encode($retorno);
         return $retorno;
     }
 }

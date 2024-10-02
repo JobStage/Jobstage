@@ -38,6 +38,9 @@
                         <br>
                         <br>
                         <a href="empresa/cadastroEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
+                        <br>
+                        <br>
+                        <a href="instituicao/cadastroInstituicao.html"><button type="submit" class="btn btn-primary btn-block w-100" >Instituição</button></a>
                     </div>
                 </div>
             </div>
