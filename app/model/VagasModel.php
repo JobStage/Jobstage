@@ -174,4 +174,36 @@ WHERE
     $result = $sql->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
+
+
+  public function criarPergunta($vagaId, $pergunta) {
+    $query = "INSERT INTO perguntas (id_vaga, pergunta) VALUES (:vaga_id, :pergunta)";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':vaga_id', $vagaId);
+    $stmt->bindParam(':pergunta', $pergunta);
+    $stmt->execute();
+}
+
+public function listarPerguntasPorVaga($vagaId) {
+    $query = "SELECT * FROM perguntas WHERE id_vaga = :vaga_id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':vaga_id', $vagaId);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function editarPergunta($perguntaId, $novaPergunta) {
+    $query = "UPDATE perguntas SET pergunta = :novaPergunta WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $perguntaId);
+    $stmt->bindParam(':novaPergunta', $novaPergunta);
+    $stmt->execute();
+}
+
+public function excluirPergunta($perguntaId) {
+    $query = "DELETE FROM perguntas WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $perguntaId);
+    $stmt->execute();
+}
 }

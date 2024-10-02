@@ -35,100 +35,112 @@
 // });
 $(document).ready(function(){
 })
-function candidatar(idEmpresa, idVaga) {
+// function candidatar(idEmpresa, idVaga) {
 
-  $.ajax({
-      type: "POST",
-      url: "../app/requests/vagaAluno.php",
-      dataType: 'JSON',
-      data: {
-          tipo: 'candidatar',
-          idVaga: idVaga,
-          idEmpresa: idEmpresa
-      },
-      success: function(data) {
-        Swal.fire({
-            title: data.tittle,
-            text: data.msg,
-            icon: data.icon
-        }).then(() => {
-            location.reload();
-        });
-    },
-    error: function(xhr, status, error) {
-        console.error(xhr.responseText);
-    }
-  });
-}
+//   $.ajax({
+//       type: "POST",
+//       url: "../app/requests/vagaAluno.php",
+//       dataType: 'JSON',
+//       data: {
+//           tipo: 'candidatar',
+//           idVaga: idVaga,
+//           idEmpresa: idEmpresa
+//       },
+//       success: function(data) {
+//         Swal.fire({
+//             title: data.tittle,
+//             text: data.msg,
+//             icon: data.icon
+//         }).then(() => {
+//             location.reload();
+//         });
+//     },
+//     error: function(xhr, status, error) {
+//         console.error(xhr.responseText);
+//     }
+//   });
+// }
 
-function verificarPerguntas(vagaId) {
+function candidatar(idEmpresa, idVaga, respostas) {
     $.ajax({
-        url: '../app/controller/vagaAluno.php',  // URL do controlador que trata das perguntas
-        type: 'POST',
-        data: { 
-            action: 'verificarPerguntas', // Define a ação no backend
-            vagaId: vagaId 
+        type: "POST",
+        url: "../app/requests/vagaAluno.php",
+        dataType: 'JSON',
+        data: {
+            tipo: 'candidatar',
+            idVaga: idVaga,
+            idEmpresa: idEmpresa,
+            respostas: respostas // Enviando as respostas das perguntas
         },
-        success: function(response) {
-            const perguntas = JSON.parse(response);
-
-            if (perguntas.length > 0) {
-                // Se houver perguntas, abre o modal para exibir as perguntas
-                abrirModalPerguntas(perguntas, vagaId);
-            } else {
-                // Se não houver perguntas, pode seguir direto para a candidatura
-                alert('Nenhuma pergunta disponível. Você será automaticamente inscrito na vaga.');
-                cadastrarCandidatura(vagaId, []);
-            }
+        success: function(data) {
+            Swal.fire({
+                title: data.title,
+                text: data.msg,
+                icon: data.icon
+            }).then(() => {
+                location.reload();
+            });
         },
-        error: function(error) {
-            console.error('Erro ao verificar perguntas: ', error);
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
         }
     });
 }
 
-function abrirModalPerguntas(perguntas, vagaId) {
-    let perguntasHtml = '';
-
-    perguntas.forEach((pergunta, index) => {
-        perguntasHtml += `
-            <div class="form-group">
-                <label for="pergunta_${index}">${pergunta.texto}</label>
-                <input type="text" class="form-control" id="pergunta_${index}" name="resposta_${index}">
-            </div>
-        `;
-    });
-
-    $('#modalPerguntasBody').html(perguntasHtml); // Insere perguntas no modal
-    $('#modalPerguntas').modal('show'); // Exibe o modal
-    
-    // Evento de submissão
-    $('#btnResponder').on('click', function() {
-        const respostas = [];
-        perguntas.forEach((_, index) => {
-            respostas.push($('#pergunta_' + index).val());
-        });
-
-        // Chama a função para cadastrar as respostas e a candidatura
-        cadastrarCandidatura(vagaId, respostas);
-    });
-}
-
-function cadastrarCandidatura(vagaId, respostas) {
+////////// perguntas //////////////
+function abrirModalPerguntas(vagaId, idEmpresa) {
     $.ajax({
-        url: '../app/controller/vagaAluno.php',  // URL do controlador que trata da candidatura
+        url: '../app/requests/vagaAluno.php',
         type: 'POST',
-        data: { 
-            action: 'cadastrarCandidatura',  // Ação no backend
-            vagaId: vagaId,
-            respostas: respostas
+        data: {
+            action: 'verificarPerguntas', 
+            idVaga: vagaId
         },
         success: function(response) {
-            alert('Candidatura realizada com sucesso!');
-            $('#modalPerguntas').modal('hide');
+            const data = JSON.parse(response);
+            if (data.status === 'success') {
+                // Se as perguntas forem encontradas, injetar no modal
+                let perguntasHtml = '';
+                data.data.forEach((pergunta, index) => {
+                    perguntasHtml += `
+                        <div class="form-group">
+                            <label for="pergunta_${index}">${pergunta.pergunta}</label>
+                            <div class="rate" id="rate_${index}">
+                                <input type="radio" id="star5_${index}" name="rate_${index}" value="5" />
+                                <label for="star5_${index}" title="5 stars">5 stars</label>
+                                <input type="radio" id="star4_${index}" name="rate_${index}" value="4" />
+                                <label for="star4_${index}" title="4 stars">4 stars</label>
+                                <input type="radio" id="star3_${index}" name="rate_${index}" value="3" />
+                                <label for="star3_${index}" title="3 stars">3 stars</label>
+                                <input type="radio" id="star2_${index}" name="rate_${index}" value="2" />
+                                <label for="star2_${index}" title="2 stars">2 stars</label>
+                                <input type="radio" id="star1_${index}" name="rate_${index}" value="1" />
+                                <label for="star1_${index}" title="1 star">1 star</label>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#modalPerguntasBody').html(perguntasHtml);
+                $('#modalPerguntas').modal('show'); // Exibe o modal
+
+                // Evento de submissão
+                $('#btnResponder').off('click'); // Remove qualquer handler anterior para evitar duplicações
+                $('#btnResponder').on('click', function() {
+                    const respostas = [];
+                    data.data.forEach((_, index) => {
+                        const rating = $(`input[name="rate_${index}"]:checked`).val(); 
+                        respostas.push(rating ? rating : null); // Adiciona a avaliação à lista de respostas
+                    });
+
+                    // Chama a função para cadastrar a candidatura com as respostas
+                    candidatar(idEmpresa, vagaId, respostas);
+                });
+            } else {
+                alert(data.message);
+            }
         },
-        error: function(error) {
-            console.error('Erro ao cadastrar candidatura: ', error);
+        error: function() {
+            alert('Erro ao carregar as perguntas.');
         }
     });
 }

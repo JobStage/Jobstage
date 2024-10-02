@@ -106,6 +106,11 @@ public function listarVagas(){
                             <div>
                                 <button class="btn btn-success col-md-12" onclick="candidatar('.$value['id_empresa'].', '.$value['idVaga'].')">Candidatar</button>
                             </div>
+                             <div>
+                                <button class="btn btn-info col-md-12" onclick="verificarPerguntas(' . $value['idVaga'] . ')">Verificar Perguntas</button>
+                            </div>
+                                <div id="perguntas' . $value['idVaga'] . '" class="mt-3"></div> <!-- Div para exibir perguntas via AJAX -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,15 +121,52 @@ public function listarVagas(){
 
 }
 
-public function candidatar($idVaga, $idEmpresa){
-    if($this->vagaModel->candidatar($idVaga, $_SESSION['id'],$idEmpresa)){
-        $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
+// public function candidatar($idVaga, $idEmpresa){ // incluindo as respostas das pergunta na candidatura
+//     if($this->vagaModel->candidatar($idVaga, $_SESSION['id'],$idEmpresa)){
+//         $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
+//         echo json_encode($retorno);
+//         return;
+//     }
+//     $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Não foi possivel se candidatar', 'icon' => 'error');
+//     echo json_encode($retorno);
+//     return;
+// }
+public function candidatar($idVaga, $idEmpresa) {//caso nao dê certo descomentar o codigo acima
+    
+    $respostas = isset($_POST['respostas']) ? $_POST['respostas'] : null;
+
+    if ($this->vagaModel->candidatar($idVaga, $_SESSION['id'], $idEmpresa, $respostas)) {
+        $retorno = array('success' => true, 'title' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
         echo json_encode($retorno);
         return;
     }
-    $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Não foi possivel se candidatar', 'icon' => 'error');
+    $retorno = array('success' => false, 'title' => 'Erro', 'msg' => 'Não foi possível se candidatar', 'icon' => 'error');
     echo json_encode($retorno);
     return;
+}
+
+public function verificarPerguntas($idVaga) {
+    if (isset($idVaga)) {
+        $perguntas = $this->vagaModel->listarPerguntasPorVaga($idVaga); // Chamando a função da model para listar perguntas
+
+        if (!empty($perguntas)) {
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Perguntas encontradas!',
+                'data' => $perguntas
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 'empty',
+                'message' => 'Nenhuma pergunta encontrada para esta vaga.'
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'ID da vaga inválido.'
+        ]);
+    }
 }
 }
 
