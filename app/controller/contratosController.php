@@ -60,8 +60,8 @@ class contratosController{
     public function gerarContratoAgencia($id){
         $contratacao = $this->getContratacoes($id);
         $idVaga = $contratacao['idVaga'];
-        $idAluno = $contratacao['idAluno'];
-        $idEmpresa = $contratacao['idEmpresa'];
+        $idAluno = $contratacao['id_aluno'];
+        $idEmpresa = $contratacao['id_empresa'];
         $hash = md5($idEmpresa . time() . $idAluno . $idVaga);
         $vaga = $this->contratos->getDadosParaContatoModel($idVaga, $idAluno, $idEmpresa);
         

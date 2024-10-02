@@ -14,7 +14,7 @@ class contratosModel{
 
     public function gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa){
         try {
-            $sql = $this->conn->prepare("INSERT INTO contratacoes (idVaga, idAluno, idEmpresa)
+            $sql = $this->conn->prepare("INSERT INTO contratacoes (idVaga, id_aluno, id_empresa)
                                         VALUES (:vaga, :aluno, :empresa)");
             $sql->bindParam(':aluno', $idAluno);
             $sql->bindParam(':vaga', $idVaga);
@@ -23,6 +23,7 @@ class contratosModel{
 
             return true;
         } catch (Exception $e) {
+            echo $e;
             return false;
         }
         
@@ -32,7 +33,7 @@ class contratosModel{
         try {
             $sql = $this->conn->prepare("SELECT * FROM contratacoes as c
                                             INNER JOIN empresa as e
-                                            ON e.id_empresa = c.idEmpresa
+                                            ON e.id_empresa = c.id_empresa
                                             WHERE c.contratoGerado = :contratoGerado");
             $sql->bindValue(':contratoGerado', 0);
             $sql->execute();
