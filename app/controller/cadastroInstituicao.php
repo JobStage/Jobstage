@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
   $cadastro = new Cadastro();
-  if(!$cadastro->getEmailEmpresa($email)){
+  if(!$cadastro->getEmailInstituicao($email)){
         
     $cadastro->inserirInstituicao($email, $senha);
     $retorno = array('tittle' => 'Sucesso', 'msg' => 'E-mail cadastrado com sucesso!', 'icon' => 'success');

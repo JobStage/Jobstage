@@ -1,8 +1,8 @@
-function cadastroAluno(){
+function cadastroAluno() {
   event.preventDefault();
   var email = $('.email').val();
   var senha = $('.senha').val();
-  
+
   $.ajax({
     type: 'POST',
     url: '../app/requests/cadastroAluno.php',
@@ -20,50 +20,50 @@ function cadastroAluno(){
         window.location.replace('loginAluno.html');
       });
     },
-    error: function(data){
+    error: function (data) {
 
     }
 
-  }) 
+  })
 }
 
-function loginAluno(){
+function loginAluno() {
   event.preventDefault();
   var email = $('.email').val();
   var senha = $('.senha').val();
 
   $.ajax({
-      type: 'POST',
-      url: '../app/requests/loginAluno.php',
-      dataType: 'JSON',
-      data: {
+    type: 'POST',
+    url: '../app/requests/loginAluno.php',
+    dataType: 'JSON',
+    data: {
       email: email,
       senha: senha
-      },
-      success: function(data){
-      if(data.sucesso){
-          window.location.replace(data.redirecionar);
+    },
+    success: function (data) {
+      if (data.sucesso) {
+        window.location.replace(data.redirecionar);
 
-      }else{
-          Swal.fire({
+      } else {
+        Swal.fire({
           title: data.tittle,
           text: data.msg,
           icon: data.icon
         });
       }
-      },
-      error: function(xhr, error, status){
+    },
+    error: function (xhr, error, status) {
       console.log(xhr, error, status);
-      }
+    }
 
-  }) 
+  })
 }
 
-function cadastroEmpresa(){
+function cadastroEmpresa() {
   event.preventDefault();
   var email = $('.email').val();
   var senha = $('.senha').val();
-  
+
   $.ajax({
     type: 'POST',
     url: '../app/requests/cadastroEmpresa.php',
@@ -72,7 +72,7 @@ function cadastroEmpresa(){
       email: email,
       senha: senha
     },
-    success: function(data){
+    success: function (data) {
       Swal.fire({
         title: data.tittle,
         text: data.msg,
@@ -81,18 +81,18 @@ function cadastroEmpresa(){
         window.location.replace('loginEmpresa.html');
       });
     },
-    error: function(data){
+    error: function (data) {
 
     }
 
-  }) 
+  })
 }
 
-function loginEmpresa(){
+function loginEmpresa() {
   event.preventDefault();
   var email = $('.email').val();
   var senha = $('.senha').val();
-  
+
   $.ajax({
     type: 'POST',
     url: '../app/requests/loginEmpresa.php',
@@ -101,54 +101,83 @@ function loginEmpresa(){
       email: email,
       senha: senha
     },
-    success: function(data){
-      if(data.sucesso){
+    success: function (data) {
+      if (data.sucesso) {
         window.location.replace(data.redirecionar);
 
-      }else{
+      } else {
         Swal.fire({
           title: data.tittle,
           text: data.msg,
           icon: data.icon
         });
       }
-      
+
     },
-    error: function(xhr, error, status){
+    error: function (xhr, error, status) {
       console.log(xhr, error, status);
     }
 
-  }) 
+  })
 }
 
-function loginAdmin(){
-event.preventDefault();
-var email = $('.email').val();
-var senha = $('.senha').val();
+function loginAdmin() {
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
 
-$.ajax({
+  $.ajax({
     type: 'POST',
     url: '../app/requests/loginAdmin.php',
     dataType: 'JSON',
     data: {
-    email: email,
-    senha: senha
+      email: email,
+      senha: senha
     },
-    success: function(data){
-    if(data.sucesso){
+    success: function (data) {
+      if (data.sucesso) {
         window.location.replace(data.redirecionar);
 
-    }else{
+      } else {
         Swal.fire({
+          title: data.tittle,
+          text: data.msg,
+          icon: data.icon
+        });
+      }
+    },
+    error: function (xhr, error, status) {
+      console.log(xhr, error, status);
+    }
+
+  })
+}
+
+function cadastroInstituicao() {
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
+
+  $.ajax({
+    type: 'POST',
+    url: '../app/requests/cadastroInstituicao.php',
+    dataType: 'JSON',
+    data: {
+      email: email,
+      senha: senha
+    },
+    success: function (data) {
+      Swal.fire({
         title: data.tittle,
         text: data.msg,
         icon: data.icon
+      }).then(() => {
+        window.location.replace('loginInstituicao.html');
       });
-    }
     },
-    error: function(xhr, error, status){
-    console.log(xhr, error, status);
+    error: function (data) {
+
     }
 
-}) 
+  })
 }
