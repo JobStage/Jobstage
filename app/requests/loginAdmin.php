@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email']) && isset($_PO
   if($resultLogin){
     
     $_SESSION['id'] = $resultLogin;
-    $_SESSION['idSessao'] = 1;
+    $_SESSION['idSessao'] = 3;
    
   
     $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);

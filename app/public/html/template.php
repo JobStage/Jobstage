@@ -1,7 +1,17 @@
 <?php 
     if(empty($_SESSION)){
         header('Location:../index.php');
-        
+    }
+    switch($_SESSION['idSessao']){
+        case '1':
+            $template = '../app/public/html/sidebarAluno.html';
+        break;
+        case '2':
+            $template = '../app/public/html/sidebarEmpresa.html';
+        break;
+        case '3':
+            $template = '../app/public/html/sidebarAdmin.html';
+        break;
     }
 ?>
 
@@ -22,7 +32,7 @@
 </head>
 <body>
 <div class="main-container d-flex">
-    <?php $_SESSION['idSessao'] == 1 ? require_once  "../app/public/html/sidebarAluno.html" : require_once  "../app/public/html/sidebarEmpresa.html"?>
+    <?php require_once $template?>
     <div class="content">
         <?php require_once "../app/public/html/navbar.html" ?>
         <div class="container">

@@ -83,6 +83,7 @@ class FormacaoController{
             <table class="table table-striped table-hover table-bordered">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Nome</th>
                         <th scope="col">Instituição</th>
                         <th scope="col">Nível</th>
@@ -92,9 +93,17 @@ class FormacaoController{
                 </thead>
                 <tbody class="table-group-divider">';
                 foreach($tabelaFormacao as $value) {
+                    if($value['matricula_valida'] == 0){
+                        $png = 'alerta.png';
+                    }elseif($value['matricula_valida'] == 1){
+                        $png = 'OK.png';
+                    }else{
+                        $png = 'X.png';
+                    } 
                     $curso = $value['curso'] == 'null'? 'Ensino médio' : $value['curso_db'];
                     $html .= '
                     <tr>
+                        <td><img src="../app/public/img/'.$png.'" width="30px" height="30px"></td>
                         <td>' . $curso  . '</td>
                         <td>' . $value['instituicao'] . '</td>
                         <td>' . $value['nivelSelecionado'] . '</td>

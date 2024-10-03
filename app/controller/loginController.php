@@ -67,7 +67,7 @@ class LoginController{
           return $retorno;
         
         }
-        $retorno = array('tittle' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
+        $retorno = array('title' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
        echo json_encode($retorno);
         return $retorno;
     }

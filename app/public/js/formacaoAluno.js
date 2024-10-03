@@ -254,7 +254,7 @@ function sendAjaxRequestCurso() {
         $('#curso').removeAttr('disabled');
 
         $.ajax({
-            url: '../app/controller/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
             type: 'POST',
             dataType: 'json',
             data: {

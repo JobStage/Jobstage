@@ -137,9 +137,9 @@ class CandidaturasController{
                 <img src="../app/public/img/curriculo-preto.png" width="48px" height="48px">
             </a>
 
-            <img src="../app/public/img/msg.png" width="48px" height="48px">
+            <img src="../app/public/img/msg.png" width="48px" height="48px" >
 
-            <img src="../app/public/img/pasta.png" width="48px" height="48px">
+            <img src="../app/public/img/pasta.png" width="48px" height="48px" onclick="gerarContrato('.$value['idAluno'].', '.$idVaga.')">
         </div>
     </div>
     <div class="more-info">
