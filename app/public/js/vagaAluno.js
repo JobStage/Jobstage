@@ -64,7 +64,7 @@ $(document).ready(function(){
 function candidatar(idEmpresa, idVaga, respostas) {
     $.ajax({
         type: "POST",
-        url: "../app/requests/vagaAluno.php",
+        url: "../app/controller/vagaAluno.php",
         dataType: 'JSON',
         data: {
             tipo: 'candidatar',
@@ -88,20 +88,18 @@ function candidatar(idEmpresa, idVaga, respostas) {
 }
 
 ////////// perguntas //////////////
-function abrirModalPerguntas(vagaId, idEmpresa) {
+function abrirModalPerguntas(vagaId) {
     $.ajax({
-        url: '../app/requests/vagaAluno.php',
-        type: 'POST',
+        url: '../app/controller/vagaAluno.php',
+        dataType: 'POST',
         data: {
-            action: 'verificarPerguntas', 
-            idVaga: vagaId
+            acao: 'verificarPerguntas', 
+            idVaga: vagaId 
         },
         success: function(response) {
-            const data = JSON.parse(response);
-            if (data.status === 'success') {
-                // Se as perguntas forem encontradas, injetar no modal
+            if (response.status === 'success') {
                 let perguntasHtml = '';
-                data.data.forEach((pergunta, index) => {
+                response.data.forEach((pergunta, index) => {
                     perguntasHtml += `
                         <div class="form-group">
                             <label for="pergunta_${index}">${pergunta.pergunta}</label>
@@ -121,22 +119,9 @@ function abrirModalPerguntas(vagaId, idEmpresa) {
                     `;
                 });
                 $('#modalPerguntasBody').html(perguntasHtml);
-                $('#modalPerguntas').modal('show'); // Exibe o modal
-
-                // Evento de submissão
-                $('#btnResponder').off('click'); // Remove qualquer handler anterior para evitar duplicações
-                $('#btnResponder').on('click', function() {
-                    const respostas = [];
-                    data.data.forEach((_, index) => {
-                        const rating = $(`input[name="rate_${index}"]:checked`).val(); 
-                        respostas.push(rating ? rating : null); // Adiciona a avaliação à lista de respostas
-                    });
-
-                    // Chama a função para cadastrar a candidatura com as respostas
-                    candidatar(idEmpresa, vagaId, respostas);
-                });
+                $('#modalPerguntas').modal('show'); 
             } else {
-                alert(data.message);
+                alert(response.message);
             }
         },
         error: function() {

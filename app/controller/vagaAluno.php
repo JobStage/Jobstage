@@ -107,7 +107,7 @@ public function listarVagas(){
                                 <button class="btn btn-success col-md-12" onclick="candidatar('.$value['id_empresa'].', '.$value['idVaga'].')">Candidatar</button>
                             </div>
                              <div>
-                                <button class="btn btn-info col-md-12" onclick="verificarPerguntas(' . $value['idVaga'] . ')">Verificar Perguntas</button>
+                                <button class="btn btn-info col-md-12" onclick="abrirModalPerguntas(' . $value['idVaga'] . ')">Verificar Perguntas</button>
                             </div>
                                 <div id="perguntas' . $value['idVaga'] . '" class="mt-3"></div> <!-- Div para exibir perguntas via AJAX -->
                             </div>
@@ -145,9 +145,35 @@ public function candidatar($idVaga, $idEmpresa) {//caso nao dê certo descomenta
     return;
 }
 
+// public function verificarPerguntas($idVaga) {
+//     if (isset($idVaga)) {
+//         $perguntas = $this->vagaModel->listarPerguntasPorVaga($idVaga); // Chamando a função da model para listar perguntas
+
+//         if (!empty($perguntas)) {
+//             echo json_encode([
+//                 'status' => 'success',
+//                 'message' => 'Perguntas encontradas!',
+//                 'data' => $perguntas
+//             ]);
+//         } else {
+//             echo json_encode([
+//                 'status' => 'empty',
+//                 'message' => 'Nenhuma pergunta encontrada para esta vaga.'
+//             ]);
+//         }
+//     } else {
+//         echo json_encode([
+//             'status' => 'error',
+//             'message' => 'ID da vaga inválido.'
+//         ]);
+//     }
+// }
+
 public function verificarPerguntas($idVaga) {
+    header('Content-Type: application/json');
+
     if (isset($idVaga)) {
-        $perguntas = $this->vagaModel->listarPerguntasPorVaga($idVaga); // Chamando a função da model para listar perguntas
+        $perguntas = $this->vagaModel->listarPerguntasPorVaga($idVaga);
 
         if (!empty($perguntas)) {
             echo json_encode([
