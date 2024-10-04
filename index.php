@@ -25,6 +25,9 @@
                         <br>
                         <br>
                         <a href="empresa/loginEmpresa.html"><button type="submit" class="btn btn-primary btn-block w-100" >Empresa</button></a>
+                        <br>
+                        <br>
+                        <a href="instituicao/loginInstituicao.html"><button type="submit" class="btn btn-primary btn-block w-100" >Instituição</button></a>
                     </div>
                 </div>
             </div>

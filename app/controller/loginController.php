@@ -84,6 +84,22 @@ class LoginController{
         echo json_encode($retorno);
         return $retorno;
     }
+
+    public function loginInstituicao($email, $senha){
+        $resultLogin = $this->login->loginInstituicao($email, $senha);
+        if($resultLogin){
+            $_SESSION['id'] = $resultLogin;
+            $_SESSION['idSessao'] = 3;
+            
+            $retorno = array('redirecionar'=>'filiais.php', 'sucesso'=> true);
+            echo json_encode($retorno);
+            return $retorno;
+            
+        }
+        $retorno = array('title' => 'Erro', 'msg' => 'E-mail ou senha incorreta', 'icon' => 'error', 'sucesso'=> false);
+        echo json_encode($retorno);
+        return $retorno;
+    }
 }
 
 

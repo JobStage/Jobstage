@@ -181,3 +181,36 @@ function cadastroInstituicao() {
 
   })
 }
+
+function loginInstituicao() {
+  event.preventDefault();
+  var email = $('.email').val();
+  var senha = $('.senha').val();
+
+  $.ajax({
+    type: 'POST',
+    url: '../app/requests/loginInstituicao.php',
+    dataType: 'json',
+    data: {
+      email: email,
+      senha: senha
+    },
+    success: function (data) {
+      if (data.sucesso) {
+        window.location.replace(data.redirecionar);
+
+      } else {
+        Swal.fire({
+          title: data.tittle,
+          text: data.msg,
+          icon: data.icon
+        });
+      }
+
+    },
+    error: function (xhr, error, status) {
+      console.log(xhr, error, status);
+    }
+
+  })
+}
