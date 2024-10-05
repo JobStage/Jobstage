@@ -15,9 +15,8 @@ class email {
         $this->mail->SMTPSecure = 'ssl';  
         $this->mail->Host = 'smtp.gmail.com'; 
         $this->mail->Port = 465; 
-        $this->mail->Username = 'nelsonolech@gmail.com'; 
-        $this->mail->Password = 'yuhx iolo scbv cclc
-';   
+        $this->mail->Username = 'email@gmail.com'; 
+        $this->mail->Password = 'senha';   
     }
 
 
@@ -475,7 +474,7 @@ class email {
 
     public function enviarEmailAssinaturaFuncionario($hash, $nomeFunc, $emailFunc, $idFunc){
         try {
-            $this->mail->SetFrom('nelsonolech@gmail.com', 'JobStage'); 
+            $this->mail->SetFrom('email@gmail.com', 'JobStage'); 
             $this->mail->addAddress($emailFunc, 'Assinatura de contrato');
             $this->mail->Subject = 'Assinatura de contrato';
             $this->mail->isHTML(true);
