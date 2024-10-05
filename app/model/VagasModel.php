@@ -56,9 +56,10 @@ class Vagas{
   
   public function getVagaById($idVaga) {
     // Consulta SQL para obter os detalhes da vaga pelo ID
-    $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = ?");
-    $stmt->execute([$idVaga]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = :id");
+    $stmt->bindParam(':id', $idVaga);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function candidatar($idVaga,  $idAluno, $idEmpresa){

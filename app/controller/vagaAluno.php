@@ -127,15 +127,3 @@ public function candidatar($idVaga, $idEmpresa){
     return;
 }
 }
-
-// if ($_POST['tipo'] == 'getVagaDetails') {
-//   $idVaga = $_POST['idVaga'];
-//   $vagaDetails = $this->vagaModel->getVagaById($idVaga); // Supondo que exista um método getVagaById no modelo
-
-//   if ($vagaDetails) {
-//       echo json_encode(['success' => true, 'data' => $vagaDetails]);
-//   } else {
-//       echo json_encode(['success' => false]);
-//   }
-//   exit;
-// }

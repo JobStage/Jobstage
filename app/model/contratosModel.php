@@ -5,20 +5,22 @@ require_once __DIR__."/../config/conexao.php";
 
 class contratosModel{
     private $conn;
+    private $conexao; 
 
     public function __construct()
     {
-        $conexao = new Conexao();
-        $this->conn = $conexao->conn();
+        $this->conexao = new Conexao();
+        $this->conn = $this->conexao->conn(); 
     }
 
-    public function gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa){
+    public function gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId){
         try {
-            $sql = $this->conn->prepare("INSERT INTO contratacoes (idVaga, id_aluno, id_empresa)
-                                        VALUES (:vaga, :aluno, :empresa)");
+            $sql = $this->conn->prepare("INSERT INTO contratacoes (idVaga, id_aluno, id_empresa, id_funcionario)
+                                        VALUES (:vaga, :aluno, :empresa, :func)");
             $sql->bindParam(':aluno', $idAluno);
             $sql->bindParam(':vaga', $idVaga);
             $sql->bindParam(':empresa', $idEmpresa);
+            $sql->bindParam(':func', $funcionarioId);
             $sql->execute();
 
             return true;
@@ -72,7 +74,8 @@ class contratosModel{
                                             e.cnpj as cnpjEmpresa,
                                             cdb.curso as nomeCurso,
                                             func.nome as nomeFunc,
-                                            func.email as emailFunc
+                                            func.email as emailFunc,
+                                            func.id as idFunc
                                         FROM vagas as v
                         INNER JOIN empresa as e
                         ON v.id_empresa = e.id_empresa
@@ -160,7 +163,8 @@ class contratosModel{
         $sql = $this->conn->prepare("SELECT 
                                         contrato as contrato, 
                                         id_aluno as idAluno, 
-                                        id as idContrato 
+                                        id as idContrato,
+                                        id_funcionario as idFunc
                                     FROM contratacoes
                                         WHERE hashContrato = :hsh");
 
@@ -169,5 +173,21 @@ class contratosModel{
 
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    public function verificaSeTemAssinatura($id, $user){
+        try {
+            $sql = $this->conn->prepare("SELECT * FROM contratacoes
+                                        WHERE id_aluno = :idAluno
+                                            AND assinado_{$user} IS NULL");
+            $sql->bindParam(':idAluno',$id);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            return $result;
+
+        } catch (Exception $e) {
+            $this->conexao->logs($e);
+            return;
+        }
     }
 }

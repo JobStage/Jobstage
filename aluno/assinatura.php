@@ -2,6 +2,8 @@
 session_start();
 require_once '../app/controller/contratosController.php';
 $contratos = new contratosController();
+
+$contratos->verificaSeTemContratoParaAssinatura($_SESSION['id'], 'aluno');
 ob_start(); 
 ?>
 
