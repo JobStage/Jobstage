@@ -9,6 +9,8 @@ ob_start();
     <?= $contratos->listarContratoAssinatura($_GET['contrato']) ?>
 </div>
 
+<script src="../app/public/js/assinatura.js"></script>
+
 <?php
 $content = ob_get_clean(); 
 $pageTitle = "Assinatura"; 

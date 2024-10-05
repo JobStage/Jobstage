@@ -145,13 +145,15 @@ class contratosModel{
     }
 
     public function getContratoPorHash($hash){
-        $sql = $this->conn->prepare("SELECT contrato FROM contratosestagio
-                                    WHERE hashContrato = :hsh");
+        $sql = $this->conn->prepare("SELECT c.contrato as contrato, ct.id_aluno as idAluno, c.id as idContrato FROM contratosestagio as c
+                                        INNER JOIN contratacoes as ct
+                                        ON ct.idContrato = c.id
+                                    WHERE c.hashContrato = :hsh");
 
         $sql->bindParam(':hsh', $hash);
         $sql->execute();
 
-        $result = $sql->fetch(PDO::FETCH_ASSOC);
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 }

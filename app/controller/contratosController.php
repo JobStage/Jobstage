@@ -146,17 +146,21 @@ class contratosController{
     }
 
     public function listarContratoAssinatura($hash){
-        $html = $this->contratos->getContratoPorHash($hash);
-
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+            $idAluno = $value['idAluno'];
+            $idContrato = $value['idContrato'];
+        }
         echo '
             <div class="card">
-                '.$html['contrato'].'
+                '.$contrato.'
             </div>
             <br>
             <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            <input type="hidden" id="idContrato" value='.$idContrato.'>
             
             <br>
-            <button class="btn btn-primary">Assinar</button>
+            <button class="btn btn-primary" onclick="assinaturaAluno('. $idAluno .')">Assinar</button>
             ';
     }
 }
