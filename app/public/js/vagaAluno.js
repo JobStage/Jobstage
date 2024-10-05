@@ -35,41 +35,39 @@
 // });
 $(document).ready(function(){
 })
-// function candidatar(idEmpresa, idVaga) {
+function candidatar(idEmpresa, idVaga) {
 
-//   $.ajax({
-//       type: "POST",
-//       url: "../app/requests/vagaAluno.php",
-//       dataType: 'JSON',
-//       data: {
-//           tipo: 'candidatar',
-//           idVaga: idVaga,
-//           idEmpresa: idEmpresa
-//       },
-//       success: function(data) {
-//         Swal.fire({
-//             title: data.tittle,
-//             text: data.msg,
-//             icon: data.icon
-//         }).then(() => {
-//             location.reload();
-//         });
-//     },
-//     error: function(xhr, status, error) {
-//         console.error(xhr.responseText);
-//     }
-//   });
-// }
-
-function candidatar(idEmpresa, idVaga, respostas) {
+  $.ajax({
+      type: "POST",
+      url: "../app/requests/vagaAluno.php",
+      dataType: 'JSON',
+      data: {
+          tipo: 'candidatar',
+          idVaga: idVaga,
+          idEmpresa: idEmpresa
+      },
+      success: function(data) {
+        Swal.fire({
+            title: data.tittle,
+            text: data.msg,
+            icon: data.icon
+        }).then(() => {
+            location.reload();
+        });
+    },
+    error: function(xhr, status, error) {
+        console.error(xhr.responseText);
+    }
+  });
+}
+function enviarRespostas(idVaga, respostas) {
     $.ajax({
         type: "POST",
         url: "../app/controller/vagaAluno.php",
         dataType: 'JSON',
         data: {
-            tipo: 'candidatar',
+            tipo: 'enviarRespostas', // Definindo a ação de envio
             idVaga: idVaga,
-            idEmpresa: idEmpresa,
             respostas: respostas // Enviando as respostas das perguntas
         },
         success: function(data) {
@@ -77,8 +75,6 @@ function candidatar(idEmpresa, idVaga, respostas) {
                 title: data.title,
                 text: data.msg,
                 icon: data.icon
-            }).then(() => {
-                location.reload();
             });
         },
         error: function(xhr, status, error) {

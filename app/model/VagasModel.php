@@ -206,4 +206,16 @@ public function excluirPergunta($perguntaId) {
     $stmt->bindParam(':id', $perguntaId);
     $stmt->execute();
 }
+
+public function salvarRespostas($idVaga, $respostas) {
+  foreach ($respostas as $idPergunta => $resposta) {
+      $query = "INSERT INTO respostas (id_pergunta, id_vaga, resposta) VALUES (:id_pergunta, :id_vaga, :resposta)";
+      $stmt = $this->conn->prepare($query);
+      $stmt->bindParam(':id_pergunta', $idPergunta);
+      $stmt->bindParam(':id_vaga', $idVaga);
+      $stmt->bindParam(':resposta', $resposta);
+      $stmt->execute();
+  }
+  return true;
+}
 }

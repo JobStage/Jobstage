@@ -121,29 +121,29 @@ public function listarVagas(){
 
 }
 
-// public function candidatar($idVaga, $idEmpresa){ // incluindo as respostas das pergunta na candidatura
-//     if($this->vagaModel->candidatar($idVaga, $_SESSION['id'],$idEmpresa)){
-//         $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
-//         echo json_encode($retorno);
-//         return;
-//     }
-//     $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Não foi possivel se candidatar', 'icon' => 'error');
-//     echo json_encode($retorno);
-//     return;
-// }
-public function candidatar($idVaga, $idEmpresa) {//caso nao dê certo descomentar o codigo acima
-    
-    $respostas = isset($_POST['respostas']) ? $_POST['respostas'] : null;
-
-    if ($this->vagaModel->candidatar($idVaga, $_SESSION['id'], $idEmpresa, $respostas)) {
-        $retorno = array('success' => true, 'title' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
+public function candidatar($idVaga, $idEmpresa){ // incluindo as respostas das pergunta na candidatura
+    if($this->vagaModel->candidatar($idVaga, $_SESSION['id'],$idEmpresa)){
+        $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
         echo json_encode($retorno);
         return;
     }
-    $retorno = array('success' => false, 'title' => 'Erro', 'msg' => 'Não foi possível se candidatar', 'icon' => 'error');
+    $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Não foi possivel se candidatar', 'icon' => 'error');
     echo json_encode($retorno);
     return;
 }
+// public function candidatar($idVaga, $idEmpresa) {//caso nao dê certo descomentar o codigo acima
+    
+//     $respostas = isset($_POST['respostas']) ? $_POST['respostas'] : null;
+
+//     if ($this->vagaModel->candidatar($idVaga, $_SESSION['id'], $idEmpresa, $respostas)) {
+//         $retorno = array('success' => true, 'title' => 'Sucesso', 'msg' => 'Candidatado com sucesso', 'icon' => 'success');
+//         echo json_encode($retorno);
+//         return;
+//     }
+//     $retorno = array('success' => false, 'title' => 'Erro', 'msg' => 'Não foi possível se candidatar', 'icon' => 'error');
+//     echo json_encode($retorno);
+//     return;
+// }
 
 // public function verificarPerguntas($idVaga) {
 //     if (isset($idVaga)) {
@@ -168,6 +168,18 @@ public function candidatar($idVaga, $idEmpresa) {//caso nao dê certo descomenta
 //         ]);
 //     }
 // }
+
+public function enviarRespostas($idVaga, $respostas) {
+    if (isset($idVaga) && isset($respostas)) {
+        if ($this->vagaModel->salvarRespostas($idVaga, $respostas)) {
+            $retorno = array('success' => true, 'title' => 'Sucesso', 'msg' => 'Respostas enviadas com sucesso!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return;
+        }
+    }
+    $retorno = array('success' => false, 'title' => 'Erro', 'msg' => 'Erro ao enviar as respostas.', 'icon' => 'error');
+    echo json_encode($retorno);
+}
 
 public function verificarPerguntas($idVaga) {
     header('Content-Type: application/json');
