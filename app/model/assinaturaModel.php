@@ -13,9 +13,9 @@ class assinaturaModel{
         try {
             $sql = $this->conn->beginTransaction();
 
+            // insere a assinatura
             $sql = $this->conn->prepare("INSERT INTO assinatura (nome, idContratosEstagio, usuarioAssinado, dataHora)
                                                 VALUES (:nome, :idContrato, :usuarioAssinado, :dataHora)");
-
             $dataHora =  date('Y-m-d H:i:s');
             $sql->bindParam(':nome', $assinatura);
             $sql->bindParam(':idContrato', $idContrato);
@@ -23,10 +23,11 @@ class assinaturaModel{
             $sql->bindParam(':dataHora', $dataHora); 
             $sql->execute();
 
-            // Pega o último ID inserido
+           
             $lastInsertId = $this->conn->lastInsertId();
 
-            $sql = $this->conn->prepare("UPDATE contratosestagio
+            // atualiza a tabela de contratos
+            $sql = $this->conn->prepare("UPDATE contratacoes
                                                 SET assinado_{$tipoUsuario} = :id
                                                 WHERE id = :idContrato");
 
@@ -34,22 +35,6 @@ class assinaturaModel{
             $sql->bindParam(':idContrato', $idContrato);
             $sql->execute();
 
-
-            /*
-            // colocar aqui outro sql para verificar se as outras colunas de assinatura estão preenchidas para verificar quando o contrato está totalmente assinado
-            
-            // CORRIGIR BANCO DE DADOS E COLOCAR O CONTRATOESTAGIO E CONTRATACOES NA MESMA TABELA
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            */ 
             $sql = $this->conn->commit();
 
             return true;

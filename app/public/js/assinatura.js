@@ -24,7 +24,15 @@ function assinaturaAluno(idUsuario){
             tipo: 'aluno'
         },
         success: function (response) {
-            
+            if(response.sucesso){
+                Swal.fire({
+                    title: response.tittle,
+                    text: response.msg,
+                    icon: response.icon
+                }).then(() => {
+                    window.location.replace('contratos.php');
+                });
+            }
         }
     });
 }

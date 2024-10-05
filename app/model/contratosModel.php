@@ -46,12 +46,18 @@ class contratosModel{
     }
 
     public function getContratoModel($id){
-        $sql = $this->conn->prepare("SELECT * FROM contratacoes 
+        try {
+            $sql = $this->conn->prepare("SELECT * FROM contratacoes 
                                         WHERE ID = :id");
-        $sql->bindParam(':id', $id);
-        $sql->execute();
-        $result = $sql->fetch(PDO::FETCH_ASSOC);
-        return $result;
+            $sql->bindParam(':id', $id);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (Exception $e) {
+            echo $e;
+            return false;
+        }
+       
     }
     // funcao para coletar dados da vaga, curso, nivel, nome aluno, nome empresa, formacao
     public function getDadosParaContatoModel($idVaga, $idAluno, $idEmpresa){
@@ -90,8 +96,9 @@ class contratosModel{
                 $sql->execute();
                 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
                 return $result;
-        } catch (PDOException $e) {
-            return $e;
+        } catch (Exception $e) {
+            echo $e;
+            return false;
         }
       
     }
@@ -101,42 +108,47 @@ class contratosModel{
             // Iniciar a transação
             $this->conn->beginTransaction();
     
-            // Inserir na tabela contratosEstagio
-            $sql = $this->conn->prepare("INSERT INTO contratosestagio (contrato, hashContrato) VALUES (:textoDoContrato, :hashC)");
-            $sql->bindParam(':textoDoContrato', $textoDoContrato);
-            $sql->bindParam(':hashC', $hash);
-            $sql->execute();
-            $idContrato = $this->conn->lastInsertId();
-    
-            // Atualizar a tabela contratacoes
+            // Inserir na tabela contratacoes
             $sql = $this->conn->prepare("UPDATE contratacoes 
-                                        SET idContrato = :idContrato, 
+                                            SET contrato = :textoDoContrato, 
+                                            hashContrato = :hashC,
                                             contratoGerado = 1 
                                         WHERE ID = :id");
-            $sql->bindParam(':idContrato', $idContrato);
+            $sql->bindParam(':textoDoContrato', $textoDoContrato);
+            $sql->bindParam(':hashC', $hash);
             $sql->bindParam(':id', $id);
             $sql->execute();
+            // $idContrato = $this->conn->lastInsertId();
+    
+            // Atualizar a tabela contratacoes
+            // $sql = $this->conn->prepare("UPDATE contratacoes 
+            //                             SET idContrato = :idContrato, 
+            //                                 contratoGerado = 1 
+            //                             WHERE ID = :id");
+            // $sql->bindParam(':idContrato', $idContrato);
+            // $sql->bindParam(':id', $id);
+            // $sql->execute();
     
             // Commit na transação
             $this->conn->commit();
     
             return true;
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             // Rollback em caso de erro
             if ($this->conn->inTransaction()) {
                 $this->conn->rollBack();
             }
+            echo $e;
             return false;
         }
     }
 
     public function getContratos($idAluno){
         $sql = $this->conn->prepare("SELECT * FROM contratacoes as ctr
-                                        INNER JOIN contratosestagio as ce
-                                            ON ctr.idContrato = ce.id
                                         INNER JOIN empresa as e
                                         on e.id_empresa = ctr.id_empresa
-                                        WHERE ctr.id_aluno = :idAluno" );
+                                        WHERE ctr.id_aluno = :idAluno
+                                        AND contratoGerado = 1" );
         $sql->bindParam(":idAluno", $idAluno);
         $sql->execute();
 
@@ -145,10 +157,12 @@ class contratosModel{
     }
 
     public function getContratoPorHash($hash){
-        $sql = $this->conn->prepare("SELECT c.contrato as contrato, ct.id_aluno as idAluno, c.id as idContrato FROM contratosestagio as c
-                                        INNER JOIN contratacoes as ct
-                                        ON ct.idContrato = c.id
-                                    WHERE c.hashContrato = :hsh");
+        $sql = $this->conn->prepare("SELECT 
+                                        contrato as contrato, 
+                                        id_aluno as idAluno, 
+                                        id as idContrato 
+                                    FROM contratacoes
+                                        WHERE hashContrato = :hsh");
 
         $sql->bindParam(':hsh', $hash);
         $sql->execute();

@@ -138,10 +138,12 @@ class contratosController{
     }
 
     public function listarContrato($hash){
-        $html = $this->contratos->getContratoPorHash($hash);
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+        }
         echo '
             <div class="card" id="contrato-texto">
-                '.$html['contrato'].'
+                '.$contrato.'
             </div>';
     }
 
