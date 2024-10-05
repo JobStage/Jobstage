@@ -159,6 +159,21 @@ class contratosModel{
         return $result;
     }
 
+    public function getAlunosContratados($idEmpresa){
+        try {
+            $sql = $this->conn->prepare("SELECT a.nome as nomeAluno, c.* FROM contratacoes as c
+                                        INNER JOIN aluno as a
+                                        on c.id_aluno = a.ID
+                                        WHERE id_empresa = :id");
+            $sql->bindParam(':id', $idEmpresa);    
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     public function getContratoPorHash($hash){
         $sql = $this->conn->prepare("SELECT 
                                         contrato as contrato, 

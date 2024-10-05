@@ -200,4 +200,27 @@ class contratosController{
     public function verificaSeTemContratoParaAssinaturaFuncionario($usuario){
        // criar funcao e verificar se existe contrato para assinar por parte do funcionario
     }
+
+    public function listarAlunosContratados($id){
+        var_dump($this->contratos->getAlunosContratados($id));
+        $html = '';
+        foreach($this->contratos->getAlunosContratados($id) as $value){
+            $html .= '<div class="card">
+                        <div class="conteudo-principal">
+                            <div class="user">
+                                <h5>'. $value['nomeAluno'] .'</h5>
+                                <p></p>
+                            </div>
+                            <div class="formacao">
+                                <h5>CONTRATO</h5>
+                            <p>'. (empty($value['contratoAtivo']) ? 'Em andamento' : ($value['contratoAtivo'] == 1 ? 'Ativo' : 'Encerrado')) .'</p>
+                            </div>
+                            <div class="icons">
+                                <img src="../app/public/img/anexo.png" width="48px" height="48px" >
+                            </div>
+                        </div>
+                    </div>';
+        }
+        return $html;
+    }
 }

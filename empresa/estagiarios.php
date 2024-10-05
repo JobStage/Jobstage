@@ -5,7 +5,7 @@ $contratos = new contratosController();
 ob_start(); 
 ?>
 
-<div class="row g-3">
+<div>
     <?= $contratos->listarAlunosContratados($_SESSION['id']) ?>
 </div>
 
@@ -55,6 +55,7 @@ ob_start();
         justify-content: space-between;
         background-color: #7474776b;
     }
+    
 </style>
 
 <script src="../app/public/js/contratos.js"></script>
