@@ -14,7 +14,11 @@ class contratosController{
     }
     // funcao para a empresa slicitar um contrato
     public function gerarContratoEmpresa($idAluno, $idVaga, $idEmpresa){
-        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa)){
+        foreach($this->dadosVaga->getVagaById($idVaga) as $value){
+            $funcionarioId = $value['id_funcionario'];
+        }
+
+        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId)){
             $retorno = array('msg' => 'Solicitação enviada! Aguarde a geração de contrato.', 'icon' => 'success' , 'success' => true);
             echo json_encode($retorno);
             return $retorno;
@@ -71,6 +75,7 @@ class contratosController{
         foreach($vaga as $value){
             $nomeFunc = $value['nomeFunc'];
             $emailFunc = $value['emailFunc'];
+            $idFunc = $value['idFunc'];
 
             $textoDoContrato = '
                 O aluno ' .$value['nomeAluno']. ' 
@@ -84,7 +89,7 @@ class contratosController{
         }
 
         if($this->contratos->gerarContratoModel($id, $textoDoContrato, $hash)){
-            if($this->email->enviarEmailAssinaturaFuncionario($hash, $nomeFunc, $emailFunc)){
+            if($this->email->enviarEmailAssinaturaFuncionario($hash, $nomeFunc, $emailFunc, $idFunc)){
                 $retorno = array('tittle' => 'Sucesso!', 'msg' => 'O contrato de estágio foi gerado!', 'icon' => 'success' , 'success' => true);
                 echo json_encode($retorno);
                 return $retorno;
@@ -138,25 +143,61 @@ class contratosController{
     }
 
     public function listarContrato($hash){
-        $html = $this->contratos->getContratoPorHash($hash);
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+        }
         echo '
             <div class="card" id="contrato-texto">
-                '.$html['contrato'].'
+                '.$contrato.'
             </div>';
     }
 
     public function listarContratoAssinatura($hash){
-        $html = $this->contratos->getContratoPorHash($hash);
-
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+            $idAluno = $value['idAluno'];
+            $idContrato = $value['idContrato'];
+           
+        }
         echo '
             <div class="card">
-                '.$html['contrato'].'
+                '.$contrato.'
             </div>
             <br>
             <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            <input type="hidden" id="idContrato" value='.$idContrato.'>
             
             <br>
-            <button class="btn btn-primary">Assinar</button>
+            <button class="btn btn-primary" onclick="assinaturaAluno('. $idAluno .')">Assinar</button>
             ';
+    }
+
+    public function listarContratoAssinaturaFunc($hash){
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+            $idContrato = $value['idContrato'];
+            $idFunc = $value['idFunc'];
+        }
+        echo '
+            <div class="card">
+                '.$contrato.'
+            </div>
+            <br>
+            <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            <input type="hidden" id="idContrato" value='.$idContrato.'>
+            
+            <br>
+            <button class="btn btn-primary" onclick="assinaturaFunc('. $idFunc .')">Assinar</button>
+            ';
+    }
+
+    public function verificaSeTemContratoParaAssinatura($id, $user){
+        if(!$this->contratos->verificaSeTemAssinatura($id, $user)){
+            header('Location: contratos.php');
+        }
+    }
+
+    public function verificaSeTemContratoParaAssinaturaFuncionario($usuario){
+       // criar funcao e verificar se existe contrato para assinar por parte do funcionario
     }
 }

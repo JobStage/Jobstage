@@ -15,8 +15,9 @@ class email {
         $this->mail->SMTPSecure = 'ssl';  
         $this->mail->Host = 'smtp.gmail.com'; 
         $this->mail->Port = 465; 
-        $this->mail->Username = 'email@gmail.com'; 
-        $this->mail->Password = 'senha';   
+        $this->mail->Username = 'nelsonolech@gmail.com'; 
+        $this->mail->Password = 'yuhx iolo scbv cclc
+';   
     }
 
 
@@ -246,7 +247,7 @@ class email {
     }
 
 
-    public function templateEmailAssinatura($hash, $nomeFunc){
+    public function templateEmailAssinatura($hash, $nomeFunc, $idFunc){
         $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
             <head>
@@ -418,7 +419,7 @@ class email {
             <tr>
 
             <td class="t17" style="background-color:#003aff;overflow:hidden;width:246px;text-align:center;line-height:48px;mso-line-height-rule:exactly;mso-text-raise:11px;border-radius:40px 40px 40px 40px;">
-            <a class="t16" href="http://localhost/Jobstage/empresa/assinatura.php?contrato='.$hash.'" style="display:block;margin:0;Margin:0;font-family:Montserrat,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:48px;font-weight:800;font-style:normal;font-size:13px;text-decoration:none;text-transform:uppercase;letter-spacing:0.5px;direction:ltr;color:#FFFFFF;text-align:center;mso-line-height-rule:exactly;mso-text-raise:11px;" target="_blank">Assinar contrato</a></td>
+            <a class="t16" href="http://localhost/Jobstage/empresa/assinatura.php?contrato='.$hash.'&userId='.$idFunc.'" style="display:block;margin:0;Margin:0;font-family:Montserrat,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:48px;font-weight:800;font-style:normal;font-size:13px;text-decoration:none;text-transform:uppercase;letter-spacing:0.5px;direction:ltr;color:#FFFFFF;text-align:center;mso-line-height-rule:exactly;mso-text-raise:11px;" target="_blank">Assinar contrato</a></td>
             </tr></table>
             </td></tr></table></td>
             </tr></table>
@@ -472,16 +473,16 @@ class email {
         return $html;
     }
 
-    public function enviarEmailAssinaturaFuncionario($hash, $nomeFunc, $emailFunc){
+    public function enviarEmailAssinaturaFuncionario($hash, $nomeFunc, $emailFunc, $idFunc){
         try {
-            $this->mail->SetFrom('email@gmail.com', 'JobStage'); 
+            $this->mail->SetFrom('nelsonolech@gmail.com', 'JobStage'); 
             $this->mail->addAddress($emailFunc, 'Assinatura de contrato');
             $this->mail->Subject = 'Assinatura de contrato';
             $this->mail->isHTML(true);
             
             $this->mail->CharSet = 'UTF-8';
             
-            $this->mail->Body = $this->templateEmailAssinatura($hash, $nomeFunc);
+            $this->mail->Body = $this->templateEmailAssinatura($hash, $nomeFunc,$idFunc);
             
             $this->mail->AltBody = 'Este é o corpo alternativo da mensagem, sem HTML.';
             
