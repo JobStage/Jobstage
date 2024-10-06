@@ -63,7 +63,7 @@ function candidatar(idEmpresa, idVaga) {
 function enviarRespostas(idVaga, respostas) {
     $.ajax({
         type: "POST",
-        url: "../app/controller/vagaAluno.php",
+        url: "../app/requests/vagaAluno.php",
         dataType: 'JSON',
         data: {
             tipo: 'enviarRespostas', // Definindo a ação de envio
@@ -86,7 +86,7 @@ function enviarRespostas(idVaga, respostas) {
 ////////// perguntas //////////////
 function abrirModalPerguntas(vagaId) {
     $.ajax({
-        url: '../app/controller/vagaAluno.php',
+        url: '../app/requests/vagaAluno.php',
         dataType: 'POST',
         data: {
             acao: 'verificarPerguntas', 
