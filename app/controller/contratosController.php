@@ -202,7 +202,6 @@ class contratosController{
     }
 
     public function listarAlunosContratados($id){
-        var_dump($this->contratos->getAlunosContratados($id));
         $html = '';
         foreach($this->contratos->getAlunosContratados($id) as $value){
             $html .= '<div class="card">
@@ -215,12 +214,17 @@ class contratosController{
                                 <h5>CONTRATO</h5>
                             <p>'. (empty($value['contratoAtivo']) ? 'Em andamento' : ($value['contratoAtivo'] == 1 ? 'Ativo' : 'Encerrado')) .'</p>
                             </div>
-                            <div class="icons">
-                                <img src="../app/public/img/anexo.png" width="48px" height="48px" >
+                            <input type="hidden" value="'. $value['ID'] .'" id="idContrato">
+                            <input type="hidden" value="'. $value['id_aluno'] .'" id="id_aluno">
+                            <input type="hidden" value="'. $value['hashContrato'] .'" id="hash">
+                            <div class="icons" style="cursor:pointer;">
+                                <img src="../app/public/img/anexo.png" width="48px" height="48px" id="abrirContratos">
                             </div>
                         </div>
                     </div>';
         }
-        return $html;
+        return $html ? $html : '<div class="alert alert-primary" role="alert">
+  Você não contratou nenhum estagiário!
+</div>';
     }
 }

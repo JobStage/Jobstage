@@ -134,7 +134,6 @@ function excluirCurso(id) {
         confirmButtonText: "Sim"
     }).then((result) => {
     if (result.isConfirmed) {
-            // CRIAR AJAX -----------------
         $.ajax({
             url: "../app/requests/CursosController.php",
             type: 'POST',

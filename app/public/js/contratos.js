@@ -1,9 +1,13 @@
 $(document).ready(function() {
-    $('img[id^="abrirContratos"]').on('click', function() {
-        // Pegar o idContrato do input relacionado
-        var idContrato = $(this).closest('a').prevAll('input[id^="idContrato"]').val();
-        var idAluno = $(this).closest('a').prevAll('input[id^="id_aluno"]').val();
-        $('#verContratoLink').attr('href', 'verContrato.php?idContrato=' + idContrato);
+    $('#abrirContratos').click(function(){
+        // Abrir o modal
+        $('#exampleModal').modal('show');
+        
+        var hash = $('#hash').val();
+        var idAluno = $('#id_aluno').val();
+        
+        // Atualize os links no modal
+        $('#verContratoLink').attr('href', 'verContrato.php?idContrato=' + hash);
         $('#verRelatorioLink').attr('href', 'relatorios.php?idAluno=' + idAluno);
     });
 });
