@@ -124,7 +124,7 @@ class FormacaoModel{
     }
 
     public function getFormacao($id){
-        $sql = $this->conn->prepare('SELECT nivel, curso  FROM formacao
+        $sql = $this->conn->prepare('SELECT nivel, curso, matricula_valida  FROM formacao
                                     WHERE id_aluno = :idAluno
                                   ');
         $sql->bindParam(':idAluno',$id);

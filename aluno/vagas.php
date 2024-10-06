@@ -4,21 +4,7 @@ require_once '../app/controller/vagaAluno.php';
 $vagas = new VagasController();
 ob_start(); 
 ?>
-<div class="container">
-  <div class="row justify-content-center my-3">
-    <div class="col-md-6">
-      <div class="input-group">
-        <input type="search" class="form-control" placeholder="Pesquisar vagas" aria-label="Pesquisar vagas">
-        <button class="btn btn-outline-secondary" type="button">Pesquisar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- <div class="row g-3">
-  <div class="col-xl-6">
- 
-  </div>
-</div> -->
+
 <div class="row g-3">
     <?= $vagas->listarVagas() ?>
 </div>
