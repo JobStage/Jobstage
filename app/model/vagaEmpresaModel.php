@@ -104,10 +104,12 @@ class vagaEmpresaModel{
     }
 
     public function getVagaFiltado($id){
-        $sql = $this->conn->prepare('SELECT * FROM vagas as v
-                                    LEFT JOIN funcionarios as f
-                                    ON v.id_funcionario = f.id
-                                    WHERE v.idVaga = :id');
+        $sql = $this->conn->prepare('SELECT f.nome as nomeFunc, v.*, p.* FROM vagas as v
+                                        INNER JOIN funcionarios as f
+                                            ON v.id_funcionario = f.id
+                                        LEFT JOIN perguntas as p
+                                        ON p.id_vaga = v.idVaga
+                                        WHERE v.idVaga = :id');
 
         $sql->bindParam(':id', $id);
         $sql->execute();

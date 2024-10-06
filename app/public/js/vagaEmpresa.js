@@ -165,7 +165,7 @@ function sendAjaxRequestAreaEdit() {
     
     if(nivel > 1){        
         $.ajax({
-            url: '../app/requests/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/cursosCadastrados.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -191,7 +191,7 @@ function sendAjaxRequesEdit(areaId) {
         $('#selecCursosEdit').removeClass('btn-secondary disabled').addClass('btn-primary');
         
         $.ajax({
-            url: '../app/requests/cursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/cursosCadastrados.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -248,7 +248,7 @@ function salvar(){
 
         // Verifica se algum input estava vazio
         if (valores.length !== inputs.length) {
-            return; // Termina a execução se algum input estava vazio
+            return;
         }
 
         // Se todos os inputs estiverem preenchidos, continua
@@ -478,7 +478,30 @@ function getEditarVaga(id){
 
                 $('#descEdit').val(data.descricao);
                 $('#reqEdit').val(data.requisitos);
-
+                $(".perguntasEdit").empty();
+                if(data.pergunta){
+                    var perguntasArray = data.pergunta.split(",");
+    
+                    perguntasArray.forEach(function(pergunta) {
+                        var cardElement = $(
+                            `<div class="card" style="margin: 10px 0">
+                                <div style="display: flex; flex-direction: row; align-items: center; text-align: center; height: 50px">
+                                    <p>${pergunta}</p> <!-- Insere a pergunta no cartão -->
+                                </div>
+                            </div>`
+                        );
+                        
+                        $(".perguntasEdit").append(cardElement);
+                    });
+                }else{
+                    var cardElement = $(
+                        `<div class="alert alert-primary" role="alert">
+                           Não existem perguntas!
+                        </div>`
+                    );
+                    
+                    $(".perguntasEdit").append(cardElement);
+                }
             },
             error: function(xhr, status, error) {
                 console.log("Erro ao receber os dados:", error);
