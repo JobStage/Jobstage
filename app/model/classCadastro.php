@@ -15,7 +15,7 @@ class Cadastro {
 
     public function inserirAluno(string $email, string $senha) 
     {
-        $sql = "INSERT INTO aluno (email, senha) VALUES (:email, :senha)";
+        $sql = "INSERT INTO aluno (email, senha, tipo_usuario) VALUES (:email, :senha, 1)";
         
         $stmt = $this->conn->prepare($sql);
         
@@ -50,7 +50,7 @@ class Cadastro {
     
     public function inserirEmpresa(string $email, string $senha) 
     {
-        $sql = "INSERT INTO empresa (email, senha) VALUES (:email, :senha)";
+        $sql = "INSERT INTO empresa (email, senha, tipo_usuario) VALUES (:email, :senha, 2)";
         
         $stmt = $this->conn->prepare($sql);
 

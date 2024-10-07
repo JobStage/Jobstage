@@ -99,8 +99,8 @@ class CursosController {
                             <td>' . $value['id_curso'] . '</td>
                             <td>' . $value['nome_curso'] . '</td>
                             <td>' . $value['instituicao'] . '</td>
-                            <td>' . $value['inicio'] . '</td>
-                            <td>' . $value['fim'] . '</td>
+                            <td>' . date('d-m-Y', strtotime($value['inicio'])) . '</td>
+                            <td>' . date('d-m-Y', strtotime($value['fim'])) . '</td>
                             <td>' . $value['nivel'] . '</td>
                             <td>' . $value['status'] . '</td>
                             <td>

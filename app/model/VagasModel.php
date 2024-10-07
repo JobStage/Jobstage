@@ -2,11 +2,12 @@
 require_once __DIR__."/../config/conexao.php";
 class Vagas{
   private $conn;
+    private $conexao; 
 
     public function __construct()
     {
-        $conexao = new Conexao();
-        $this->conn = $conexao->conn();
+        $this->conexao = new Conexao();
+        $this->conn = $this->conexao->conn(); 
     }
 
     public function getAllVagas($id, $idAluno){
@@ -56,9 +57,10 @@ class Vagas{
   
   public function getVagaById($idVaga) {
     // Consulta SQL para obter os detalhes da vaga pelo ID
-    $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = ?");
-    $stmt->execute([$idVaga]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = :id");
+    $stmt->bindParam(':id', $idVaga);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function candidatar($idVaga,  $idAluno, $idEmpresa){
@@ -151,27 +153,38 @@ public function vagasCandidatadas($id, $idAluno){
   }
 
   public function getCandidatosVagas($idVaga, $idEmpresa) {
-    $sql = $this->conn->prepare("SELECT
-    al.ID as idAluno, 
-    al.nome as nomeUsuario,
-    al.data_nasc as dataNasc,
-    curs.curso as curso,
-    form.fim as dataFormacao,
-    TIMESTAMPDIFF(YEAR, al.data_nasc, CURDATE()) AS idade
-FROM 
-    candidatura as cad
-    INNER JOIN aluno as al ON al.ID = cad.id_aluno
-    INNER JOIN formacao as form ON form.id_aluno = al.ID
-    INNER JOIN curso_db as curs ON curs.ID = form.curso
-WHERE 
-    cad.id_vaga = :idVaga 
-    AND cad.id_empresa = :idEmpresa;
-
-");
+    try {
+      $sql = $this->conn->prepare(
+          "SELECT
+              al.ID as idAluno, 
+              al.nome as nomeUsuario,
+              al.data_nasc as dataNasc,
+              curs.curso as curso,
+              form.fim as dataFormacao,
+              TIMESTAMPDIFF(YEAR, al.data_nasc, CURDATE()) AS idade
+          FROM 
+              candidatura as cad
+              INNER JOIN aluno as al ON al.ID = cad.id_aluno
+              INNER JOIN formacao as form ON form.id_aluno = al.ID
+              INNER JOIN curso_db as curs ON curs.ID = form.curso
+          WHERE 
+              cad.id_vaga = :idVaga 
+              AND cad.id_empresa = :idEmpresa
+              AND cad.id_aluno NOT IN (
+                  SELECT contratacoes.id_aluno 
+                  FROM contratacoes 
+                  WHERE contratacoes.id_empresa = :idEmpresa
+              )
+      ");
     $sql->bindParam(':idVaga', $idVaga);
     $sql->bindParam(':idEmpresa', $idEmpresa);
     $sql->execute();
     $result = $sql->fetchAll(PDO::FETCH_ASSOC);
     return $result;
+    } catch (Exception $e) {
+      $this->conexao->logs($e);
+      return false;
+    }
+    
   }
 }

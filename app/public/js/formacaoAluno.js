@@ -254,7 +254,7 @@ function sendAjaxRequestCurso() {
         $('#curso').removeAttr('disabled');
 
         $.ajax({
-            url: '../app/requests/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/CursosCadastrados.php',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -283,7 +283,7 @@ function sendAjaxRequestCursoEdit(nivel) {
         $('#cursoEdit').removeAttr('disabled');
 
         $.ajax({
-            url: '../app/requests/CursosCadastrados.php',  // Substitua pelo seu endpoint de servidor
+            url: '../app/requests/CursosCadastrados.php',
             type: 'POST',
             dataType: 'json',
             data: {

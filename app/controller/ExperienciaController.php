@@ -82,8 +82,8 @@ class ExperienciaController {
                         <tr>
                             <td>' . $value['cargo'] . '</td>
                             <td>' . $value['nome'] . '</td>
-                            <td>' . $value['inicio'] . '</td>
-                            <td>' . $value['fim'] . '</td>
+                            <td>' .  date('d-m-Y', strtotime($value['inicio'])) . '</td>
+                            <td>' . ($value['fim'] == 'Atual' ? $value['fim'] : date('d-m-Y', strtotime($value['fim']))) . '</td>
                             <td>' . $value['tipo'] . '</td>
                             <td>
                                 <button class="btn btn-primary" id="edit-'.$value['id_exp'].'" value='.$value['id_exp'].'>

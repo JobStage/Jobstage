@@ -11,8 +11,8 @@ class funcionarioModel{
 
     public function salvar($nome, $email, $idEmpresa){
         try {
-            $sql = $this->conn->prepare("INSERT INTO funcionarios (nome, email, id_empresa)
-                                        VALUES(:nome, :email, :idEmpresa)");
+            $sql = $this->conn->prepare("INSERT INTO funcionarios (nome, email, id_empresa, tipo_usuario)
+                                        VALUES(:nome, :email, :idEmpresa, 5)");
             $sql->bindParam(':nome', $nome);
             $sql->bindParam(':email', $email);
             $sql->bindParam(':idEmpresa', $idEmpresa);

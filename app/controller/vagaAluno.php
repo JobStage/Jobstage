@@ -13,49 +13,16 @@ class VagasController{
   public function __construct() {
     $this->vagaModel = new Vagas();
 }
-// public function mostrarInformacaoVagas($idVaga){
-//   $html = '';
 
-//   foreach($this->vagaModel->getAllVagas($idVaga) as $value){
-//       $html .= '
-//           <div class="col-xl-6">
-//               <div class="card">
-//                   <div class="card-header">
-//                   <h3>'.$value['nome'].'</h3>
-//                   </div>
-//                   <div class="card-body">
-//                       <div class="infoVaga" style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap;">
-//                           <div class="">
-//                               <img src="../app/public/img/cifrao.png" width="40px" heigth="40px">
-//                               R$ '. $value['salario'] .'
-//                           </div>
-//                           <div class="">
-//                               <img src="../app/public/img/formacao.png" width="40px" heigth="40px">
-//                               '. $value['nomeNivel'] .'
-//                           </div>
-//                           <div class="">
-//                              <img src="../app/public/img/pasta.png" width="40px" heigth="40px">
-//                               '. $value['modeloVaga'] .'
-//                               <input type="hidden" value="idVaga">
-//                           </div>
-//                       </div>
-//                       <br>
-//                       <div class="row g-3">
-//                           <div class="col-6">
-//                               <button class="btn btn-primary" style="width:100%" onclick="candidatarVaga('. $value['idVaga'] .')">Candidatar</button>
-//                           </div>
-//                       </div>
-//                   </div>
-//               </div>
-//           </div>
-//       ';
-//   }
-//   echo $html;
-// }
 
 public function listarVagas(){
     $formacao = new FormacaoController();
-    $list = $formacao->getFormacao();   
+    $list = $formacao->getFormacao(); 
+    if($list['matricula_valida'] !== 1){
+        return '<div class="alert alert-danger" role="alert">
+                    Termine o cadastro de sua <b>formação</b> e aguarde a validação de sua declaração de matrícula para ver as vagas de estágio!
+                </div>';
+    }  
     $idCurso = $list['curso'];
     $html = '';
     $vagas = $this->vagaModel->getAllVagas($idCurso, $_SESSION['id']);
@@ -127,15 +94,3 @@ public function candidatar($idVaga, $idEmpresa){
     return;
 }
 }
-
-// if ($_POST['tipo'] == 'getVagaDetails') {
-//   $idVaga = $_POST['idVaga'];
-//   $vagaDetails = $this->vagaModel->getVagaById($idVaga); // Supondo que exista um método getVagaById no modelo
-
-//   if ($vagaDetails) {
-//       echo json_encode(['success' => true, 'data' => $vagaDetails]);
-//   } else {
-//       echo json_encode(['success' => false]);
-//   }
-//   exit;
-// }

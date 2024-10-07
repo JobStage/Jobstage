@@ -2,8 +2,9 @@
 require_once "../controller/matricula.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tipo = $_POST['acao'];
-    $id = $_POST['idFormacao'];
+    $tipo = $_POST['acao']?? null;
+    $id = $_POST['idFormacao'] ?? null;
+
     $matricula = new matricula();
     switch ($tipo) {
         case 'aprovarMatricula':
