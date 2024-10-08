@@ -170,8 +170,9 @@ public function candidatar($idVaga, $idEmpresa){ // incluindo as respostas das p
 // }
 
 public function enviarRespostas($idVaga, $respostas) {
+    $idAluno = $_SESSION['id']; // Obtendo o ID do aluno pela sessão
     if (isset($idVaga) && isset($respostas)) {
-        if ($this->vagaModel->salvarRespostas($idVaga, $respostas)) {
+        if ($this->vagaModel->salvarRespostas($idVaga, $idAluno, $respostas)) {
             $retorno = array('success' => true, 'title' => 'Sucesso', 'msg' => 'Respostas enviadas com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return;
@@ -182,7 +183,7 @@ public function enviarRespostas($idVaga, $respostas) {
 }
 
 public function verificarPerguntas($idVaga) {
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
 
     if (isset($idVaga)) {
         $perguntas = $this->vagaModel->listarPerguntasPorVaga($idVaga);

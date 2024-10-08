@@ -61,14 +61,23 @@ function candidatar(idEmpresa, idVaga) {
   });
 }
 function enviarRespostas(idVaga, respostas) {
+    if (!respostas || respostas.length === 0) {
+        Swal.fire({
+            title: 'Erro',
+            text: 'Nenhuma resposta foi fornecida!',
+            icon: 'error'
+        });
+        return;
+    }
+
     $.ajax({
         type: "POST",
         url: "../app/requests/vagaAluno.php",
         dataType: 'JSON',
         data: {
-            tipo: 'enviarRespostas', // Definindo a ação de envio
+            tipo: 'enviarRespostas', 
             idVaga: idVaga,
-            respostas: respostas // Enviando as respostas das perguntas
+            respostas: respostas 
         },
         success: function(data) {
             Swal.fire({
@@ -86,10 +95,11 @@ function enviarRespostas(idVaga, respostas) {
 ////////// perguntas //////////////
 function abrirModalPerguntas(vagaId) {
     $.ajax({
+        type: 'POST',  // Corrigido o tipo de request
         url: '../app/requests/vagaAluno.php',
-        dataType: 'POST',
+        dataType: 'JSON',  // Ajustado para retornar JSON
         data: {
-            acao: 'verificarPerguntas', 
+            tipo: 'verificarPerguntas',  // Usando o nome correto da ação
             idVaga: vagaId 
         },
         success: function(response) {
@@ -117,11 +127,19 @@ function abrirModalPerguntas(vagaId) {
                 $('#modalPerguntasBody').html(perguntasHtml);
                 $('#modalPerguntas').modal('show'); 
             } else {
-                alert(response.message);
+                Swal.fire({
+                    title: 'Erro',
+                    text: response.message,
+                    icon: 'error'
+                });
             }
         },
         error: function() {
-            alert('Erro ao carregar as perguntas.');
+            Swal.fire({
+                title: 'Erro',
+                text: 'Erro ao carregar as perguntas.',
+                icon: 'error'
+            });
         }
     });
 }

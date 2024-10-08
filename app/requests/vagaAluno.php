@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $listaVagas->enviarRespostas($_POST['idVaga'], $_POST['respostas']);
             break;
         
-        case 'abrirModalPerguntas':
+        case 'verificarPerguntas':  // Ajustando para o nome correto
             $listaVagas->verificarPerguntas($_POST['idVaga']);
-        
+            break;
     }
 }
