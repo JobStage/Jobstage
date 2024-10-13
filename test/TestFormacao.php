@@ -30,15 +30,15 @@ class TestFormacaoController extends UnitTestCase {
     public function testCriarFormacaoComErro() {
         try {
             // Defina um ID de aluno que não existe para simular um erro
-            $idAluno = 999; // ID que não existe
+            $idAluno = 34; // ID que não existe
     
             // Dados para a criação da formação
-            $curso = 'ADS';
-            $instituicao = 'sesc'; 
+            $curso = 'direito';
+            $instituicao = 'sesi'; 
             $nivel = 'medio';
-            $inicio = '2023-01-01';
-            $fim = '2024-01-01';
-            $status = 'finalizado';
+            $inicio = '2024-10-01';
+            $fim = '2024-11-09';
+            $status = 'andamento';
             $arquivo = [
                 'type' => 'application/pdf',
                 'tmp_name' => __DIR__ . '/../test/testePDF.pdf' // Caminho para o PDF existente

@@ -9,7 +9,7 @@ class TestVagaEmpresaController extends UnitTestCase {
     public function setUp() {
         $this->controller = new VagaEmpresaController();
         // Simula a sessão
-        $_SESSION['id'] = 1; // ou um valor apropriado
+        $_SESSION['id'] = 7; // ou um valor apropriado
     }
 
     // Função para testar a criação de uma vaga com sucesso
@@ -32,8 +32,7 @@ class TestVagaEmpresaController extends UnitTestCase {
         $this->controller->criarVaga($supervisor, $nome, $rs, $modelo, $nivel, $desc, $req, $area, $valoresSelecionados, $ensinoMedio, $perguntas);
         $output = ob_get_clean(); // Captura a saída e limpa o buffer
 
-        // // Debug: Imprima a saída real
-        echo "Output: " . $output; // Adicione esta linha
+        //echo "Output: " . $output; // Adicione esta linha
 
         $expectedOutput = json_encode([
             'success' => true, 

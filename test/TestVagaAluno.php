@@ -9,17 +9,15 @@ class TestVagaController extends UnitTestCase {
   //   if (session_status() === PHP_SESSION_NONE) {
   //     session_start(); // Inicia a sessão se ainda não estiver iniciada
   // }
-    $_SESSION['id'] = 34; // Simula um usuário logado com ID 1
+    $_SESSION['id'] = 34; // Coloque um ID do Aluno existente no banco
     $this->controller = new VagasController();
 }
 
 public function testCandidatarComSucesso() {
     try {
-        $idVaga = 14;
-        $idEmpresa = 9; // A empresa também deve existir na base de dados
+        $idVaga = 16; // Coloque o ID da vaga existente no banco
+        $idEmpresa = 7; // Coloque o ID da Empresa existente no banco
 
-        // A função deve retornar o valor adequado, aqui estamos apenas chamando
-        // a função candidatar, que já faz a lógica e retorna JSON.
         ob_start(); // Inicia captura de saída
         $this->controller->candidatar($idVaga, $idEmpresa);
         $output = ob_get_clean(); // Pega o conteúdo capturado

@@ -37,7 +37,7 @@ class TestLogin extends UnitTestCase {
           $this->assertEqual($_SESSION['idSessao'], 3, 'O valor da variável de sessão "idSessao" não é o esperado.');
       } else {
           // Caso o login não seja bem-sucedido
-          $this->assertTrue('O login não foi realizado com sucesso. Verifique se o email e a senha são válidos e se o banco de dados está configurado corretamente.');
+          $this->fail('O login não foi realizado com sucesso.');
       }
   }
 }
