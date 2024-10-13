@@ -17,13 +17,20 @@ class FilialController {
         $this->cursos = new CursosCadastrados();
     }
 
-    public function criarFilial($nome, $niveis){
-        $nivelInstituicao =  implode(',', $niveis);
-
+    public function criarFilial($nome, $niveis) {
+        $nivelInstituicao = implode(',', $niveis);
         $result = $this->filial->criarFilial($nome, $nivelInstituicao, $_SESSION['id']);
-
-        echo json_encode($result);
-        return $result;
+        
+        // Prepare o retorno com base no resultado
+        if ($result) { // Se a operação for bem-sucedida
+            $response = array('success' => true, 'msg' => 'Filial criada com sucesso!');
+        } else { // Se a operação falhar
+            $response = array('success' => false, 'msg' => 'Falha ao criar filial.');
+        }
+    
+        // Retorna a resposta em formato JSON
+        echo json_encode($response);
+        return $response; // Retorno opcional, se você precisar usar o valor em outro lugar
     }
 
     public function listaFiliais(){
