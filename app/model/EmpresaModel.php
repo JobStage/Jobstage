@@ -10,13 +10,14 @@ class Empresa{
         $this->conn = $conexao->conn();
     }
 
-    public function inserir($idEmpresa, $nome, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
+    public function inserir($idEmpresa, $nome,$email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero){
         $sql = $this->conn->prepare('INSERT INTO empresa (nome, email, cnpj, contato, estado, cidade,
                                     cep, rua, numero, id_empresa) 
                                     VALUES (:nome, :email, :cnpj, :contato, :estado, :cidade,
                                     :cep, :rua, :numero, :id)');
         $sql->bindParam(':id', $idEmpresa);
         $sql->bindParam(':nome', $nome);
+        $sql->bindParam(':email', $email); // Adicionando o bindParam para o campo email
         $sql->bindParam(':cnpj', $cnpj);
         $sql->bindParam(':contato', $contato);
         $sql->bindParam(':estado', $estado);

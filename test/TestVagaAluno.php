@@ -18,10 +18,10 @@ public function testCandidatarComSucesso() {
         $idVaga = 16; // Coloque o ID da vaga existente no banco
         $idEmpresa = 7; // Coloque o ID da Empresa existente no banco
 
-        ob_start(); // Inicia captura de saída
+        ob_start(); 
         $this->controller->candidatar($idVaga, $idEmpresa);
-        $output = ob_get_clean(); // Pega o conteúdo capturado
-        $retorno = json_decode($output, true); // Decodifica o JSON de saída
+        $output = ob_get_clean(); 
+        $retorno = json_decode($output, true); 
 
         // Verificações
         $this->assertTrue(is_array($retorno), "O retorno não é um array.");

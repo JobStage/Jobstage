@@ -15,11 +15,12 @@ class EmpresaController{
     } 
 
     public function inserirEmpresa() {
-        if(empty($_POST['nome']) || empty($_POST['email']) || empty($_POST['cnpj']) || empty($_POST['contato']) || empty($_POST['estado']) || empty($_POST['cidade']) || empty($_POST['cep']) || empty($_POST['rua']) || empty($_POST['numero'])) {
+        if(empty(empty($_POST['idEmpresa']) ||$_POST['nome']) || empty($_POST['email']) || empty($_POST['cnpj']) || empty($_POST['contato']) || empty($_POST['estado']) || empty($_POST['cidade']) || empty($_POST['cep']) || empty($_POST['rua']) || empty($_POST['numero'])) {
             $retorno = array('success' => false, 'tittle' => 'Erro', 'msg' => 'Campos obrigatórios', 'icon' => 'warning');
             echo json_encode($retorno);
             return;
         }
+        $idEmpresa = $_POST['idEmpresa'];//
         $nome = $_POST['nome'];
         $email = $_POST['email'];
         $cnpj = $_POST['cnpj'];
@@ -30,7 +31,7 @@ class EmpresaController{
         $rua = $_POST['rua'];
         $numero = $_POST['numero'];
 
-        $this->empresaModel->inserir($nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero);
+        $this->empresaModel->inserir($idEmpresa,$nome, $email, $cnpj, $contato, $estado, $cidade, $cep, $rua, $numero);//idEmpresa
         $retorno = array('success' => true, 'title' => 'Sucesso', 'msg' => 'Dados salvos!', 'icon' => 'success');
         echo json_encode($retorno);
         return;
