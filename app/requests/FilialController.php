@@ -25,6 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
             $filial->editarFilial($_POST['nome'], $_POST['id'], $valoresSelecionados);
         break;
+        case 'addFilial':
+            $filial->addFilial($cursoTecnico = $_POST["tecnico"], $cursoSuperior = $_POST["superior"], $estado = $_POST["estado"], $cidade = $_POST["cidade"], $cep = $_POST["CEP"], $rua = $_POST["rua"]);
+        break;
     }
 
 

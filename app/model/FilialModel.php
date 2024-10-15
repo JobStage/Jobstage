@@ -92,4 +92,27 @@ class FilialModel {
         $result = $sql->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+    
+    public function insertNivelFilial($idFilial,$cursoTecnico, $cursoSuperior,$estado, $cidade, $cep, $rua) {
+        $sql = $this->conn->prepare("INSERT INTO filial (id_instituicao, cursoTecnico, cursoSuperior, estado, cidade, CEP, rua) 
+                                     VALUES (:niveis, :id, :cursoTecnico, :cursoSuperior, :estado, :cidade, CEP, rua)");
+    
+        $sql->bindParam(':niveis', $nivel);
+        $sql->bindParam(':id', $idFilial);
+        $sql->bindParam(':cursoTecnico', $cursoTecnico);
+        $sql->bindParam(':cursoSuperior', $cursoSuperior);
+        $sql->bindParam(':estado', $estado);
+        $sql->bindParam(':cidade', $cidade);
+        $sql->bindParam(':CEP', $cep);
+        $sql->bindParam(':rua', $rua);
+    
+        $sql->execute();
+        return true;
+    }
+    // private function insertNivelFilial($idFilial, $nivel) {
+    //     // Implementar lógica para inserir o nível da filial
+    //     $query = "INSERT INTO filiais_niveis (id_filial, nivel) VALUES (:idFilial, :nivel)";
+    //     // Execute a query
+    // }
+    
 }

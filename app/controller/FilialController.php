@@ -123,4 +123,41 @@ class FilialController {
         return $html;
        
     }
+    
+    public function addFilial($cursoTecnico,$cursoSuperior, $estado, $cidade, $cep, $rua) {
+        // $nivelInstituicao = implode(",", $niveis);
+        // $cursoTecnicoInstituicao = implode(",", $cursoTecnico);
+        // $cursoSuperiorInstituicao = implode(",", $cursoSuperior);
+
+        $result = $this->filial->insertNivelFilial($_SESSION['id'],$cursoTecnico, $cursoSuperior, $estado, $cidade, $cep, $rua);
+        
+        echo json_encode($result);
+        return $result;
+
+    }
+    // public function addFilial() {
+    //     // Verificar se a requisição é do tipo POST
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         $data = json_decode(file_get_contents('instituicao\filiais.php'), true);
+    
+    //         $nome = $data['nome'];
+    //         $niveis = $data['niveis'];
+    
+    //         // Lógica para inserir a filial no banco de dados
+    //         // Supondo que você tenha um método para inserir uma nova filial
+    //         $idFilial = $this->criarFilial($nome,$niveis);
+    
+    //         // Agora, insira os níveis no banco de dados
+    //         foreach ($niveis as $nivel) {
+    //             // Método fictício para associar níveis a uma filial
+    //             $this->filial->insertNivelFilial($idFilial, $nivel);
+                
+    //         }
+    
+    //         // Retornar uma resposta JSON
+    //         echo json_encode(['status' => 'success']);
+    //         exit;
+    //     }
+    // }
+    
 }
