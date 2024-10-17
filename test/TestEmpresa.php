@@ -11,16 +11,13 @@ class TestCadastro extends UnitTestCase {
         $this->cadastro = new Cadastro(); 
     }
 
-    public function testInserirNovaEmpresaComSucesso() {
-        $email = 'teste_empresa_' . time() . '@example.com';
-        $senha = md5('555');
-      
-        
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_POST['email'] = $email;
-        $_POST['senha'] = $senha;
-    
+    public function testInserirNovaEmpresa() {
       try {
+        $_POST = array(
+          'email' => 'teste_empresa' . time() . '@example.com',
+          'senha' => md5('555'),
+      );
+              
         $this->cadastro->inserirEmpresa( $_POST['email'], $_POST['senha']);
         $this->assertTrue(true, "Nenhum erro ocorreu durante a execução do método.");
       } catch (Exception $e) {

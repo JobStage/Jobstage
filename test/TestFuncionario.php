@@ -12,7 +12,7 @@ class TestFuncionarioController extends UnitTestCase {
     }
 
     
-    public function testSalvarFuncionarioComDadosValidos() {
+    public function testSalvarFuncionario() {
         
         $nome = 'João da Silva';
         $email = 'joao@empresa.com';
