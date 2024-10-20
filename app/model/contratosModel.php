@@ -6,9 +6,8 @@ require_once __DIR__."/../config/conexao.php";
 class contratosModel{
     private $conn;
     private $conexao; 
-
-    public function __construct()
-    {
+    
+    public function __construct() {
         $this->conexao = new Conexao();
         $this->conn = $this->conexao->conn(); 
     }
@@ -25,7 +24,7 @@ class contratosModel{
 
             return true;
         } catch (Exception $e) {
-            echo $e;
+            $this->conexao->logs($e);
             return false;
         }
         
@@ -42,6 +41,7 @@ class contratosModel{
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         } catch (Exception $e) {
+            $this->conexao->logs($e);
             return false;
         }
         
@@ -56,7 +56,7 @@ class contratosModel{
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             return $result;
         } catch (Exception $e) {
-            echo $e;
+            $this->conexao->logs($e);
             return false;
         }
        
@@ -100,7 +100,7 @@ class contratosModel{
                 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
                 return $result;
         } catch (Exception $e) {
-            echo $e;
+            $this->conexao->logs($e);
             return false;
         }
       
@@ -129,22 +129,27 @@ class contratosModel{
             if ($this->conn->inTransaction()) {
                 $this->conn->rollBack();
             }
-            echo $e;
+            $this->conexao->logs($e);
             return false;
         }
     }
 
     public function getContratos($idAluno){
-        $sql = $this->conn->prepare("SELECT * FROM contratacoes as ctr
-                                        INNER JOIN empresa as e
-                                        on e.id_empresa = ctr.id_empresa
-                                        WHERE ctr.id_aluno = :idAluno
-                                        AND contratoGerado = 1" );
-        $sql->bindParam(":idAluno", $idAluno);
-        $sql->execute();
-
-        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        try {
+            $sql = $this->conn->prepare("SELECT * FROM contratacoes as ctr
+                                            INNER JOIN empresa as e
+                                            on e.id_empresa = ctr.id_empresa
+                                            WHERE ctr.id_aluno = :idAluno
+                                            AND contratoGerado = 1" );
+            $sql->bindParam(":idAluno", $idAluno);
+            $sql->execute();
+    
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }  catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
+        }
     }
 
     public function getAlunosContratados($idEmpresa){
@@ -153,30 +158,36 @@ class contratosModel{
                                         INNER JOIN aluno as a
                                         on c.id_aluno = a.ID
                                         WHERE id_empresa = :id
-                                        AND contratoGerado > 1");
+                                        AND contratoGerado > 0");
             $sql->bindParam(':id', $idEmpresa);    
             $sql->execute();
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $result;
-        } catch (Exception $e) {
+        } catch(Exception $e) {
+            $this->conexao->logs($e);
             return false;
         }
     }
 
     public function getContratoPorHash($hash){
-        $sql = $this->conn->prepare("SELECT 
-                                        contrato as contrato, 
-                                        id_aluno as idAluno, 
-                                        id as idContrato,
-                                        id_funcionario as idFunc
-                                    FROM contratacoes
-                                        WHERE hashContrato = :hsh");
-
-        $sql->bindParam(':hsh', $hash);
-        $sql->execute();
-
-        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        try {
+            $sql = $this->conn->prepare("SELECT 
+                                            contrato as contrato, 
+                                            id_aluno as idAluno, 
+                                            id as idContrato,
+                                            id_funcionario as idFunc
+                                        FROM contratacoes
+                                            WHERE hashContrato = :hsh");
+    
+            $sql->bindParam(':hsh', $hash);
+            $sql->execute();
+    
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }  catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
+        }
     }
 
     public function verificaSeTemAssinatura($id, $user){
