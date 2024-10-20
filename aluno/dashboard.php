@@ -223,13 +223,17 @@ h1, h2, h3, h4, h5, h6, strong {
 <div id="wrapper">
       <div class="content-area">
           <div class="main">
-
-
-
             <div class="row mt-5 mb-4">
-              <div class="col-md-12">
+              <div class="col-md-7">
                 <div class="box">
                   <div id="chart">
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="box">
+                  <div id="asd">
 
                   </div>
                 </div>
@@ -257,11 +261,71 @@ h1, h2, h3, h4, h5, h6, strong {
     function dashboardAluno(data){
         let estados = [];
         let quantidades = [];
+        let dataAtivas = [];
+        let dataInativas = [];
 
         data.forEach(function(item) {
             estados.push(item.Estado);
             quantidades.push(item.qtde);
+            dataAtivas.push(item.ativa);
+            dataInativas.push(item.inativa);
         });
+
+        var qqqq = {
+          series: [{
+          data: [dataAtivas[0], dataInativas[0]]
+        }],
+          chart: {
+          height: 350,
+          type: 'bar',
+          events: {
+            click: function(chart, w, e) {
+              // console.log(chart, w, e)
+            }
+          }
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            distributed: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
+        },
+        title: {
+            text: 'Vagas',
+            align: 'left',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 0,
+            floating: false,
+            style: {
+              fontSize:  '14px',
+              fontWeight:  'bold',
+              fontFamily:  undefined,
+              color:  '#263238'
+            },
+        },
+        colors: ['#00c925', '#c90000'],
+        xaxis: {
+          categories: [
+            'Ativas', 'Inativas'
+          ],
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        }
+        };
+
+        var charts = new ApexCharts(document.querySelector("#asd"), qqqq);
+        charts.render();
+
 
       
         var options = {

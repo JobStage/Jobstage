@@ -12,13 +12,23 @@ class chartsModel{
 
    public function graphAluno(){
     try {
-        $sql = $this->conn->prepare("SELECT e.nome AS Estado, count(e.nome) AS qtde FROM vagas AS v
-                                INNER JOIN empresa AS emp
-                                ON emp.id_empresa = v.id_empresa 
-                                INNER JOIN estados AS e
-                                ON e.id = emp.estado 
-                                GROUP BY e.nome
-                                ORDER BY qtde ASC");
+        $sql = $this->conn->prepare("SELECT 
+                                    e.nome AS Estado, 
+                                    COUNT(v.idVaga) AS qtde,
+                                    (SELECT COUNT(idVaga) FROM vagas WHERE ativo = 1) AS ativa,
+                                    (SELECT COUNT(idVaga) FROM vagas WHERE ativo = 0) AS inativa
+                                FROM 
+                                    vagas AS v
+                                INNER JOIN 
+                                    empresa AS emp ON emp.id_empresa = v.id_empresa 
+                                INNER JOIN 
+                                    estados AS e ON e.id = emp.estado 
+                                GROUP BY 
+                                    e.nome
+                                ORDER BY 
+                                    qtde ASC
+                            ");    
+                             
         $sql->execute();
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);
         return $result;
