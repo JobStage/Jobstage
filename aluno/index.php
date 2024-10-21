@@ -2,7 +2,7 @@
 session_start();
 ob_start();  
 
-header('Location: dados.php');
+header('Location: dashboard.php');
 ?>
 
 
