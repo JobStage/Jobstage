@@ -2,13 +2,12 @@
 require_once __DIR__."/../config/conexao.php";
 class Vagas{
   private $conn;
-    private $conexao; 
-
-    public function __construct()
-    {
-        $this->conexao = new Conexao();
-        $this->conn = $this->conexao->conn(); 
-    }
+  private $conexao; 
+  
+  public function __construct() {
+      $this->conexao = new Conexao();
+      $this->conn = $this->conexao->conn(); 
+  }
 
     public function getAllVagas($id, $idAluno){
       try {
@@ -49,36 +48,41 @@ class Vagas{
       
         return $result;
         
-      } catch (PDOException $e) {
-      echo $e;
-      return;
-      }
+      } catch (Exception $e) {
+        $this->conexao->logs($e);
+        return false;
+    }
   }
-  
+ 
   public function getVagaById($idVaga) {
-    // Consulta SQL para obter os detalhes da vaga pelo ID
-    $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = :id");
-    $stmt->bindParam(':id', $idVaga);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+    try {
+      $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = :id");
+      $stmt->bindParam(':id', $idVaga);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-public function candidatar($idVaga,  $idAluno, $idEmpresa){
-  try {
-    $sql = $this->conn->prepare('INSERT INTO candidatura (id_vaga, id_aluno, id_empresa) VALUES (:idVaga, :idAluno, :idEmpresa)');
-      
-    // Vincula os parÃ¢metros aos valores reais
-    $sql->bindParam(':idVaga', $idVaga, PDO::PARAM_INT);
-    $sql->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
-    $sql->bindParam(':idEmpresa', $idEmpresa, PDO::PARAM_INT);
-    $sql->execute();
-    return true;
-  } catch (PDOException $e) {
-    echo $e;
-    return false;
+    }  catch (Exception $e) {
+        $this->conexao->logs($e);
+        return false;
+    }
   }
-  
-}
+
+  public function candidatar($idVaga,  $idAluno, $idEmpresa){
+    try {
+      $sql = $this->conn->prepare('INSERT INTO candidatura (id_vaga, id_aluno, id_empresa) VALUES (:idVaga, :idAluno, :idEmpresa)');
+        
+      // Vincula os parÃ¢metros aos valores reais
+      $sql->bindParam(':idVaga', $idVaga, PDO::PARAM_INT);
+      $sql->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
+      $sql->bindParam(':idEmpresa', $idEmpresa, PDO::PARAM_INT);
+      $sql->execute();
+      return true;
+    }catch (Exception $e) {
+      $this->conexao->logs($e);
+      return false;
+    }
+    
+  }
 
 
 
@@ -119,17 +123,17 @@ public function vagasCandidatadas($id, $idAluno){
 
     return $result;
 
-  } catch (PDOException $e) {
-    echo $e;
-    return;
-  }
+  } catch (Exception $e) {
+    $this->conexao->logs($e);
+    return false;
+}
 
 }
 
 
   public function candidaturasEmpresa($empresa){
     try {
-      $sql = $this->conn->prepare('SELECT n.nivel as nomeNivel, m.modelo as modeloVaga, v.* FROM vagas as v
+      $sql = $this->conn->prepare('SELECT DISTINCT n.nivel as nomeNivel, m.modelo as modeloVaga, v.* FROM vagas as v
       INNER JOIN nivel as n
         ON n.ID = v.nivel
       INNER JOIN modelo as m
@@ -145,10 +149,10 @@ public function vagasCandidatadas($id, $idAluno){
 
       return $result;
 
-    } catch (PDOException $e) {
-      echo $e;
-      return;
-    }
+    }catch (Exception $e) {
+      $this->conexao->logs($e);
+      return false;
+  }
 
   }
 

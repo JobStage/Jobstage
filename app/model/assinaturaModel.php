@@ -2,11 +2,12 @@
 require_once __DIR__ .'/../config/conexao.php';
 
 class assinaturaModel{
-    private $conn; 
+    private $conn;
+    private $conexao; 
     
     public function __construct() {
-        $conexao = new Conexao();
-        $this->conn = $conexao->conn();
+        $this->conexao = new Conexao();
+        $this->conn = $this->conexao->conn(); 
     }
 
     public function assinarContrato($idAluno, $assinatura, $tipoUsuario, $idContrato){
@@ -40,7 +41,8 @@ class assinaturaModel{
             return true;
         } catch (Exception $e) {
             $sql = $this->conn->rollBack();
-            echo $e;
+            $this->conexao->logs($e);
+            return false;
             return false;
         }
     }
