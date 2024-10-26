@@ -185,11 +185,11 @@ WHERE
 }
 
 public function listarPerguntasPorVaga($vagaId) {
-    $query = "SELECT * FROM perguntas WHERE id_vaga = :vaga_id";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':vaga_id', $vagaId);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $query = "SELECT pergunta FROM perguntas WHERE id_vaga = :vaga_id ";
+  $stmt = $this->conn->prepare($query);
+  $stmt->bindParam(':vaga_id', $vagaId);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function editarPergunta($perguntaId, $novaPergunta) {
@@ -207,15 +207,74 @@ public function excluirPergunta($perguntaId) {
     $stmt->execute();
 }
 
-public function salvarRespostas($idVaga, $idAluno, $respostas) {
-  foreach ($respostas as $idPergunta => $resposta) {
-      $query = "INSERT INTO resposta_pergunta (id_pergunta, id_aluno, resposta) VALUES (:id_pergunta, :id_aluno, :resposta)";
-      $stmt = $this->conn->prepare($query);
-      $stmt->bindParam(':id_pergunta', $idPergunta);
-      $stmt->bindParam(':id_aluno', $idAluno);
-      $stmt->bindParam(':resposta', $resposta);
-      $stmt->execute();
-  }
-  return true;
+// public function salvarRespostas($idVaga, $idAluno, $respostas) {
+//   foreach ($respostas as $idPergunta => $resposta) {
+//       $query = "INSERT INTO resposta_pergunta (id_pergunta, id_aluno, resposta) VALUES (:id_pergunta, :id_aluno, :resposta)";
+//       $stmt = $this->conn->prepare($query);
+//       $stmt->bindParam(':id_pergunta', $idPergunta);
+//       $stmt->bindParam(':id_aluno', $idAluno);
+//       $stmt->bindParam(':resposta', $resposta);
+//       $stmt->execute();
+//   }
+//   return true;
+// }
+/////////////////////////////////////////////////////////////
+// public function salvarRespostas($idAluno, $idVaga, $respostas) {
+//   $respostasFormatadas = implode(',', $respostas); // Junta as respostas em uma string separada por vírgula
+
+//   $query = "INSERT INTO resposta_pergunta (resposta, id_aluno, id_pergunta) VALUES (:resposta, :id_aluno, :id_vaga)";
+//   $stmt = $this->conn->prepare($query);
+//   $stmt->bindParam(':resposta', $respostasFormatadas);
+//   $stmt->bindParam(':id_aluno', $idAluno);
+//   $stmt->bindParam(':id_vaga', $idVaga);
+//   return $stmt->execute();
+// }
+
+// public function salvarRespostas($idVaga, $idAluno, $idPergunta, $valorResposta) {
+//   $sql = "INSERT INTO resposta_pergunta (ID, id_aluno, id_pergunta, resposta) VALUES (:idVaga, :idAluno, :idPergunta, :resposta)";
+//   $stmt = $this->conn->prepare($sql);
+//   $stmt->bindParam(':idVaga', $idVaga);
+//   $stmt->bindParam(':idAluno', $idAluno);
+//   $stmt->bindParam(':idPergunta', $idPergunta);
+//   $stmt->bindParam(':resposta', $valorResposta);
+  
+//   return $stmt->execute();
+// }
+//////////////////////////////////////////
+// public function salvarRespostas($idAluno, $idPergunta, $valorResposta) {
+//   $sql = "INSERT INTO resposta_pergunta (id_aluno, id_pergunta, resposta) VALUES (:idAluno, :idPergunta, :resposta)";
+//   $stmt = $this->conn->prepare($sql);
+//   $stmt->bindParam(':idAluno', $idAluno);
+//   $stmt->bindParam(':idPergunta', $idPergunta);
+//   $stmt->bindParam(':resposta', $valorResposta);
+
+//   return $stmt->execute();
+// }/////////////
+// public function salvarRespostas($resposta,$idPergunta) {
+//   $sql = "INSERT INTO resposta_pergunta (resposta, id_pergunta) VALUES (:respostaPergunta, :idPergunta)";
+//   $stmt = $this->conn->prepare($sql);
+//   $stmt->bindParam(':resposta', $resposta);
+//   $stmt->bindParam(':idPergunta', $idPergunta);
+
+
+//   return $stmt->execute();
+// }
+// public function salvarRespostas($resposta, $idAluno, $idPergunta) {
+//   $sql = "INSERT INTO resposta_pergunta (resposta, id_pergunta, id_aluno) VALUES (:resposta, :idPergunta, :idAluno)";
+//   $stmt = $this->conn->prepare($sql);
+//   $stmt->bindParam(':resposta', $resposta);
+//   $stmt->bindParam(':idPergunta', $idPergunta);
+//   $stmt->bindParam(':idAluno', $idAluno);
+
+//   return $stmt->execute();
+// }
+
+public function salvarRespostas($resposta) {
+  $sql = "INSERT INTO resposta_pergunta (resposta) VALUES (:resposta)";
+  $stmt = $this->conn->prepare($sql);
+  $stmt->bindParam(':resposta', $resposta);
+
+  return $stmt->execute();
 }
+
 }
