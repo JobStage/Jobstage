@@ -143,13 +143,49 @@ class contratosController{
     }
 
     public function listarContrato($hash){
+        $ass = '';
+        $dataHora = '';
+        $dados = [];
         foreach($this->contratos->getContratoPorHash($hash) as $value){
             $contrato = $value['contrato'];
+            $ass .= '<div class="ass-item">' . $value['nomeAss'] . '</div>';
+            $dataHora .= '<div class="dataHora-item">' . $value['dataHora'] . '</div>';
+            $dados[] = [
+                'nomeAss' => $value['nomeAss'],
+                'dataHora' => $value['dataHora']
+            ];
         }
-        echo '
+        $html =  '
             <div class="card" id="contrato-texto">
                 '.$contrato.'
+                <div class="assinaturas" style="display: flex; flex-direction: row; justify-content: space-evenly">
+                    <div>
+                       ' . (isset($dados[0]['nomeAss']) ? $dados[0]['nomeAss'] : '') . '
+                        <div class="linha"></div>
+                    </div>
+                    <div>
+                       ' . (isset($dados[1]['nomeAss']) ? $dados[1]['nomeAss'] : '') . '
+                        <div class="linha"></div>
+                    </div>
+                    <div>
+                        ' . (isset($dados[2]['nomeAss']) ? $dados[2]['nomeAss'] : '') . '
+                        <div class="linha"></div>
+                    </div>
+                </div>
+                <div class="comprovanteAss" style="margin: 0 auto; padding-top: 50px;">
+               ';
+
+                    $dataHora = new DateTime($value['dataHora']);
+                    foreach ($dados as $value) {
+                        $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y H:i:s') . '</b></p>';
+                    }
+
+        $html .= '
+                </div>
             </div>';
+
+            echo $html;
+
     }
 
     public function listarContratoAssinatura($hash){
