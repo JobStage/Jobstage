@@ -10,7 +10,13 @@ class assinaturaController{
     }
    
     public function assinarContrato($idAluno, $assinatura, $tipo, $idContrato){
-        if($this->assinaturaModel->assinarContrato($idAluno, $assinatura, $tipo, $idContrato)){
+        $a = $this->assinaturaModel->verificaAssinaturas($idContrato);
+        $assinado = false;
+
+        if($a['assinado_empresa'] && $a['assinado_instituicao'] || $a['assinado_empresa'] && $a['assinado_aluno'] || $a['assinado_aluno'] && $a['assinado_instituicao']){
+            $assinado = true;
+        }
+        if($this->assinaturaModel->assinarContrato($idAluno, $assinatura, $tipo, $idContrato, $assinado)){
             $retorno = array('tittle' => 'Sucesso', 'msg' => 'Contrato assinado!', 'icon' => 'success', 'sucesso' => true);
             echo json_encode($retorno);
             return $retorno;

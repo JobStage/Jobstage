@@ -179,7 +179,7 @@ class contratosModel{
                                             ass.nome as nomeAss,
                                             ass.dataHora as dataHora
                                         FROM contratacoes as c
-                                        RIGHT JOIN assinatura as ass
+                                        LEFT JOIN assinatura as ass
                                         on ass.idContratosEstagio = c.ID
                                             WHERE c.hashContrato = :hsh");
     
