@@ -276,5 +276,20 @@ public function salvarRespostas($resposta) {
 
   return $stmt->execute();
 }
-
+public function listarUltimaResposta() {
+  $query = "SELECT resposta FROM resposta_pergunta ORDER BY id DESC LIMIT 1";
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+  
+  // Retornar a resposta encontrada
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+public function listarUltimaPergunta() {
+  $query = "SELECT pergunta FROM perguntas ORDER BY id DESC LIMIT 1";
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+  
+  // Retornar a resposta encontrada
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 }
