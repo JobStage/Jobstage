@@ -22,7 +22,7 @@ ob_start();
         <div class="contratos" style="display: flex; justify-content:space-evenly; align-items: center;">
             <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
                 <p>Contrato estágio</p>
-                <a href="verContrato.php?idContrato=" id="verContratoLink">
+                <a href="verContrato.php?contrato=" id="verContratoLink">
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>
             </div>
