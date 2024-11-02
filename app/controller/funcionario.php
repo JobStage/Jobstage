@@ -16,12 +16,12 @@ class funcionarioController{
      
     }
 
-    public function salvar($nome, $email, $idEmpresa){
-        if(empty($nome) || empty($email)){
+    public function salvar($nome, $email, $idEmpresa, $area){
+        if(empty($nome) || empty($email) || empty($area)){
             return;
         }
 
-        if($this->funcionario->salvar($nome, $email, $idEmpresa)){
+        if($this->funcionario->salvar($nome, $email, $idEmpresa, $area)){
             $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Funcionário criado!', 'icon' => 'success');
             echo json_encode($retorno);
             return $retorno;

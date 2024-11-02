@@ -23,6 +23,13 @@ ob_start();
                     <input type="text" class="form-control" id="email">
                 </div>
                 <div class="col-md-12">
+                    <label for="area" class="form-label">Setor</label>
+                    <select id="area" class="form-select" aria-label="Default select example">
+                       
+                        
+                    </select>
+                </div>
+                <div class="col-md-12">
                      <button type="submit" class="btn btn-success" id='salvar' onclick='save()'>Salvar</button>
                 </div>
             </form>
