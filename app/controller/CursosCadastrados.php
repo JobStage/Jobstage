@@ -33,6 +33,18 @@ class CursosCadastrados{
         return $html;
     }
 
+    public function listarTodasArea(){
+        $html = "<option value=''></option>";
+        foreach($this->cursosModel->getAllArea() as $value){
+            $html .= '
+                <option value='.$value['ID'].'>' .$value['setor'] . '</option>
+            ';
+        }
+
+        echo json_encode($html);
+        return $html;
+    }
+
     public function listaCursos($id){
         $html = '<option id= "medio"> </option>';
         

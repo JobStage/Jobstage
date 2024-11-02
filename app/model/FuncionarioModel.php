@@ -9,17 +9,20 @@ class funcionarioModel{
         $this->conn = $conexao->conn();
     }
 
-    public function salvar($nome, $email, $idEmpresa){
+    public function salvar($nome, $email, $idEmpresa, $area){
         try {
-            $sql = $this->conn->prepare("INSERT INTO funcionarios (nome, email, id_empresa)
-                                        VALUES(:nome, :email, :idEmpresa)");
+            $sql = $this->conn->prepare("INSERT INTO funcionarios (nome, email, id_empresa, setor, tipo_usuario)
+                                        VALUES(:nome, :email, :idEmpresa, :setor, :user)");
             $sql->bindParam(':nome', $nome);
             $sql->bindParam(':email', $email);
             $sql->bindParam(':idEmpresa', $idEmpresa);
+            $sql->bindParam(':setor', $area);
+            $sql->bindValue(':user', 5);
     
             $sql->execute();
             return true;
         } catch (PDOException $e) {
+            echo $e;
             return false;
         }
     }
