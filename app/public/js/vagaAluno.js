@@ -60,3 +60,26 @@ function candidatar(idEmpresa, idVaga) {
     }
   });
 }
+function enviarResposta(resposta) {
+    $.ajax({
+        type: "POST",
+        url: "../app/requests/vagaAluno.php",
+        dataType: 'JSON',
+        data: {
+            tipo: 'enviarResposta',
+            resposta: resposta
+        },
+        success: function(data) {
+            Swal.fire({
+                title: data.tittle,
+                text: data.msg,
+                icon: data.icon
+            }).then(() => {
+                location.reload();
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+  }

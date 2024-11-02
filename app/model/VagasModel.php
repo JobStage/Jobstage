@@ -191,4 +191,59 @@ public function vagasCandidatadas($id, $idAluno){
     }
     
   }
+
+  public function criarPergunta($vagaId, $pergunta) {
+    $query = "INSERT INTO perguntas (id_vaga, pergunta) VALUES (:vaga_id, :pergunta)";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':vaga_id', $vagaId);
+    $stmt->bindParam(':pergunta', $pergunta);
+    $stmt->execute();
+}
+
+public function listarPerguntasPorVaga($vagaId) {
+  $query = "SELECT pergunta FROM perguntas WHERE id_vaga = :vaga_id ";
+  $stmt = $this->conn->prepare($query);
+  $stmt->bindParam(':vaga_id', $vagaId);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function editarPergunta($perguntaId, $novaPergunta) {
+    $query = "UPDATE perguntas SET pergunta = :novaPergunta WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $perguntaId);
+    $stmt->bindParam(':novaPergunta', $novaPergunta);
+    $stmt->execute();
+}
+
+public function excluirPergunta($perguntaId) {
+    $query = "DELETE FROM perguntas WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $perguntaId);
+    $stmt->execute();
+}
+
+public function salvarRespostas($resposta) {
+  $sql = "INSERT INTO resposta_pergunta (resposta) VALUES (:resposta)";
+  $stmt = $this->conn->prepare($sql);
+  $stmt->bindParam(':resposta', $resposta);
+
+  return $stmt->execute();
+}
+public function listarUltimaResposta() {
+  $query = "SELECT resposta FROM resposta_pergunta ORDER BY id DESC LIMIT 1";
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+  
+  // Retornar a resposta encontrada
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+public function listarUltimaPergunta() {
+  $query = "SELECT pergunta FROM perguntas ORDER BY id DESC LIMIT 1";
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+  
+  // Retornar a resposta encontrada
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 }

@@ -117,6 +117,11 @@ class CandidaturasController{
     }
 
     public function candidatosVaga($idVaga) {
+        $resposta = $this->vagaModel->listarUltimaResposta();
+        $respostaTexto = $resposta['resposta'] ?? 'Sem resposta';
+
+        $pergunta = $this->vagaModel->listarUltimaPergunta();
+        $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
         $html = '';
         foreach($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
             $html .= '<div class="card">
@@ -142,10 +147,11 @@ class CandidaturasController{
             <img src="../app/public/img/pasta.png" width="48px" height="48px" onclick="gerarContrato('.$value['idAluno'].', '.$idVaga.')">
         </div>
     </div>
-    <div class="more-info">
+     <div class="more-info">
         <div class="collapse" id="collapseExample">
-            Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+            '. $perguntaTexto .': '. $respostaTexto .'
         </div>
+    </div>
     </div>
 </div>';
         }
