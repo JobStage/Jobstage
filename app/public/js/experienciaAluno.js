@@ -2,7 +2,6 @@
 $(document).ready(function() {
     $('.btn-primary').on('click', function() {
         var id = $(this).val(); 
-        console.log(id);
         $.ajax({
             type: "post",
             url: "../app/requests/ExperienciaController.php",
@@ -15,7 +14,15 @@ $(document).ready(function() {
                 $('#empresaEdit').val(data.nome);
                 $('#cargoEdit').val(data.cargo);
                 $('#inicioEdit').val(data.inicio);
-                $('#fimEdit').val(data.fim);
+                if(data.fim !== 'Atual'){
+                    $('#fimEdit').val(data.fim);
+                }else{
+                    $('#fimEdit').attr('type', 'text'); 
+                    $('#fimEdit').attr('placeholder', 'Atual'); 
+                    $('#fimEdit').val('Atual'); 
+                    $('#fimEdit').prop('disabled', true); 
+                    $('#atualEdit').prop('checked', true); 
+                }
                 $('#tipoEdit').val(data.tipo);
                 $('#atividadeEdit').val(data.atividades);
                 $('#idAluno').val(data.id_aluno);
@@ -33,6 +40,33 @@ $(document).ready(function() {
     $('[data-dismiss="modal"]').on('click', function(){
         $('#staticBackdrop').modal('hide');
     });
+
+    $('#atual').on('click', function(){
+        if ($(this).is(':checked')) {
+            $('#fim').attr('type', 'text'); 
+            $('#fim').attr('placeholder', 'Atual'); 
+            $('#fim').val('Atual'); 
+            $('#fim').prop('disabled', true); 
+        } else {
+            $('#fim').attr('type', 'date');
+            $('#fim').prop('disabled', false); 
+            $('#fim').removeAttr('placeholder');
+        }
+        console.log($('#fim').val());
+    });
+
+    $('#atualEdit').on('click', function(){
+        if ($(this).is(':checked')) {
+            $('#fimEdit').attr('type', 'text'); 
+            $('#fimEdit').attr('placeholder', 'Atual'); 
+            $('#fimEdit').val('Atual'); 
+            $('#fimEdit').prop('disabled', true); 
+        } else {
+            $('#fimEdit').attr('type', 'date');
+            $('#fimEdit').prop('disabled', false); 
+            $('#fimEdit').removeAttr('placeholder');
+        }
+    });
 });
 
 function salvarExperiencia() {
@@ -43,6 +77,24 @@ function salvarExperiencia() {
     var fim = $('#fim').val();
     var tipo = $('#tipo').val();
     var atividade = $('#atividade').val();
+
+    if(!empresa || !cargo || !inicio || !fim || !tipo || !atividade){
+        Swal.fire({
+            title: 'Atenção',
+            text: 'Campos obrigatórios!',
+            icon: 'warning'
+        });
+        return;
+    }
+
+    if(inicio > fim){
+        Swal.fire({
+            title: 'Atenção',
+            text: 'A data de início não pode ser maior que a data fim',
+            icon: 'warning'
+        });
+        return;
+    }
     $.ajax({
         type: "post",
         url: "../app/requests/ExperienciaController.php",
@@ -79,6 +131,24 @@ function editarExperiencia(){
     var fim = $('#fimEdit').val();
     var tipo = $('#tipoEdit').val();
     var atividade = $('#atividadeEdit').val();
+
+    if(!nome || !cargo || !inicio || !fim || !tipo || !atividade){
+        Swal.fire({
+            title: 'Atenção',
+            text: 'Campos obrigatórios!',
+            icon: 'warning'
+        });
+        return;
+    }
+
+    if(inicio > fim){
+        Swal.fire({
+            title: 'Atenção',
+            text: 'A data de início não pode ser maior que a data fim',
+            icon: 'warning'
+        });
+        return;
+    }
     $.ajax({
         url: "../app/requests/ExperienciaController.php",
         type: 'POST',

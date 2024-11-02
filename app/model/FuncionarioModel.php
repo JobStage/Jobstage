@@ -1,15 +1,15 @@
 <?php
 require_once __DIR__."/../config/conexao.php";
 class funcionarioModel{
-  private $conn;
-
-    public function __construct()
-    {
-        $conexao = new Conexao();
-        $this->conn = $conexao->conn();
+    private $conn;
+    private $conexao; 
+    
+    public function __construct() {
+        $this->conexao = new Conexao();
+        $this->conn = $this->conexao->conn(); 
     }
-
-    public function salvar($nome, $email, $idEmpresa, $area){
+  
+  public function salvar($nome, $email, $idEmpresa, $area){
         try {
             $sql = $this->conn->prepare("INSERT INTO funcionarios (nome, email, id_empresa, setor, tipo_usuario)
                                         VALUES(:nome, :email, :idEmpresa, :setor, :user)");
@@ -40,7 +40,8 @@ class funcionarioModel{
     
             $sql->execute();
             return true;
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
+            $this->conexao->logs($e);
             return false;
         }
     }
@@ -55,7 +56,8 @@ class funcionarioModel{
 
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $result;
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
+            $this->conexao->logs($e);
             return false;
         }
     }

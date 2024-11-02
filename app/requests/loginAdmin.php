@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email']) && isset($_PO
     $_SESSION['idSessao'] = 3;
    
   
-    $retorno = array('redirecionar'=>'index.php', 'sucesso'=> true);
+    $retorno = array('redirecionar'=>'dashboard.php', 'sucesso'=> true);
     echo json_encode($retorno);
     return $retorno;
   

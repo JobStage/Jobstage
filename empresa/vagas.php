@@ -191,9 +191,15 @@ ob_start();
                         <textarea id="reqEdit" type="text" class="form-control"></textarea>
                     </div>
                     <div class="col-lg-12" style="padding:10px;">
-                    <label for="supervisor" class="form-label">Supervisor</label>
+                        <label for="supervisor" class="form-label">Supervisor</label>
                         <input class="form-select" id="editSupervisor" disabled>
-                </div>
+                    </div>
+                    <div class="col-lg-12" style="padding:10px;">
+                        <p>Perguntas</p>
+                        <div class="perguntasEdit">
+
+                        </div>
+                    </div>
                     <input type="hidden" id="idVaga">
                 </form>
             </div>
