@@ -26,7 +26,6 @@ class assinaturaModel{
             $lastInsertId = $this->conn->lastInsertId();
     
             if ($assinado) {
-                echo 'true -> ' . $lastInsertId;
                 $sql = $this->conn->prepare("UPDATE contratacoes
                                                SET assinado_{$tipoUsuario} = :id,
                                                    contratoAssinado = 1
@@ -35,7 +34,6 @@ class assinaturaModel{
                 $sql->bindParam(':idContrato', $idContrato);
                 $sql->execute();
             } else {
-                echo 'false -> ' . $lastInsertId;
                 $sql = $this->conn->prepare("UPDATE contratacoes
                                                SET assinado_{$tipoUsuario} = :id
                                                WHERE id = :idContrato");

@@ -106,6 +106,17 @@ class contratosController{
         }
     }
 
+    public function desligamentoContrato($hash){
+        if($this->contratos->desligamentoContrato($hash)){
+            $retorno = array('msg' => 'Cancelamento feito!.', 'icon' => 'success' , 'success' => true);
+            echo json_encode($retorno);
+            return $retorno;
+        }
+        $retorno = array('msg' => 'Erro na solicitacao de cancelamento!', 'icon' => 'error' , 'success' => false);
+        echo json_encode($retorno);
+        return $retorno;
+    }
+
     public function getAllContratos($idAluno){
         $html = '';
         $status = '';
@@ -118,6 +129,10 @@ class contratosController{
                 ;
             }elseif ($value['assinado_empresa'] == 0 || $value['assinado_instituicao'] == 0) {
                 $status ='<img src="../app/public/img/alerta.png" width="20px" height="20px" style="margin-right: 5px;">';
+            }elseif ($value['contratoAtivo'] == 2){
+                $status ='<img src="../app/public/img/X.png" width="20px" height="20px" style="margin-right: 5px;">';
+            }else{
+                $status ='<img src="../app/public/img/OK.png" width="20px" height="20px" style="margin-right: 5px;">';
             }
 
 
@@ -148,6 +163,7 @@ class contratosController{
         $dados = [];
         foreach($this->contratos->getContratoPorHash($hash) as $value){
             $contrato = $value['contrato'];
+            $contratoAtivo = $value['contratoAtivo'];
             $ass .= '<div class="ass-item">' . $value['nomeAss'] . '</div>';
             $dataHora .= '<div class="dataHora-item">' . $value['dataHora'] . '</div>';
             $dados[] = [
@@ -179,10 +195,11 @@ class contratosController{
                     foreach ($dados as $value) {
                         $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y H:i:s') . '</b></p>';
                     }
-
+                    $contratoId = $_GET['contrato'];
         $html .= '
                 </div>
-            </div>';
+            </div>
+            '.($contratoAtivo == 1 ? '<button class="btn btn-danger" onclick="desligamento(\'' . $contratoId . '\')">Pedir desligamento</button>' : '');
 
             echo $html;
 

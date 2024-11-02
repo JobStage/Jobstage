@@ -6,8 +6,9 @@ ob_start();
 ?>
 
 <div class="card">
-    <?= $contratos->listarContrato($_GET['idContrato']) ?>
+    <?= $contratos->listarContrato($_GET['contrato']) ?>
 </div>
+<script src="../app/public/js/contratos.js"></script>
 
 <?php
 $content = ob_get_clean(); 

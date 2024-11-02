@@ -174,6 +174,7 @@ class contratosModel{
             $sql = $this->conn->prepare("SELECT
                                             c.contrato as contrato, 
                                             c.id_aluno as idAluno, 
+                                            c.contratoAtivo as contratoAtivo, 
                                             c.id as idContrato,
                                             c.id_funcionario as idFunc,
                                             ass.nome as nomeAss,
@@ -204,6 +205,20 @@ class contratosModel{
             $result = $sql->fetch(PDO::FETCH_ASSOC);
             return $result;
 
+        } catch (Exception $e) {
+            $this->conexao->logs($e);
+            return;
+        }
+    }
+
+    public function desligamentoContrato($hash){
+        try {
+           $sql = $this->conn->prepare("UPDATE contratacoes
+                                        SET contratoAtivo = 2
+                                        WHERE hashContrato = :hashh");
+            $sql->bindParam(':hashh', $hash);
+            $sql->execute();
+            return true;
         } catch (Exception $e) {
             $this->conexao->logs($e);
             return;
