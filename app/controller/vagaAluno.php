@@ -29,7 +29,6 @@ public function listarVagas(){
     foreach ($vagas as $value) {
         // Chama o método listarPergunta para pegar as perguntas da vaga atual
         $perguntasHtml = $this->listarPergunta($value['idVaga']);
-
         $html .= '
              <div class="col-xl-6">
                 <div class="card">
@@ -37,33 +36,32 @@ public function listarVagas(){
                     <h3>' . $value['nome'] . '</h3>
                     </div>
                     <div class="card-body">
-                            <div class="">
+                            <div class="mb-3">
                                 <img src="../app/public/img/empresa.png" width="40px" heigth="40px">
-                                    ' . $value['nomeEmpresa'] . '
+                                ' . $value['nomeEmpresa'] . '
                             </div>
                         <div class="infoVaga" style="display: flex; flex-direction: row; justify-content: space-between; flex-wrap: wrap;">
-                            <div class="">
+                            <div class="mb-3">
                                 <img src="../app/public/img/cifrao.png" width="40px" heigth="40px">
                                 R$ ' . $value['salario'] . '
                             </div>
-                            <div class="">
+                            <div class="mb-3">
                                 <img src="../app/public/img/pin.png" width="40px" heigth="40px">
                                 ' . $value['nomeCidade'] . ' - ' . $value['nomeEstado'] . '
                             </div>
-                            <div class="">
+                            <div class="mb-3">
                                 <img src="../app/public/img/pasta.png" width="40px" heigth="40px">
-                                
                             </div>
                             <input type="hidden" value="' . $value['idVaga'] . '" id="idVaga">
                         </div>
                         <br>
                         <div class="row g-3">
                             <div>
-                                <button class="btn btn-secondary col-md-12" data-bs-toggle="collapse" href="#verMais' . $value['idVaga'] . '" role="button" aria-expanded="false" aria-controls="verMais">Ver mais</button>
+                                <button class="btn btn-secondary col-md-12" data-bs-toggle="collapse" href="#verMais' . $value['idVaga'] . '" role="button" aria-expanded="false" aria-controls="verMais" >Ver mais</button>
                             </div>
+                            
                         </div>
                         <div id="verMais' . $value['idVaga'] . '" class="collapse">
-                            <!-- Conteúdo do colapso -->
                             <div class="descricao">
                                 <h5>Descricao</h5>
                                 <p>' . $value['descricao'] . '</p>
@@ -71,11 +69,31 @@ public function listarVagas(){
                             <div class="requisitos">
                                 <h5>Requisitos</h5>
                                 <p>' . $value['requisitos'] . '</p>
+                          
+                                
+                                
+                                <button class="btn btn-info col-md-12" data-bs-toggle="modal" data-bs-target="#perguntaModal' . $value['idVaga'] . '">Candidatar-se</button>
+                                
                             </div>
-                            ' .$perguntasHtml .' <!-- Insere as perguntas aqui -->
-                            <div>
-                                <button class="btn btn-success col-md-12" onclick="candidatar(' . $value['id_empresa'] . ', ' . $value['idVaga'] . ')">Candidatar</button>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Perguntas -->
+            <div class="modal fade" id="perguntaModal' . $value['idVaga'] . '" tabindex="-1" aria-labelledby="perguntaModalLabel' . $value['idVaga'] . '" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="perguntaModalLabel' . $value['idVaga'] . ' ' . $value['nome'] . '</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ' . $perguntasHtml . '
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <button class="btn btn-success " onclick="candidatar(' . $value['id_empresa'] . ', ' . $value['idVaga'] . ')">Candidatar</button>
                         </div>
                     </div>
                 </div>
@@ -135,8 +153,8 @@ public function listarPergunta($idVaga){
         foreach($pergunta as $value) {
             $html .= '
                 <div class="pergunta">
-                    <h5>Perguntas</h5>
-                    <p>' . $value['pergunta'] . '</p>
+                    
+                    <h4>' . $value['pergunta'] . '</h4>
         
                     <!-- Avaliação por estrelas -->
                     <div class="rate">
@@ -172,8 +190,8 @@ public function candidatar($idVaga, $idEmpresa){
 
 public function enviarResposta( $resposta) { 
     if($this->vagaModel->salvarRespostas( $resposta)){
-        $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Respondido com sucesso', 'icon' => 'success');
-        echo json_encode($retorno);
+        // $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Respondido com sucesso', 'icon' => 'success');
+        // echo json_encode($retorno);
         return;
     }
     else {
