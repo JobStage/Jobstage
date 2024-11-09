@@ -223,10 +223,11 @@ public function excluirPergunta($perguntaId) {
     $stmt->execute();
 }
 
-public function salvarRespostas($resposta) {
-  $sql = "INSERT INTO resposta_pergunta (resposta) VALUES (:resposta)";
+public function salvarRespostas($resposta, $idAluno) {
+  $sql = "INSERT INTO resposta_pergunta (resposta, id_aluno) VALUES (:resposta, :aluno_id)";
   $stmt = $this->conn->prepare($sql);
   $stmt->bindParam(':resposta', $resposta);
+  $stmt->bindParam(':aluno_id', $idAluno);
 
   return $stmt->execute();
 }

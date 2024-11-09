@@ -106,7 +106,7 @@ public function listarVagas(){
 public function listarPergunta($idVaga){
     $html = '';
     $pergunta = $this->vagaModel->listarPerguntasPorVaga($idVaga);
-    $resposta = $this->vagaModel->salvarRespostas('');
+    // $resposta = $this->vagaModel->salvarRespostas('');
     if($pergunta ){
         $html .= '
         <style>
@@ -189,7 +189,7 @@ public function candidatar($idVaga, $idEmpresa){
 }
 
 public function enviarResposta( $resposta) { 
-    if($this->vagaModel->salvarRespostas( $resposta)){
+    if($this->vagaModel->salvarRespostas( $resposta,$_SESSION['id'])){
         // $retorno = array('success' => true, 'tittle' => 'Sucesso', 'msg' => 'Respondido com sucesso', 'icon' => 'success');
         // echo json_encode($retorno);
         return;
