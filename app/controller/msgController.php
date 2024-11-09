@@ -37,6 +37,16 @@ class msgController{
     }
   }
 
+  public function listarConversasEmpresa($idAluno){
+    foreach($this->msgModel->listarConversasEmpresa($idAluno) as $value ){
+      echo '<a href="msg.php?id='.$value['idAluno'].'" target="_blank">
+              <div class="card" style="padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9; border-radius: 5px; font-size: 16px;">
+                '. $value['nomeUsuario'] .'
+              </div>
+            </a>';
+    }
+  }
+
   public function salvarMsgEmpresa($txt, $id, $destino){
     if($this->msgModel->salvarMsgEmpresa($txt, $id, $destino)){
       $retorno = array('sucesso'=> true);

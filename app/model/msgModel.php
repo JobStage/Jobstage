@@ -52,6 +52,22 @@ class msgModel{
         }
     }
 
+    public function listarConversasEmpresa($idAluno){
+        try {
+            $sql = $this->conn->prepare(" SELECT distinct a.nome AS nomeUsuario, a.ID as idAluno FROM msgempresa AS msg
+                                            INNER JOIN aluno AS a
+                                            ON a.ID = msg.idDestino 
+                                            WHERE msg.idUsuario = :ID");
+            $sql->bindParam(':ID', $idAluno);
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }  catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
+        }
+    }
+
     public function listarMsgAluno($idEmpresa, $idAluno){
         try {
             $sql = $this->conn->prepare('SELECT e.msg as msgEmpresa, a.msg as msgAluno FROM msgempresa as e
