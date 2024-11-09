@@ -14,26 +14,38 @@ class msgModel{
 
     public function listarMsg($idEmpresa, $idAluno){
         try {
-        $stmt = $this->conn->prepare(" SELECT id, msg, idDestino, idUsuario, dataEnvio, 'msgAluno' AS origem
+            $stmt = $this->conn->prepare(" SELECT id, msg, idDestino, idUsuario, dataEnvio, 'msgAluno' AS origem
+                                                FROM msgAluno
+                                                where idUsuario = :idAluno and idDestino = :idA
+                                            UNION
+                                                SELECT id, msg, idDestino, idUsuario, dataEnvio, 'msgEmpresa' AS origem
+                                                FROM msgEmpresa
+                                                where idUsuario = :idEmpresa and idDestino = :idE
+                                            ORDER BY dataEnvio asc");
+            $stmt->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
+            $stmt->bindParam(':idEmpresa', $idEmpresa, PDO::PARAM_INT);
+            $stmt->bindParam(':idE', $idAluno, PDO::PARAM_INT);
+            $stmt->bindParam(':idA', $idEmpresa, PDO::PARAM_INT);
 
-    FROM msgAluno
-    where idUsuario = :idAluno and idDestino = :idA
-    UNION
-    SELECT id, msg, idDestino, idUsuario, dataEnvio, 'msgEmpresa' AS origem
-    FROM msgEmpresa
-    where idUsuario = :idEmpresa and idDestino = :idE
-    
-    ORDER BY dataEnvio asc
-            ");
+            $stmt->execute();
 
-        $stmt->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
-        $stmt->bindParam(':idEmpresa', $idEmpresa, PDO::PARAM_INT);
-        $stmt->bindParam(':idE', $idAluno, PDO::PARAM_INT);
-        $stmt->bindParam(':idA', $idEmpresa, PDO::PARAM_INT);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }  catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
+        }
+    }
 
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function listarConversas($idAluno){
+        try {
+            $sql = $this->conn->prepare("SELECT DISTINCT emp.id_empresa as idEmp, emp.nome AS nome FROM msgempresa AS e
+                                        INNER JOIN empresa AS emp
+                                        ON emp.id_empresa = e.idUsuario 
+                                        WHERE idDestino = :ID");
+            $sql->bindParam(':ID', $idAluno);
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
         }  catch (Exception $e) {
             $this->conexao->logs($e);
             return false;

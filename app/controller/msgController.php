@@ -18,11 +18,22 @@ class msgController{
         echo '<div class="card left alert alert-info" style="margin-right: auto;">
                 ' . htmlspecialchars($value['msg']) . '
               </div><br>';
-    } elseif ($value['origem'] == 'msgEmpresa') {
-        echo '<div class="card left alert alert-warning" style="margin-left: auto;">
-                ' . htmlspecialchars($value['msg']) . '
-              </div><br>';
+      } elseif ($value['origem'] == 'msgEmpresa') {
+          echo '<div class="card left alert alert-warning" style="margin-left: auto;">
+                  ' . htmlspecialchars($value['msg']) . '
+                </div><br>';
+      }
     }
+  }
+
+  public function listarConversas($idAluno){
+    foreach($this->msgModel->listarConversas($idAluno) as $value ){
+
+      echo '<a href="msg.php?id='.$value['idEmp'].'" target="_blank">
+            <div class="card" style="padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9; border-radius: 5px; font-size: 16px;">
+                '. $value['nome'] .'
+              </div>
+            </a>';
     }
   }
 
