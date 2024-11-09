@@ -14,11 +14,11 @@ class msgController{
 
   public function listarMsg($idEmpresa, $idAluno){
     foreach($this->msgModel->listarMsg($idEmpresa, $idAluno) as $value ){
-     if ($value['origem'] == 'Aluno') {
+     if ($value['origem'] == 'msgAluno') {
         echo '<div class="card left alert alert-info" style="margin-right: auto;">
                 ' . htmlspecialchars($value['msg']) . '
               </div><br>';
-    } elseif ($value['origem'] == 'Empresa') {
+    } elseif ($value['origem'] == 'msgEmpresa') {
         echo '<div class="card left alert alert-warning" style="margin-left: auto;">
                 ' . htmlspecialchars($value['msg']) . '
               </div><br>';

@@ -14,13 +14,16 @@ class msgModel{
 
     public function listarMsg($idEmpresa, $idAluno){
         try {
-        $stmt = $this->conn->prepare(" SELECT 'Aluno' AS origem, id, msg, idUsuario, idDestino 
-            FROM msgAluno 
-            WHERE idUsuario = :idAluno AND idDestino = :idA
-            UNION
-            SELECT 'Empresa' AS origem, id, msg, idUsuario, idDestino 
-            FROM msgEmpresa 
-            WHERE idUsuario = :idEmpresa AND idDestino = :idE
+        $stmt = $this->conn->prepare(" SELECT id, msg, idDestino, idUsuario, dataEnvio, 'msgAluno' AS origem
+
+    FROM msgAluno
+    where idUsuario = :idAluno and idDestino = :idA
+    UNION
+    SELECT id, msg, idDestino, idUsuario, dataEnvio, 'msgEmpresa' AS origem
+    FROM msgEmpresa
+    where idUsuario = :idEmpresa and idDestino = :idE
+    
+    ORDER BY dataEnvio asc
             ");
 
         $stmt->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
@@ -80,14 +83,23 @@ class msgModel{
     }
     
     public function salvarMsgAluno($txt, $idUser, $idDestino){
+        date_default_timezone_set('America/Sao_Paulo');
 
+        // Obtém a data e hora atual
+        $dataEnvio = date('Y-m-d H:i:s');  // Formato: YYYY-MM-DD HH:MM:SS
 
+        // Prepara a consulta SQL com o campo de data e hora
+        $sql = $this->conn->prepare('INSERT INTO msgaluno (msg, idDestino, idUsuario, dataEnvio) VALUES (:msg, :destino, :usuario, :dt)');
 
-        $sql = $this->conn->prepare('INSERT INTO msgaluno (msg, idDestino, idUsuario) VALUES (:msg, :destino, :usuario)');
+        // Vincula os parâmetros
         $sql->bindParam(':msg', $txt);
         $sql->bindParam(':destino', $idDestino);
         $sql->bindParam(':usuario', $idUser);
+        $sql->bindParam(':dt', $dataEnvio);  // Vincula a data e hora
+
+        // Executa a consulta
         $sql->execute();
+
         return true;
     }
    

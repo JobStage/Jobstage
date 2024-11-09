@@ -4,7 +4,6 @@ ob_start();
 require_once '../app/controller/msgController.php';
 $msg = new msgController();
 
-echo $_SESSION['id'], '--', $_GET['id'];
 ?>
 
 
