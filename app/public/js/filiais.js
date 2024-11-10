@@ -1,39 +1,39 @@
 // função para puxar os valores do banco de dados na MODAL
-// $(document).ready(function () {
-//   $('.btn-primary').on('click', function () {
-//     var id = $(this).val();
-//     console.log(id);
-//     // AJAX -----------------------------------------
-//     $.ajax({
-//       type: "post",
-//       url: "../app/requests/FilialController.php",
-//       dataType: 'json',
-//       data: {
-//         acao: 'getAll',
-//         id: id
-//       },
-//       success: function (data) {
-//         //   $('#estado').val(data.nome_curso);
-//         //   $('#optionsListCidade').val(data.instituicao);
-//         //   $('#CEP').val(data.nivel);
-//         //   $('#Rua').val(data.inicio);
-//         // $('#ensino-medio').val(data.ensino-medio);
-//         $('#tecnico').val(data.tecnico);
-//         $('#superior').val(data.superior);
-//       },
-//       error: function (xhr, status, error) {
-//         console.log("Erro ao receber os dados:", error);
-//       }
-//     });
+$(document).ready(function () {
+  $('.btn-primary').on('click', function () {
+    var id = $(this).val();
+    console.log(id);
+    // AJAX -----------------------------------------
+    $.ajax({
+      type: "post",
+      url: "../app/requests/FilialController.php",
+      dataType: 'json',
+      data: {
+        acao: 'getAll',
+        id: id
+      },
+      success: function (data) {
+        $('#estado').val(data.nome_curso);
+        $('#optionsListCidade').val(data.instituicao);
+        $('#CEP').val(data.nivel);
+        $('#Rua').val(data.inicio);
+        $('#ensino-medio').val(data.ensino - medio);
+        $('#tecnico').val(data.tecnico);
+        $('#superior').val(data.superior);
+      },
+      error: function (xhr, status, error) {
+        console.log("Erro ao receber os dados:", error);
+      }
+    });
 
-//     // Mostra o modal do Bootstrap
-//     $('#staticBackdrop').modal('show');
-//   });
+    // Mostra o modal do Bootstrap
+    $('#staticBackdrop').modal('show');
+  });
 
-//   $('[data-dismiss="modal"]').on('click', function () {
-//     $('#staticBackdrop').modal('hide');
-//   });
-// });
+  $('[data-dismiss="modal"]').on('click', function () {
+    $('#staticBackdrop').modal('hide');
+  });
+});
 
 function salvar() {
   let idfilial = $('#idFilial').val()
@@ -158,62 +158,244 @@ function editarFilial() {
   });
 }
 
-function salvarDadosFilial($id) {
-  var idfilial = $('#idFilial').val()
+// function salvarDadosFilial($id) {
+//   var idfilial = $('#idFilial').val()
+//   var estado = $('#estado option:selected').val();
+//   var cidade = $('#optionsListCidade option:selected').val();
+//   var cep = $('#CEP').val();
+//   var rua = $('#Rua').val();
+
+//   var nome = $('#nome').val();
+//   var niveis = [];
+
+//   // Verificar quais checkboxes estão marcados
+//   if ($('#medio').is(':checked')) {
+//     niveis.push(1); // Médio
+//   }
+//   if ($('#tecnico').is(':checked')) {
+//     niveis.push(2); // Técnico
+//   }
+//   if ($('#superior').is(':checked')) {
+//     niveis.push(3); // Superior
+//   }
+
+//   // Fazer a requisição AJAX com jQuery
+//   $.ajax({
+//     url: '../app/requests/FilialController.php',
+//     type: 'POST',
+//     contentType: 'application/json',
+//     // data: JSON.stringify({ nome: nome, niveis: niveis }),
+//     data: {
+//       acao: 'addFilial',
+//       id: idfilial,
+//       nome: nome,
+//       estado: estado,
+//       cidade: cidade,
+//       cep: cep,
+//       rua: rua,
+//       niveis: JSON.stringify(niveis)
+//     },
+//     success: function (data) {
+//       $('#idFilial').val(data.id);
+//       $('#nome').val(data.nome);
+//       $('#estado option:selected').val(data.estado);
+//       $('#optionsListCidade option:selected').val(data.cidade);
+//       $('#CEP').val(data.cep);
+//       $('#Rua').val(data.rua);
+//       const values = data.nivel.split(',');
+
+//       // Marcar os checkboxes com base nos valores do AJAX
+//       values.forEach(function (value) {
+//         $('input[type="checkbox"][value="' + value.trim() + '"]').prop('checked', true);
+//       });
+//     },
+//     error: function (xhr, status, error) {
+//       console.log("Erro ao receber os dados:", error);
+//     }
+//   });
+
+// }
+
+// function salvarDadosFilial($id) {
+//   var idfilial = $('#idFilial').val();
+//   var estado = $('#estado option:selected').val();
+//   var cidade = $('#optionsListCidade option:selected').val();
+//   var cep = $('#CEP').val();
+//   var rua = $('#Rua').val();
+//   var nome = $('#nome').val();
+//   var niveis = [];
+
+//   // Coletar os checkboxes marcados
+//   $('input[type="checkbox"]:checked').each(function () {
+//     niveis.push($(this).val());
+//   });
+
+//   // Fazer a requisição AJAX com jQuery
+//   $.ajax({
+//     url: '../app/requests/FilialController.php',
+//     type: 'POST',
+//     // contentType: 'application/json',
+//     data: {
+//       acao: 'addFilial',
+//       id: idfilial,
+//       nome: nome,
+//       estado: estado,
+//       cidade: cidade,
+//       cep: cep,
+//       rua: rua,
+//       niveis: niveis.join(',') // Juntar os níveis com vírgula
+//     },
+//     success: function (data) {
+//       // Log para depuração
+//       // console.log('Resposta do servidor:', data);
+
+//       $('#idFilial').val(data.id);
+//       $('#nome').val(data.nome);
+//       $('#estado option:selected').val(data.estado);
+//       $('#optionsListCidade option:selected').val(data.cidade);
+//       $('#CEP').val(data.cep);
+//       $('#Rua').val(data.rua);
+
+//       // Verificar e processar 'data.nivel'
+//       const nivelStr = typeof data.nivel === 'string' ? data.nivel : '';
+//       const valores = nivelStr.split(',').map(value => value.trim());
+
+//       // Desmarcar todos os checkboxes antes de marcar os corretos
+//       $('input[type="checkbox"]').prop('checked', false);
+//       valores.forEach(function (value) {
+//         $('input[type="checkbox"][value="' + value + '"]').prop('checked', true);
+//       });
+//     },
+//     error: function (xhr, status, error) {
+//       console.log("Erro ao receber os dados:", error);
+//     }
+//   });
+// }
+
+function salvarDadosFilial(id) {
   var estado = $('#estado option:selected').val();
   var cidade = $('#optionsListCidade option:selected').val();
   var cep = $('#CEP').val();
   var rua = $('#Rua').val();
+  var medioChecked = [];
+  var superiorChecked = [];
+  var tecnicoChecked = [];
 
-  var nome = $('#nome').val();
-  var niveis = [];
-
-  // Verificar quais checkboxes estão marcados
-  if ($('#medio').is(':checked')) {
-    niveis.push(1); // Médio
-  }
-  if ($('#tecnico').is(':checked')) {
-    niveis.push(2); // Técnico
-  }
-  if ($('#superior').is(':checked')) {
-    niveis.push(3); // Superior
+  if (!estado || !cidade || !cep || !rua) {
+    Swal.fire({
+      title: 'Atenção',
+      text: 'Campos obrigatórios',
+      icon: 'warning'
+    });
   }
 
-  // Fazer a requisição AJAX com jQuery
+  $('#medio input:checked').each(function () {
+    medioChecked.push($(this).val());
+  });
+
+  $('#superior input:checked').each(function () {
+    superiorChecked.push($(this).val());
+  });
+
+  $('#tecnico input:checked').each(function () {
+    tecnicoChecked.push($(this).val());
+  });
+
+  console.log("medio ->", medioChecked);
+  console.log("superior -> ", superiorChecked);
+  console.log("tecnico -> ", tecnicoChecked);
+  console.log("cidade -> ", cidade);
+  console.log("estado -> ", estado);
+  console.log("cep -> ", cep);
+  console.log("rua -> ", rua);
   $.ajax({
-    url: '../app/requests/FilialController.php',
-    type: 'POST',
-    contentType: 'application/json',
-    // data: JSON.stringify({ nome: nome, niveis: niveis }),
+    type: "POST",
+    url: "../app/requests/FilialController.php",
+    dataType: 'json',
     data: {
       acao: 'addFilial',
-      id: idfilial,
-      nome: nome,
+      tecnico: tecnicoChecked,
+      superior: superiorChecked,
       estado: estado,
       cidade: cidade,
-      cep: cep,
+      CEP: cep,
       rua: rua,
-      niveis: JSON.stringify(niveis)
+      idFilial: id
+      // id: idfilial,
     },
     success: function (data) {
-      $('#idFilial').val(data.id);
-      $('#nome').val(data.nome);
-      $('#estado option:selected').val(data.estado);
-      $('#optionsListCidade option:selected').val(data.cidade);
-      $('#CEP').val(data.cep);
-      $('#Rua').val(data.rua);
-      const values = data.nivel.split(',');
+      console.log(data.success);
+      if (data) {
+        Swal.fire({
+          title: 'yeah',
+          text: 'salvo',
+          icon: 'success'
+        }).then(() => {
+          location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: 'ERRO',
+          text: 'error',
+          icon: 'error'
+        });
 
-      // Marcar os checkboxes com base nos valores do AJAX
-      values.forEach(function (value) {
-        $('input[type="checkbox"][value="' + value.trim() + '"]').prop('checked', true);
-      });
+        console.log("TESTE função de erro teste");
+      }
+
     },
     error: function (xhr, status, error) {
+      // console.error(xhr.responseText);
       console.log("Erro ao receber os dados:", error);
     }
   });
+}
 
+function excluirFilial(id) {
+  Swal.fire({
+    title: "Quer mesmo excluir essa filial? ",
+    text: "Você não poderá reverter esta ação!",
+    icon: "warning",
+    showCancelButton: true,
+    cancelButtonColor: "#d33",
+    cancelButtonText: 'Não',
+    confirmButtonColor: "#3085d6",
+    confirmButtonText: "Sim"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // CRIAR AJAX -----------------
+      $.ajax({
+        url: "../app/requests/FilialController.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          acao: 'excluir',
+          id: idfilial,
+        },
+        success: function (data) {
+          if (data.success) {
+            Swal.fire({
+              title: data.tittle,
+              text: data.msg,
+              icon: data.icon
+            }).then(() => {
+              $('#staticBackdrop').modal('hide');
+              location.reload();
+            });
+          } else {
+            Swal.fire({
+              title: data.tittle,
+              text: data.msg,
+              icon: data.icon
+            });
+          };
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
+    }
+  });
 }
 
 $('#estado').change(function () {
