@@ -12,18 +12,29 @@ class vagaEmpresaModel{
         $this->conn = $this->conexao->conn(); 
     }
    
-    public function inserirPerguntas($idVaga, $perguntas){
+    public function inserirPerguntas($vagaId, $perguntas){
         try {
-            $sql = $this->conn->prepare("INSERT INTO perguntas (pergunta, id_vaga) VALUES (:pergunta, :id_vaga)");
-                $sql->bindParam(':pergunta', $perguntas);
-                $sql->bindParam(':id_vaga', $idVaga);
-                $sql->execute();
+                    // Se as perguntas vierem como uma string separada por vírgulas, converta para um array
+            if (is_string($perguntas)) {
+                $perguntas = explode(',', $perguntas);
+            }
+
+            // Inserir cada pergunta individualmente
+            $query = "INSERT INTO perguntas (id_vaga, pergunta) VALUES (:vaga_id, :pergunta)";
+            $stmt = $this->conn->prepare($query);
+
+            foreach ($perguntas as $pergunta) {
+                $stmt->bindParam(':vaga_id', $vagaId);
+                $stmt->bindParam(':pergunta', trim($pergunta)); // trim para remover espaços
+                $stmt->execute();
+            }
             return true;
         }  catch (Exception $e) {
             $this->conexao->logs($e);
             return false;
         }
-    }
+    } 
+
 
     public function criarVaga($supervisor, $nome, $rs, $modelo, $nivel, $desc, $req, $idEmpresa, $area = null, $valoresSelecionados = null, $ensinoMedio = null, $perguntas= null){
         try {
