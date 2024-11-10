@@ -201,7 +201,7 @@ public function vagasCandidatadas($id, $idAluno){
 }
 
 public function listarPerguntasPorVaga($vagaId) {
-  $query = "SELECT pergunta FROM perguntas WHERE id_vaga = :vaga_id ";
+  $query = "SELECT id, pergunta FROM perguntas WHERE id_vaga = :vaga_id";
   $stmt = $this->conn->prepare($query);
   $stmt->bindParam(':vaga_id', $vagaId);
   $stmt->execute();

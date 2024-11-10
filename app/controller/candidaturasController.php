@@ -156,5 +156,5 @@ class CandidaturasController{
 </div>';
         }
         echo $html;
-    }
+   }  
 }

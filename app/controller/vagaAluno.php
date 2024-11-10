@@ -106,8 +106,8 @@ public function listarVagas(){
 public function listarPergunta($idVaga){
     $html = '';
     $pergunta = $this->vagaModel->listarPerguntasPorVaga($idVaga);
-    // $resposta = $this->vagaModel->salvarRespostas('');
-    if($pergunta ){
+    
+    if($pergunta) {
         $html .= '
         <style>
             * {
@@ -151,31 +151,37 @@ public function listarPergunta($idVaga){
             }
         </style>';
         foreach($pergunta as $value) {
+            // Define identificadores únicos para cada pergunta
+            $idPergunta = $value['id'];
             $html .= '
                 <div class="pergunta">
-                    
                     <h4>' . $value['pergunta'] . '</h4>
         
-                    <!-- Avaliação por estrelas -->
+                    <!-- Avaliação por estrelas com identificadores únicos -->
                     <div class="rate">
-                        <input type="radio" id="star5_" name="rate_" value="5" onclick="enviarResposta(5)" />
-                        <label for="star5_" title="5 stars">5 stars</label>
-                        <input type="radio" id="star4_" name="rate_" value="4" onclick="enviarResposta(4)" />
-                        <label for="star4_" title="4 stars">4 stars</label>
-                        <input type="radio" id="star3_" name="rate_" value="3" onclick="enviarResposta(3)" />
-                        <label for="star3_" title="3 stars">3 stars</label>
-                        <input type="radio" id="star2_" name="rate_" value="2" onclick="enviarResposta(2)" />
-                        <label for="star2_" title="2 stars">2 stars</label>
-                        <input type="radio" id="star1_" name="rate_" value="1" onclick="enviarResposta(1)" />
-                        <label for="star1_" title="1 star">1 star</label>
+                        <input type="radio" id="star5_' . $idPergunta . '" name="rate_' . $idPergunta . '" value="5" onclick="enviarResposta(5)" />
+                        <label for="star5_' . $idPergunta . '" title="5 stars">5 stars</label>
+                        <input type="radio" id="star4_' . $idPergunta . '" name="rate_' . $idPergunta . '" value="4" onclick="enviarResposta(4)" />
+                        <label for="star4_' . $idPergunta . '" title="4 stars">4 stars</label>
+                        <input type="radio" id="star3_' . $idPergunta . '" name="rate_' . $idPergunta . '" value="3" onclick="enviarResposta(3)" />
+                        <label for="star3_' . $idPergunta . '" title="3 stars">3 stars</label>
+                        <input type="radio" id="star2_' . $idPergunta . '" name="rate_' . $idPergunta . '" value="2" onclick="enviarResposta(2)" />
+                        <label for="star2_' . $idPergunta . '" title="2 stars">2 stars</label>
+                        <input type="radio" id="star1_' . $idPergunta . '" name="rate_' . $idPergunta . '" value="1" onclick="enviarResposta(1)" />
+                        <label for="star1_' . $idPergunta . '" title="1 star">1 star</label>
                     </div>
-                </div>';
+                </div>
+                <br>
+                <br>
+                <br>
+                ';
         }
         return $html;
     }
 
-    return $html ? $html: '<div class="alert alert-info" role="alert"> Sem perguntas </div>';
+    return $html ? $html : '<div class="alert alert-info" role="alert">Sem perguntas</div>';
 }
+
 
 public function candidatar($idVaga, $idEmpresa){ 
     if($this->vagaModel->candidatar($idVaga, $_SESSION['id'],$idEmpresa)){
