@@ -25,7 +25,7 @@ class vagaEmpresaModel{
 
             foreach ($perguntas as $pergunta) {
                 $stmt->bindParam(':vaga_id', $vagaId);
-                $stmt->bindParam(':pergunta', trim($pergunta)); // trim para remover espaços
+                $stmt->bindParam(':pergunta', $pergunta); 
                 $stmt->execute();
             }
             return true;

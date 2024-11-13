@@ -117,44 +117,46 @@ class CandidaturasController{
     }
 
     public function candidatosVaga($idVaga) {
-        $resposta = $this->vagaModel->listarUltimaResposta();
-        $respostaTexto = $resposta['resposta'] ?? 'Sem resposta';
-
-        $pergunta = $this->vagaModel->listarUltimaPergunta();
-        $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
+        $respostas = $this->vagaModel->listarUltimasRespostas();
+        $perguntas = $this->vagaModel->listarUltimasPerguntas();
+    
         $html = '';
-        foreach($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
+        foreach ($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
             $html .= '<div class="card">
-    <div class="conteudo-principal">
-        <div class="user">
-            <h5>'.$value['nomeUsuario'].'</h5>
-            <p>'.$value['idade'].'</p>
-        </div>
-        <div class="formacao">
-            <h5>'.$value['curso'].'</h5>
-            <p>'.$value['dataFormacao'].'</p>
-        </div>
-        <div class="icons">
-            <img src="../app/public/img/info.png" width="48px" height="48px" 
-            data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-
-            <a href="curriculo.php?id='.$value['idAluno'].'" target="_blank">
-                <img src="../app/public/img/curriculo-preto.png" width="48px" height="48px">
-            </a>
-
-            <img src="../app/public/img/msg.png" width="48px" height="48px" >
-
-            <img src="../app/public/img/pasta.png" width="48px" height="48px" onclick="gerarContrato('.$value['idAluno'].', '.$idVaga.')">
-        </div>
-    </div>
-     <div class="more-info">
-        <div class="collapse" id="collapseExample">
-            '. $perguntaTexto .': '. $respostaTexto .'
-        </div>
-    </div>
-    </div>
-</div>';
+                <div class="conteudo-principal">
+                    <div class="user">
+                        <h5>' . $value['nomeUsuario'] . '</h5>
+                        <p>' . $value['idade'] . '</p>
+                    </div>
+                    <div class="formacao">
+                        <h5>' . $value['curso'] . '</h5>
+                        <p>' . $value['dataFormacao'] . '</p>
+                    </div>
+                    <div class="icons">
+                        <img src="../app/public/img/info.png" width="48px" height="48px" 
+                        data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <a href="curriculo.php?id=' . $value['idAluno'] . '" target="_blank">
+                            <img src="../app/public/img/curriculo-preto.png" width="48px" height="48px">
+                        </a>
+                        <img src="../app/public/img/msg.png" width="48px" height="48px" >
+                        <img src="../app/public/img/pasta.png" width="48px" height="48px" onclick="gerarContrato(' . $value['idAluno'] . ', ' . $idVaga . ')">
+                    </div>
+                </div>
+                <div class="more-info">
+                    <div class="collapse" id="collapseExample">';
+            
+            // Exibir cada pergunta com a respectiva resposta
+            foreach ($perguntas as $index => $pergunta) {
+                $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
+                $respostaTexto = $respostas[$index]['resposta'] ?? 'Sem resposta';
+                $html .= '<p><strong>' . $perguntaTexto . ':</strong> ' . $respostaTexto . '</p>';
+            }
+    
+            $html .= '</div>
+                </div>
+            </div>';
         }
         echo $html;
-   }  
+    }
+    
 }
