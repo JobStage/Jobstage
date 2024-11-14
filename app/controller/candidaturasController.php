@@ -144,12 +144,14 @@ class CandidaturasController{
                 </div>
                 <div class="more-info">
                     <div class="collapse" id="collapseExample">';
-            
-            // Exibir cada pergunta com a respectiva resposta
+    
+            // Exibir cada pergunta com as respectivas respostas como estrelas
             foreach ($perguntas as $index => $pergunta) {
                 $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
-                $respostaTexto = $respostas[$index]['resposta'] ?? 'Sem resposta';
-                $html .= '<p><strong>' . $perguntaTexto . ':</strong> ' . $respostaTexto . '</p>';
+                $respostaValor = $respostas[$index]['resposta'] ?? 0;
+                $respostaEstrelas = $this->gerarEstrelas((int)$respostaValor);
+    
+                $html .= '<p><strong>' . $perguntaTexto . ':</strong> ' . $respostaEstrelas . '</p>';
             }
     
             $html .= '</div>
@@ -158,5 +160,19 @@ class CandidaturasController{
         }
         echo $html;
     }
+    
+
+    private function gerarEstrelas($valor) {
+        $estrelas = '';
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= $valor) {
+                $estrelas .= '<span>&#9733;</span>'; 
+            } else {
+                $estrelas .= '<span>&#9734;</span>';  
+            }
+        }
+        return $estrelas;
+    }
+    
     
 }
