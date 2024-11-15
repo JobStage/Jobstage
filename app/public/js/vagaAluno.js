@@ -60,3 +60,47 @@ function candidatar(idEmpresa, idVaga) {
     }
   });
 }
+function enviarResposta(resposta) {
+    $.ajax({
+        type: "POST",
+        url: "../app/requests/vagaAluno.php",
+        dataType: 'JSON',
+        data: {
+            tipo: 'enviarResposta',
+            resposta: resposta
+        },
+        success: function(data) {
+            // Swal.fire({
+            //     title: data.tittle,
+            //     text: data.msg,
+            //     icon: data.icon
+            // }).then(() => {
+            //     location.reload();
+            // });
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+  }
+// JavaScript para carregar as perguntas de uma vaga na modal via AJAX
+function carregarPerguntasVaga(idVaga) {
+    $.ajax({
+        url: '../app/controller/vagaAluno.php', // Endereço do arquivo PHP que retorna as perguntas
+        method: 'GET',
+        data: { idVaga: idVaga },
+        success: function(response) {
+            // Preenche o corpo da modal com as perguntas retornadas
+            $('#perguntaModal' + idVaga + ' .modal-body').html(response);
+        },
+        error: function() {
+            alert('Erro ao carregar as perguntas.');
+        }
+    });
+}
+
+// Quando a modal for aberta, carregue as perguntas
+$('.btn-info').on('click', function() {
+    var idVaga = $(this).data('idvaga');
+    carregarPerguntasVaga(idVaga);
+});

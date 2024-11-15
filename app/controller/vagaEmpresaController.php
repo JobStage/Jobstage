@@ -98,7 +98,8 @@ class VagaEmpresaController{
             'descricao'=>$result['descricao'],  
             'requisitos'=>$result['requisitos'],  
             'id_empresa'=>$result['id_empresa'], 
-            'nomeFunc'=>$result['nome'], 
+            'nomeFunc'=>$result['nomeFunc'], 
+            'pergunta'=>$result['pergunta'], 
         );
  
         echo json_encode($array);

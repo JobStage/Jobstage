@@ -10,6 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $id = $_POST['id'];
             $contratos->gerarContratoAgencia($id);
             break;
+        case 'desligamentoContrato':
+            $id = $_POST['id'];
+            $contratos->desligamentoContrato($id);
+        break;
         
         default:
             # code...

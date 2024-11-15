@@ -16,8 +16,8 @@ $(document).ready(function(){
                 $('#telefone').val(data.tel);
                 $('#optionsListCivil [value="' + data.civil + '"]').attr('selected', 'selected');
                 $('#estado [value="' + data.estado + '"]').attr('selected', 'selected');
-                buscaCidade(data.estado); // chama funcao para listar as cidades baseado no estado
-                setTimeout(function() { // tempo para sistema puxar a cidade selecionada do banco
+                buscaCidade(data.estado); 
+                setTimeout(function() { 
                     $('#optionsListCidade [value="' + data.cidade + '"]').attr('selected', 'selected');
                 }, 100);
                 $('#cep').val(data.cep);

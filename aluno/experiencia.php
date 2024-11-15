@@ -38,6 +38,10 @@ ob_start();
                     <div class="col-lg-4">  
                         <label for="fim" class="form-label">Fim</label>
                         <input type="date" class="form-control" id="fim" required>
+                      
+                        <input type="checkbox" id="atual" class="form-check-input">
+                        <label for="atual" class="form-check-label">Atual</label>
+       
                     </div>
                     <div class="col-lg-4">
                         <label for="tipo" class="form-label">Tipo</label>
@@ -84,6 +88,9 @@ ob_start();
                     <div class="form-group">
                         <label for="fimEdit" class="form-label">Fim</label>
                         <input type="date" class="form-control" id="fimEdit" required>
+
+                        <input type="checkbox" id="atualEdit" class="form-check-input">
+                        <label for="atualEdit" class="form-check-label">Atual</label>
                     </div>
                     <div class="form-group">
                         <label for="tipoEdit" class="form-label">Tipo</label>

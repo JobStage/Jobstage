@@ -2,12 +2,12 @@
 require_once __DIR__."/../config/conexao.php";
 class Vagas{
   private $conn;
-
-    public function __construct()
-    {
-        $conexao = new Conexao();
-        $this->conn = $conexao->conn();
-    }
+  private $conexao; 
+  
+  public function __construct() {
+      $this->conexao = new Conexao();
+      $this->conn = $this->conexao->conn(); 
+  }
 
     public function getAllVagas($id, $idAluno){
       try {
@@ -48,35 +48,41 @@ class Vagas{
       
         return $result;
         
-      } catch (PDOException $e) {
-      echo $e;
-      return;
-      }
+      } catch (Exception $e) {
+        $this->conexao->logs($e);
+        return false;
+    }
   }
-  
+ 
   public function getVagaById($idVaga) {
-    // Consulta SQL para obter os detalhes da vaga pelo ID
-    $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = ?");
-    $stmt->execute([$idVaga]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+    try {
+      $stmt = $this->conn->prepare("SELECT * FROM vagas WHERE idVaga = :id");
+      $stmt->bindParam(':id', $idVaga);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-public function candidatar($idVaga,  $idAluno, $idEmpresa){
-  try {
-    $sql = $this->conn->prepare('INSERT INTO candidatura (id_vaga, id_aluno, id_empresa) VALUES (:idVaga, :idAluno, :idEmpresa)');
-      
-    // Vincula os parÃ¢metros aos valores reais
-    $sql->bindParam(':idVaga', $idVaga, PDO::PARAM_INT);
-    $sql->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
-    $sql->bindParam(':idEmpresa', $idEmpresa, PDO::PARAM_INT);
-    $sql->execute();
-    return true;
-  } catch (PDOException $e) {
-    echo $e;
-    return false;
+    }  catch (Exception $e) {
+        $this->conexao->logs($e);
+        return false;
+    }
   }
-  
-}
+
+  public function candidatar($idVaga,  $idAluno, $idEmpresa){
+    try {
+      $sql = $this->conn->prepare('INSERT INTO candidatura (id_vaga, id_aluno, id_empresa) VALUES (:idVaga, :idAluno, :idEmpresa)');
+        
+      // Vincula os parÃ¢metros aos valores reais
+      $sql->bindParam(':idVaga', $idVaga, PDO::PARAM_INT);
+      $sql->bindParam(':idAluno', $idAluno, PDO::PARAM_INT);
+      $sql->bindParam(':idEmpresa', $idEmpresa, PDO::PARAM_INT);
+      $sql->execute();
+      return true;
+    }catch (Exception $e) {
+      $this->conexao->logs($e);
+      return false;
+    }
+    
+  }
 
 
 
@@ -117,17 +123,17 @@ public function vagasCandidatadas($id, $idAluno){
 
     return $result;
 
-  } catch (PDOException $e) {
-    echo $e;
-    return;
-  }
+  } catch (Exception $e) {
+    $this->conexao->logs($e);
+    return false;
+}
 
 }
 
 
   public function candidaturasEmpresa($empresa){
     try {
-      $sql = $this->conn->prepare('SELECT n.nivel as nomeNivel, m.modelo as modeloVaga, v.* FROM vagas as v
+      $sql = $this->conn->prepare('SELECT DISTINCT n.nivel as nomeNivel, m.modelo as modeloVaga, v.* FROM vagas as v
       INNER JOIN nivel as n
         ON n.ID = v.nivel
       INNER JOIN modelo as m
@@ -143,35 +149,102 @@ public function vagasCandidatadas($id, $idAluno){
 
       return $result;
 
-    } catch (PDOException $e) {
-      echo $e;
-      return;
-    }
+    }catch (Exception $e) {
+      $this->conexao->logs($e);
+      return false;
+  }
 
   }
 
   public function getCandidatosVagas($idVaga, $idEmpresa) {
-    $sql = $this->conn->prepare("SELECT
-    al.ID as idAluno, 
-    al.nome as nomeUsuario,
-    al.data_nasc as dataNasc,
-    curs.curso as curso,
-    form.fim as dataFormacao,
-    TIMESTAMPDIFF(YEAR, al.data_nasc, CURDATE()) AS idade
-FROM 
-    candidatura as cad
-    INNER JOIN aluno as al ON al.ID = cad.id_aluno
-    INNER JOIN formacao as form ON form.id_aluno = al.ID
-    INNER JOIN curso_db as curs ON curs.ID = form.curso
-WHERE 
-    cad.id_vaga = :idVaga 
-    AND cad.id_empresa = :idEmpresa;
-
-");
+    try {
+      $sql = $this->conn->prepare(
+          "SELECT
+              al.ID as idAluno, 
+              al.nome as nomeUsuario,
+              al.data_nasc as dataNasc,
+              curs.curso as curso,
+              form.fim as dataFormacao,
+              TIMESTAMPDIFF(YEAR, al.data_nasc, CURDATE()) AS idade
+          FROM 
+              candidatura as cad
+              INNER JOIN aluno as al ON al.ID = cad.id_aluno
+              INNER JOIN formacao as form ON form.id_aluno = al.ID
+              INNER JOIN curso_db as curs ON curs.ID = form.curso
+          WHERE 
+              cad.id_vaga = :idVaga 
+              AND cad.id_empresa = :idEmpresa
+              AND cad.id_aluno NOT IN (
+                  SELECT contratacoes.id_aluno 
+                  FROM contratacoes 
+                  WHERE contratacoes.id_empresa = :idEmpresa
+              )
+      ");
     $sql->bindParam(':idVaga', $idVaga);
     $sql->bindParam(':idEmpresa', $idEmpresa);
     $sql->execute();
     $result = $sql->fetchAll(PDO::FETCH_ASSOC);
     return $result;
+    } catch (Exception $e) {
+      $this->conexao->logs($e);
+      return false;
+    }
+    
   }
+
+  public function criarPergunta($vagaId, $pergunta) {
+    $query = "INSERT INTO perguntas (id_vaga, pergunta) VALUES (:vaga_id, :pergunta)";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':vaga_id', $vagaId);
+    $stmt->bindParam(':pergunta', $pergunta);
+    $stmt->execute();
+}
+
+public function listarPerguntasPorVaga($vagaId) {
+  $query = "SELECT id, pergunta FROM perguntas WHERE id_vaga = :vaga_id";
+  $stmt = $this->conn->prepare($query);
+  $stmt->bindParam(':vaga_id', $vagaId);
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function editarPergunta($perguntaId, $novaPergunta) {
+    $query = "UPDATE perguntas SET pergunta = :novaPergunta WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $perguntaId);
+    $stmt->bindParam(':novaPergunta', $novaPergunta);
+    $stmt->execute();
+}
+
+public function excluirPergunta($perguntaId) {
+    $query = "DELETE FROM perguntas WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $perguntaId);
+    $stmt->execute();
+}
+
+public function salvarRespostas($resposta, $idAluno) {
+  $sql = "INSERT INTO resposta_pergunta (resposta, id_aluno) VALUES (:resposta, :aluno_id)";
+  $stmt = $this->conn->prepare($sql);
+  $stmt->bindParam(':resposta', $resposta);
+  $stmt->bindParam(':aluno_id', $idAluno);
+
+  return $stmt->execute();
+}
+public function listarUltimaResposta() {
+  $query = "SELECT resposta FROM resposta_pergunta ORDER BY id DESC LIMIT 1";
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+  
+  // Retornar a resposta encontrada
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+public function listarUltimaPergunta() {
+  $query = "SELECT pergunta FROM perguntas ORDER BY id DESC LIMIT 1";
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+  
+  // Retornar a resposta encontrada
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 }
