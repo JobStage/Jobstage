@@ -174,5 +174,36 @@ class FilialController {
     //         exit;
     //     }
     // }
+    public function listarFilialcadastradas(){
+        $h = '<option value=""></option>';
+        foreach($this->filial->listarTodasFiliais() as $v){
+            $h .= '<option value='. $v['id_filial'] .'>'. $v['nome'] .'</option>';
+        }
+        echo $h;
+    }
+
+    public function getDadoFilialID($id) {
+        $dadosFilial = [
+            'tecnico' => [],
+            'superior' => [],
+            'nivel' => [],
+            'cidade' => '',
+            'estado' => '',
+            'cep' => '',
+            'rua' => '',
+        ];
     
+        foreach ($this->filial->getDadosFilialID($id) as $value) {
+            $dadosFilial['tecnico'][] = $value['cursosTecnico'] ?? '';
+            $dadosFilial['superior'][] = $value['cursosSuperior'] ?? '';
+            $dadosFilial['cidade'] = $value['nomeCidade'] ?? '';
+            $dadosFilial['estado'] = $value['nomeEstado'] ?? '';
+            $dadosFilial['cep'] = $value['CEP'] ?? '';
+            $dadosFilial['rua'] = $value['rua'] ?? '';
+            $dadosFilial['nivel'] = $value['nivel'] ?? '';
+        }
+    
+        echo json_encode($dadosFilial);
+        return $dadosFilial;
+    }
 }

@@ -4,7 +4,7 @@
 //     session_start(); 
 // } 
 require_once __DIR__ . '/../model/FormacaoModel.php';
-require_once 'matricula.php';
+require_once __DIR__ . '/../controller/matricula.php';
 
 class FormacaoController{
     private $formacaoModel;
@@ -17,11 +17,11 @@ class FormacaoController{
      
     }
 
-
-    public function criarFormacao(string $curso, string $instituicao, string $nivel, $inicio, $fim, string $status, $arquivo, int $idAluno): array {
+                                                                          
+    public function criarFormacao($curso, $instituicao, $nivel, $estado, $cidade, $cep, $fim, $arquivo, $idAluno) {
         $nomeArquivo = $this->matricula->inserirMatricula($arquivo);
         
-        if($this->formacaoModel->criarFormacao($curso, $instituicao, $nivel, $inicio, $fim, $status, $nomeArquivo, $idAluno)){
+        if ($this->formacaoModel->criarFormacao($curso, $instituicao, $nivel, $estado, $cidade, $cep, $fim, $nomeArquivo, $idAluno)) {
             $retorno = array('tittle' => 'Sucesso', 'msg' => 'Formação cadastrada com sucesso!', 'icon' => 'success');
             echo json_encode($retorno);
             return $retorno;
@@ -84,7 +84,6 @@ class FormacaoController{
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Nome</th>
                         <th scope="col">Instituição</th>
                         <th scope="col">Nível</th>
                         <th scope="col">Status</th>
@@ -100,13 +99,12 @@ class FormacaoController{
                     }else{
                         $png = 'X.png';
                     } 
-                    $curso = $value['curso'] == 'null'? 'Ensino médio' : $value['curso_db'];
+                    $curso = $value['curso'] == 'null'? 'Ensino médio' : $value['curso'];
                     $html .= '
                     <tr>
                         <td><img src="../app/public/img/'.$png.'" width="30px" height="30px"></td>
-                        <td>' . $curso  . '</td>
-                        <td>' . $value['instituicao'] . '</td>
-                        <td>' . $value['nivelSelecionado'] . '</td>
+                        <td>' . $value['nome'] . '</td>
+                        <td>Médio</td>
                         <td>' . $value['status'] . '</td>
                         <td>
                             <button class="btn btn-primary" id="edit-' . $value['id_formacao'] . '" value="' . $value['id_formacao'] . '">

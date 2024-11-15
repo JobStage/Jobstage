@@ -29,6 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         case 'addFilial':
             $filial->addFilial($cursoTecnico = implode(',',$_POST["tecnico"]), $cursoSuperior = implode(',',$_POST["superior"]), $estado = $_POST["estado"], $cidade = $_POST["cidade"], $cep = $_POST["CEP"], $rua = $_POST["rua"]);
         break;
+        case 'filialSelect':
+            $filial->getDadoFilialID($_POST['idFilial']);
+        break;
         case 'excluir':
             $filial->excluirFilial($_POST['idFilial'], $idInstituicao);
     }

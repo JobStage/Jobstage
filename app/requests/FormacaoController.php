@@ -33,7 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         break;
         case 'criar':
             if (isset($_FILES["file"]) && $_FILES["file"]["error"] == 0) {
-                $formacao->criarFormacao($curso = $_POST["curso"], $instituicao = $_POST["instituicao"], $nivel = $_POST["nivel"], $inicio = $_POST["inicio"], $fim = $_POST["fim"], $status = $_POST["status"], $arquivo = $_FILES['file'], $_SESSION['id']);
+                $formacao->criarFormacao(
+                $curso = $_POST["curso"], 
+                $instituicao = $_POST["instituicao"],
+                $nivel = $_POST["nivel"], 
+                $estado = $_POST["estado"], 
+                $cidade = $_POST["cidade"], 
+                $cep = $_POST["cep"], 
+                $fim = $_POST["fim"], 
+                $arquivo = $_FILES['file'], 
+                $_SESSION['id']);
             }
         break;
     }

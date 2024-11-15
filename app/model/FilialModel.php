@@ -158,5 +158,25 @@ class FilialModel {
     //     $query = "INSERT INTO filiais_niveis (id_filial, nivel) VALUES (:idFilial, :nivel)";
     //     // Execute a query
     // }
-    
+    public function listarTodasFiliais(){
+        $sql = $this->conn->prepare('SELECT * FROM filial');
+        $sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getDadosFilialID($id){
+        $sql = $this->conn->prepare('SELECT e.nome as nomeEstado, c.nome as nomeCidade, f.* FROM filial as f
+                                    INNER JOIN estados as e
+                                    on e.id = f.estado
+                                    inner join cidades as c
+                                    on c.id = f.cidade
+                                    WHERE id_filial = :id');
+        $sql->bindParam(':id', $id);
+        $sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
 }
