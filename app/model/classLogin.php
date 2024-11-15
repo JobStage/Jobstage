@@ -54,6 +54,22 @@ class Login
             return false;
         }
     }
+    public function loginInstituicao(string $emailInstituicao, string $senhaInstituicao)
+    {
+        $sql = "SELECT id_instituicao, email, senha FROM instituicao WHERE email = :email AND senha = :senha";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $emailInstituicao);
+        $stmt->bindParam(':senha', $senhaInstituicao);
+        $stmt->execute();
+
+      
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result === false) {
+            
+            return false;  
+        }
+        return $result['id_instituicao'];
+    }
 
     public function loginAdmin(string $emailAluno, string $senhaAluno){
         try {

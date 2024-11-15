@@ -41,10 +41,16 @@ $(document).ready(function() {
         $('#staticBackdrop').modal('hide');
     });
 
-    $('#nivel').change(function() {
+    // $('#nivel').change(function() {
            
             sendAjaxRequestCurso(); 
-        });
+    // });
+
+    $('#instittuicao').change(function() {
+        requetFilialselecionada(this.value); 
+    });
+
+    
 
     $('#nivelEdit').change(function() {
         
@@ -53,27 +59,52 @@ $(document).ready(function() {
 });
 
 
+function requetFilialselecionada(a){
+    $.ajax({
+        url: '../app/requests/FilialController.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            acao: 'filialSelect',
+            idFilial: a
+        },
+        success: function(data){
+            $('#Estado').val(data.estado);
+            $('#cidade').val(data.cidade);
+            $('#Cep').val(data.cep);
+            $('#Rua').val(data.rua);
+            $('#nivel').val('Médio');
+            $('#curso').val('Ensino Médio');
+        },
+    
+           
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
 function salvarFormacao() {
     event.preventDefault();
-    var curso = $('#curso').val();
-    if ($('#curso').prop('disabled')) {
-        curso = 218;
-        console.log(curso+'1');
+    // var curso = $('#curso').val();
+    // if ($('#curso').prop('disabled')) {
+    //     curso = 218;
+    //     console.log(curso+'1');
         
-    }
-    
-    // Cria um objeto FormData
+    // }
     var formData = new FormData();
 
-    // Adiciona os valores do formulário ao objeto FormData
     formData.append('acao', 'criar');
-    formData.append('curso',curso);
     formData.append('instituicao', $('#instittuicao').val());
+    formData.append('curso', $('#curso').val());
     formData.append('nivel', $('#nivel').val());
-    formData.append('inicio', $('#inicio').val());
+    formData.append('estado', $('#Estado').val());
+    formData.append('cidade', $('#cidade').val());
+    formData.append('cep', $('#Cep').val());
+    formData.append('rua', $('#Rua').val());
     formData.append('fim', $('#fim').val());
-    formData.append('status', $('#status').val());
-    
+        
     // Adiciona o arquivo ao objeto FormData
     var file = $('#file').prop('files')[0];
 

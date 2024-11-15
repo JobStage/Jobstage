@@ -93,25 +93,25 @@ class FilialController {
 
         $cursosCadastradosFilial = '';
         if($niveis === 1){
-            $cursosCadastradosFilial .= '<div class="form-check">
+            $cursosCadastradosFilial .= '<div class="form-check" id="medio">
                                             <input class="form-check-input" type="checkbox" value="1" id="ensino-medio" checked disabled/>
                                             <label class="form-check-label" for="ensino-medio">Ensino Médio</label>
                                         </div>';
         }else{
             if(in_array(1, $niveisArray)){
-                $cursosCadastradosFilial .= '<div class="form-check">
+                $cursosCadastradosFilial .= '<div class="form-check" id="medio">
                                                 <input class="form-check-input" type="checkbox" value="1" id="ensino-medio" checked disabled/>
                                                 <label class="form-check-label" for="ensino-medio">Ensino Médio</label>
                                             </div>';
             }
             if(in_array(2, $niveisArray)){
                $tecnico = $this->cursos->listarCursosNivelTecnico();
-               $cursosCadastradosFilial .= '<div>'.$tecnico.'</div>';
+               $cursosCadastradosFilial .= '<div id="tecnico">'.$tecnico.'</div>';
             }
             
             if(in_array(3, $niveisArray)){
                $superior = $this->cursos->listarCursosNivelSuperior();
-               $cursosCadastradosFilial .= '<div>'.$superior.'</div>';
+               $cursosCadastradosFilial .= '<div id="superior">'.$superior.'</div>';
             }
 
         }
@@ -122,5 +122,88 @@ class FilialController {
 
         return $html;
        
+    }
+    
+    public function addFilial($cursosTecnico,$cursosSuperior, $estado, $cidade, $cep, $rua) {
+        // $nivelInstituicao = implode(",", $niveis);
+        // $cursoTecnicoInstituicao = implode(",", $cursoTecnico);
+        // $cursoSuperiorInstituicao = implode(",", $cursoSuperior);
+
+        $result = $this->filial->insertNivelFilial($_SESSION['id'],$cursosTecnico, $cursosSuperior, $estado, $cidade, $cep, $rua);
+        
+        echo json_encode($result);
+        return $result;
+
+    }
+
+    public function excluirFilial(int $idFilial, int $idInstituicao) {
+        $resultDeleteFilial = $this->filial->excluirFilial($idFilial, $idInstituicao);
+        
+        if($resultDeleteFilial){
+
+            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação excluída!', 'icon' => 'success');
+            echo json_encode($retorno);
+            return $retorno;
+        }
+
+        $retorno = array('success' => false, 'tittle' => 'Erro!', 'msg' => 'Não foi possível excluir o curso!', 'icon' => 'error');
+        echo json_encode($retorno);
+        return $retorno;
+    }
+    // public function addFilial() {
+    //     // Verificar se a requisição é do tipo POST
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         $data = json_decode(file_get_contents('instituicao\filiais.php'), true);
+    
+    //         $nome = $data['nome'];
+    //         $niveis = $data['niveis'];
+    
+    //         // Lógica para inserir a filial no banco de dados
+    //         // Supondo que você tenha um método para inserir uma nova filial
+    //         $idFilial = $this->criarFilial($nome,$niveis);
+    
+    //         // Agora, insira os níveis no banco de dados
+    //         foreach ($niveis as $nivel) {
+    //             // Método fictício para associar níveis a uma filial
+    //             $this->filial->insertNivelFilial($idFilial, $nivel);
+                
+    //         }
+    
+    //         // Retornar uma resposta JSON
+    //         echo json_encode(['status' => 'success']);
+    //         exit;
+    //     }
+    // }
+    public function listarFilialcadastradas(){
+        $h = '<option value=""></option>';
+        foreach($this->filial->listarTodasFiliais() as $v){
+            $h .= '<option value='. $v['id_filial'] .'>'. $v['nome'] .'</option>';
+        }
+        echo $h;
+    }
+
+    public function getDadoFilialID($id) {
+        $dadosFilial = [
+            'tecnico' => [],
+            'superior' => [],
+            'nivel' => [],
+            'cidade' => '',
+            'estado' => '',
+            'cep' => '',
+            'rua' => '',
+        ];
+    
+        foreach ($this->filial->getDadosFilialID($id) as $value) {
+            $dadosFilial['tecnico'][] = $value['cursosTecnico'] ?? '';
+            $dadosFilial['superior'][] = $value['cursosSuperior'] ?? '';
+            $dadosFilial['cidade'] = $value['nomeCidade'] ?? '';
+            $dadosFilial['estado'] = $value['nomeEstado'] ?? '';
+            $dadosFilial['cep'] = $value['CEP'] ?? '';
+            $dadosFilial['rua'] = $value['rua'] ?? '';
+            $dadosFilial['nivel'] = $value['nivel'] ?? '';
+        }
+    
+        echo json_encode($dadosFilial);
+        return $dadosFilial;
     }
 }
