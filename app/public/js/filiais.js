@@ -351,6 +351,53 @@ function salvarDadosFilial(id) {
   });
 }
 
+// function excluirFilial(id) {
+//   Swal.fire({
+//     title: "Quer mesmo excluir essa filial? ",
+//     text: "Você não poderá reverter esta ação!",
+//     icon: "warning",
+//     showCancelButton: true,
+//     cancelButtonColor: "#d33",
+//     cancelButtonText: 'Não',
+//     confirmButtonColor: "#3085d6",
+//     confirmButtonText: "Sim"
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // CRIAR AJAX -----------------
+//       $.ajax({
+//         url: "../app/requests/FilialController.php",
+//         type: 'POST',
+//         dataType: 'json',
+//         data: {
+//           acao: 'excluir',
+//           id: idfilial,
+//         },
+//         success: function (data) {
+//           if (data.success) {
+//             Swal.fire({
+//               title: data.tittle,
+//               text: data.msg,
+//               icon: data.icon
+//             }).then(() => {
+//               $('#staticBackdrop').modal('hide');
+//               location.reload();
+//             });
+//           } else {
+//             Swal.fire({
+//               title: data.tittle,
+//               text: data.msg,
+//               icon: data.icon
+//             });
+//           };
+//         },
+//         error: function (xhr, status, error) {
+//           console.error(xhr.responseText);
+//         }
+//       });
+//     }
+//   });
+// }
+
 function excluirFilial(id) {
   Swal.fire({
     title: "Quer mesmo excluir essa filial? ",
@@ -363,14 +410,14 @@ function excluirFilial(id) {
     confirmButtonText: "Sim"
   }).then((result) => {
     if (result.isConfirmed) {
-      // CRIAR AJAX -----------------
+      // Enviar AJAX para excluir a filial
       $.ajax({
         url: "../app/requests/FilialController.php",
         type: 'POST',
         dataType: 'json',
         data: {
           acao: 'excluir',
-          id: idfilial,
+          id: id,  // Corrigido aqui: passou-se o parâmetro correto
         },
         success: function (data) {
           if (data.success) {
@@ -379,8 +426,7 @@ function excluirFilial(id) {
               text: data.msg,
               icon: data.icon
             }).then(() => {
-              $('#staticBackdrop').modal('hide');
-              location.reload();
+              location.reload(); // Recarregar a página após excluir
             });
           } else {
             Swal.fire({
@@ -388,7 +434,7 @@ function excluirFilial(id) {
               text: data.msg,
               icon: data.icon
             });
-          };
+          }
         },
         error: function (xhr, status, error) {
           console.error(xhr.responseText);
@@ -397,6 +443,7 @@ function excluirFilial(id) {
     }
   });
 }
+
 
 $('#estado').change(function () {
   var valorSelecionado = $(this).val();

@@ -45,7 +45,7 @@ class FilialController {
                         </div>
                         <div class="icons">
                             <img src="../app/public/img/editar-preto.png" width="48px" height="48px" style="cursor:pointer" onclick="editar('.$value['id'].')">
-                            <img src="../app/public/img/excluir.png" width="48px" height="48px"  style="cursor:pointer">
+                            <img src="../app/public/img/excluir.png" width="48px" height="48px"  style="cursor:pointer" onclick="excluirFilial('.$value['id'].')">
                         </div>
                     </div>
                     <input type="hidden" id="idFilial" value="">
@@ -124,32 +124,57 @@ class FilialController {
        
     }
     
-    public function addFilial($cursosTecnico,$cursosSuperior, $estado, $cidade, $cep, $rua) {
+    public function addFilial($id,$cursosTecnico,$cursosSuperior, $estado, $cidade, $cep, $rua) {
         // $nivelInstituicao = implode(",", $niveis);
         // $cursoTecnicoInstituicao = implode(",", $cursoTecnico);
         // $cursoSuperiorInstituicao = implode(",", $cursoSuperior);
 
-        $result = $this->filial->insertNivelFilial($_SESSION['id'],$cursosTecnico, $cursosSuperior, $estado, $cidade, $cep, $rua);
+        $result = $this->filial->updateFilial($_SESSION['id'],$id,$cursosTecnico, $cursosSuperior, $estado, $cidade, $cep, $rua);
         
         echo json_encode($result);
         return $result;
 
     }
 
+    // public function excluirFilial(int $idFilial, int $idInstituicao) {
+    //     $resultDeleteFilial = $this->filial->excluirFilial($idFilial, $idInstituicao);
+        
+    //     if($resultDeleteFilial){
+
+    //         $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação excluída!', 'icon' => 'success');
+    //         echo json_encode($retorno);
+    //         return $retorno;
+    //     }
+
+    //     $retorno = array('success' => false, 'tittle' => 'Erro!', 'msg' => 'Não foi possível excluir o curso!', 'icon' => 'error');
+    //     echo json_encode($retorno);
+    //     return $retorno;
+    // }
+
     public function excluirFilial(int $idFilial, int $idInstituicao) {
         $resultDeleteFilial = $this->filial->excluirFilial($idFilial, $idInstituicao);
         
-        if($resultDeleteFilial){
-
-            $retorno = array('success' => true, 'tittle' => 'Sucesso!', 'msg' => 'Formação excluída!', 'icon' => 'success');
-            echo json_encode($retorno);
-            return $retorno;
+        if ($resultDeleteFilial) {
+            $retorno = array(
+                'success' => true, 
+                'tittle' => 'Sucesso!', 
+                'msg' => 'Filial excluída com sucesso!', 
+                'icon' => 'success'
+            );
+        } else {
+            $retorno = array(
+                'success' => false, 
+                'tittle' => 'Erro!', 
+                'msg' => 'Não foi possível excluir a filial!', 
+                'icon' => 'error'
+            );
         }
-
-        $retorno = array('success' => false, 'tittle' => 'Erro!', 'msg' => 'Não foi possível excluir o curso!', 'icon' => 'error');
+    
         echo json_encode($retorno);
         return $retorno;
     }
+    
+
     // public function addFilial() {
     //     // Verificar se a requisição é do tipo POST
     //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

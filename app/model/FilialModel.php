@@ -109,7 +109,7 @@ class FilialModel {
     //     $sql->execute();
     //     return true;
     // }
-    public function insertNivelFilial($id,$cursosTecnico, $cursosSuperior,$estado, $cidade, $CEP, $rua) {
+    public function updateFilial($idInstituicao, $id, $cursosTecnico, $cursosSuperior,$estado, $cidade, $CEP, $rua) {
         try {
             
             $sql = $this->conn->prepare("UPDATE filial 
@@ -119,9 +119,11 @@ class FilialModel {
                                           cidade = :cidade, 
                                           CEP = :CEP, 
                                           rua = :rua 
-                                      WHERE id_instituicao = :id");
+                                      WHERE id_filial = :id
+                                      AND id_instituicao = :idINst");
     
             $sql->bindParam(':id', $id);
+            $sql->bindParam(':idINst', $idInstituicao);
             $sql->bindParam(':cursosTecnico', $cursosTecnico);
             $sql->bindParam(':cursosSuperior', $cursosSuperior);
             $sql->bindParam(':estado', $estado);
@@ -137,22 +139,68 @@ class FilialModel {
         }
     }
 
-    public function excluirFilial(int $idFilial, int $idIstituicao) {
+    // public function excluirFilial(int $idFilial, int $idIstituicao) {
+    //     try {
+    //         $sql = $this->conn->prepare('DELETE FROM filial 
+    //                                         WHERE id_filial = :idFilial
+    //                                         AND id_instituicao = :idIstituicao');
+    //         $sql->bindParam(':idFilial',$idFilial);
+    //         $sql->bindParam(':idIstituicao',$idIstituicao);
+    
+    //         $sql->execute();
+
+    //         return true;
+    //     } catch (PDOException $e) {
+    //         echo ' MODEL -> Erro ao executar a operação: ' . $e->getMessage();
+    //         return false;
+    //     }
+    // } 
+
+    public function excluirFilial(int $idFilial, int $idInstituicao) {
         try {
             $sql = $this->conn->prepare('DELETE FROM filial 
                                             WHERE id_filial = :idFilial
-                                            AND id_instituicao = :idIstituicao');
-            $sql->bindParam(':idFilial',$idFilial);
-            $sql->bindParam(':idIstituicao',$idIstituicao);
+                                            AND id_instituicao = :idInstituicao');
+            $sql->bindParam(':idFilial', $idFilial);
+            $sql->bindParam(':idInstituicao', $idInstituicao);
     
             $sql->execute();
-
+    
             return true;
         } catch (PDOException $e) {
-            echo ' MODEL -> Erro ao executar a operação: ' . $e->getMessage();
+            echo 'Erro ao executar a operação: ' . $e->getMessage();
             return false;
         }
-    } 
+    }
+    
+    public function getFilialData($idInstituicao) {
+        try {
+            // Prepara o comando SQL para selecionar os dados da tabela "filial"
+            $sql = $this->conn->prepare("SELECT id_instituicao, cursosTecnico, cursosSuperior, estado, cidade, CEP, rua
+                                         FROM filial 
+                                         WHERE id_instituicao = :idInstituicao");
+    
+            // Vincula o parâmetro
+            $sql->bindParam(':idInstituicao', $idInstituicao);
+    
+            // Executa o comando SQL
+            $sql->execute();
+    
+            // Verifica se há resultados
+            if ($sql->rowCount() > 0) {
+                // Retorna os dados como um array associativo
+                return $sql->fetch(PDO::FETCH_ASSOC);
+            } else {
+                // Caso não encontre dados, retorna false ou null
+                return false;
+            }
+        } catch (PDOException $e) {
+            // Em caso de erro, exibe a mensagem de erro
+            echo "Erro ao buscar dados: " . $e->getMessage();
+            return false;
+        }
+    }
+    
     // private function insertNivelFilial($idFilial, $nivel) {
     //     // Implementar lógica para inserir o nível da filial
     //     $query = "INSERT INTO filiais_niveis (id_filial, nivel) VALUES (:idFilial, :nivel)";
