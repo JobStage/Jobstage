@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
+include "session.php";
 require_once '../app/controller/CidadeEstado.php';
 $estado = new CidadeEstado();
 

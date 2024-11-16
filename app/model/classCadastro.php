@@ -71,6 +71,29 @@ class Cadastro {
             return false;
         }
     }
+    public function getEmailInstituicao(string $email)
+    {
+        $sql = "SELECT email from instituicao WHERE email = :email ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":email", $email);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    
+    public function inserirInstituicao(string $email, string $senha) 
+    {
+        $sql = "INSERT INTO instituicao (email, senha) VALUES (:email, :senha)";
+        
+        $stmt = $this->conn->prepare($sql);
+
+        
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":senha", $senha);
+
+        $stmt->execute();
+    }
 
 }
 

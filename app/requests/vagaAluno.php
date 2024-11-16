@@ -14,5 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         case 'candidatar':
            $listaVagas->candidatar($_POST['idVaga'], $_POST['idEmpresa']);
             break;
+        case 'enviarResposta':
+            $listaVagas->enviarResposta( $_POST['resposta']);
+            break;
     }
 }

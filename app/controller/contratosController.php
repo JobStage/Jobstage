@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/../model/contratosModel.php';
 require_once __DIR__ . '/../model/VagasModel.php';
+require_once __DIR__ . '/../model/FormacaoModel.php';
 require_once __DIR__ . '/../../email.php';
 
 class contratosController{
     private $contratos;
+    private $formacao;
     private $email;
     private $dadosVaga;
     public function __construct() {
         $this->contratos = new contratosModel();
         $this->dadosVaga = new Vagas();
+        $this->formacao = new FormacaoModel();
         $this->email = new email();
     }
     // funcao para a empresa slicitar um contrato
@@ -18,7 +21,11 @@ class contratosController{
             $funcionarioId = $value['id_funcionario'];
         }
 
-        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId)){
+       foreach($this->formacao->getFormacaoFilial($idAluno) as $v){
+        $idFilial = $v['instituicao'];
+       }
+       
+        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId, $idFilial)){
             $retorno = array('msg' => 'Solicitação enviada! Aguarde a geração de contrato.', 'icon' => 'success' , 'success' => true);
             echo json_encode($retorno);
             return $retorno;
@@ -193,7 +200,7 @@ class contratosController{
 
                     $dataHora = new DateTime($value['dataHora']);
                     foreach ($dados as $value) {
-                        $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y H:i:s') . '</b></p>';
+                        $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y') . '</b></p>';
                     }
                     $contratoId = $_GET['contrato'];
         $html .= '
@@ -241,6 +248,25 @@ class contratosController{
             
             <br>
             <button class="btn btn-primary" onclick="assinaturaFunc('. $idFunc .')">Assinar</button>
+            ';
+    }
+
+    public function listarContratoAssinaturaInst($hash){
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+            $idContrato = $value['idContrato'];
+            $idFunc = $value['idFilial'];
+        }
+        echo '
+            <div class="card">
+                '.$contrato.'
+            </div>
+            <br>
+            <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            <input type="hidden" id="idContrato" value='.$idContrato.'>
+            
+            <br>
+            <button class="btn btn-primary" onclick="assinaturaInst('. $idFunc .')">Assinar</button>
             ';
     }
 

@@ -1,8 +1,11 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 require_once '../app/controller/FormacaoController.php';
 require_once '../app/controller/CursosCadastrados.php';
+require_once '../app/controller/FilialController.php';
 $formacao = new FormacaoController();
+$filial = new FilialController();
 $cursos = new CursosCadastrados();
 ob_start();  
 ?>
@@ -28,46 +31,39 @@ ob_start();
                 <form class="row g-3" id="uploadForm" enctype="multipart/form-data">
                     <div class="col-lg-4">
                         <label for="instittuicao" class="form-label">Instituição</label>
-                        <input type="text" class="form-control" id="instittuicao" required>
+                        <select type="text" class="form-control" id="instittuicao" required>
+                            <?=$filial->listarFilialcadastradas() ?>
+                        </select>
                     </div>
                     <div class="col-lg-4">
                         <label for="nivel" class="form-label">Nível</label>
-                        <select type="text" class="form-control" id="nivel" required><?=$cursos->getNivel() ?></select>
+                        <input type="text" class="form-control" id="nivel" disabled></input>
                     </div>
                     <div class="col-lg-4">
                         <label for="curso" class="form-label">Curso</label>
-                        <select type="text" class="form-control" id="curso" required disabled> </select>
+                        <input type="text" class="form-control" id="curso" required disabled> </input>
+                    </div>           
+                    <div class="col-lg-2">
+                        <label for="Estado" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="Estado" disabled>
                     </div>
-                    <!-- <div class="col-lg-4">
-                        <label for="estado" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estado" required disabled>
+                    <div class="col-lg-2">
+                        <label for="fim" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" id="cidade" disabled>
                     </div>
                     <div class="col-lg-4">
-                        <label for="cidade" class="form-label">Cidade</label>
-                        <input type="text" class="form-control" id="cidade" required disabled>
-                    </div>
-                    <div class="col-lg-2">
-                        <label for="cep" class="form-label">CEP</label>
-                        <input type="number" class="form-control" id="cep" required disabled>
+                        <label for="Cep" class="form-label">Cep</label>
+                        <input type="text" class="form-control" id="Cep" disabled>
                     </div>
                     <div class="col-lg-4">
-                        <label for="rua" class="form-label">Rua</label>
-                        <input type="text" class="form-control" id="rua" required disabled>
-                    </div> -->
-                                       
-                    <div class="col-lg-2">
-                        <label for="inicio" class="form-label">Inicio</label>
-                        <input type="date" class="form-control" id="inicio" required>
+                        <label for="Rua" class="form-label">Rua</label>
+                        <input type="text" class="form-control" id="Rua" disabled>
                     </div>
-                    <div class="col-lg-2">
-                        <label for="fim" class="form-label">Fim</label>
+                    <div class="col-lg-4">
+                        <label for="fim" class="form-label">Previsão formatura</label>
                         <input type="date" class="form-control" id="fim" required>
                     </div>
-                    <div class="col-lg-4">
-                        <label for="status" class="form-label">Status</label>
-                        <input type="text" class="form-control" id="status" required>
-                    </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-8">
                         <label for="file" class="form-label">Matrícula</label>
                         <input type="file" class="form-control" id="file" required>
                     </div>

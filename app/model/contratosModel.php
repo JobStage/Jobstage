@@ -12,19 +12,19 @@ class contratosModel{
         $this->conn = $this->conexao->conn(); 
     }
 
-    public function gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId){
+    public function gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId, $idFilial){
         try {
-            $sql = $this->conn->prepare("INSERT INTO contratacoes (idVaga, id_aluno, id_empresa, id_funcionario)
-                                        VALUES (:vaga, :aluno, :empresa, :func)");
+            $sql = $this->conn->prepare("INSERT INTO contratacoes (idVaga, id_aluno, id_empresa, id_funcionario, idFilial)
+                                        VALUES (:vaga, :aluno, :empresa, :func, :filial)");
             $sql->bindParam(':aluno', $idAluno);
             $sql->bindParam(':vaga', $idVaga);
             $sql->bindParam(':empresa', $idEmpresa);
             $sql->bindParam(':func', $funcionarioId);
+            $sql->bindParam(':filial', $idFilial);
             $sql->execute();
-
             return true;
         } catch (Exception $e) {
-            $this->conexao->logs($e);
+           echo $e;
             return false;
         }
         
@@ -174,6 +174,7 @@ class contratosModel{
             $sql = $this->conn->prepare("SELECT
                                             c.contrato as contrato, 
                                             c.id_aluno as idAluno, 
+                                            c.idFilial as idFilial, 
                                             c.contratoAtivo as contratoAtivo, 
                                             c.id as idContrato,
                                             c.id_funcionario as idFunc,

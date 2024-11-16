@@ -12,6 +12,10 @@
         case '3':
             $template = '../app/public/html/sidebarAdmin.html';
         break;
+        break;
+        case '4':
+            $template = '../app/public/html/sidebarInst.html';
+        break;
     }
 ?>
 

@@ -28,7 +28,8 @@ class assinaturaModel{
             if ($assinado) {
                 $sql = $this->conn->prepare("UPDATE contratacoes
                                                SET assinado_{$tipoUsuario} = :id,
-                                                   contratoAssinado = 1
+                                                   contratoAssinado = 1,
+                                                   contratoAtivo = 1
                                                WHERE id = :idContrato");
                 $sql->bindParam(':id', $lastInsertId);
                 $sql->bindParam(':idContrato', $idContrato);
