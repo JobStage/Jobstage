@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 require_once '../app/controller/contratosController.php';
 $contratos = new contratosController();
 ob_start(); 
@@ -22,16 +23,16 @@ ob_start();
         <div class="contratos" style="display: flex; justify-content:space-evenly; align-items: center;">
             <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
                 <p>Contrato estágio</p>
-                <a href="verContrato.php?idContrato=" id="verContratoLink">
+                <a href="verContrato.php?contrato=" id="verContratoLink">
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>
             </div>
-            <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
+            <!-- <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
                 <p>Relatórios</p>
                 <a href="relatorios.php?idAluno=" id="verRelatorioLink">
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>    
-            </div>
+            </div> -->
         </div>
       </div>
       <div class="modal-footer">

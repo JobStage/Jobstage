@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 require_once '../app/controller/funcionario.php';
 
 $funcionario = new funcionarioController();
@@ -21,6 +22,13 @@ ob_start();
                 <div class="col-md-6">
                     <label for="email" class="form-label">E-mail</label>
                     <input type="text" class="form-control" id="email">
+                </div>
+                <div class="col-md-12">
+                    <label for="area" class="form-label">Setor</label>
+                    <select id="area" class="form-select" aria-label="Default select example">
+                       
+                        
+                    </select>
                 </div>
                 <div class="col-md-12">
                      <button type="submit" class="btn btn-success" id='salvar' onclick='save()'>Salvar</button>

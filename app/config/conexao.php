@@ -34,4 +34,18 @@ class Conexao {
         
         $sql->execute();
     }    
+
+    public function listarLogs(){
+        $sql = $this->connection->prepare("SELECT * FROM logs");
+        $sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($result as $v){
+            echo ' <tr>
+                    <th scope="row">'.$v['id'].'</th>
+                    <td>'.$v['mensagem'].'</td>
+                    <td>'.$v['dataHora'].'</td>
+                </tr>';
+        }
+    }
 }

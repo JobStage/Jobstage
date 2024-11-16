@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $acao = $_POST['acao'];   
     $filial = new FilialController($_SESSION['id']);
     $valoresSelecionados =  $_POST['niveis'] ?? null;
+    $idInstituicao = $_SESSION['id'];
 
     switch($acao){
         case 'criarFilial':
@@ -25,6 +26,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $valoresSelecionados = $valoresSelecionados ? json_decode($valoresSelecionados, true) : null;
             $filial->editarFilial($_POST['nome'], $_POST['id'], $valoresSelecionados);
         break;
+        case 'addFilial':
+            $filial->addFilial($cursoTecnico = implode(',',$_POST["tecnico"]), $cursoSuperior = implode(',',$_POST["superior"]), $estado = $_POST["estado"], $cidade = $_POST["cidade"], $cep = $_POST["CEP"], $rua = $_POST["rua"]);
+        break;
+        case 'filialSelect':
+            $filial->getDadoFilialID($_POST['idFilial']);
+        break;
+        case 'excluir':
+            $filial->excluirFilial($_POST['idFilial'], $idInstituicao);
     }
 
 

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 require_once '../app/controller/candidaturasController.php';
 $candidatura = new CandidaturasController();
 ob_start(); 

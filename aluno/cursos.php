@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 require_once '../app/controller/CursosController.php';
 $cursos = new CursosController();
 ob_start(); 

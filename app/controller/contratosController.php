@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/../model/contratosModel.php';
 require_once __DIR__ . '/../model/VagasModel.php';
+require_once __DIR__ . '/../model/FormacaoModel.php';
 require_once __DIR__ . '/../../email.php';
 
 class contratosController{
     private $contratos;
+    private $formacao;
     private $email;
     private $dadosVaga;
     public function __construct() {
         $this->contratos = new contratosModel();
         $this->dadosVaga = new Vagas();
+        $this->formacao = new FormacaoModel();
         $this->email = new email();
     }
     // funcao para a empresa slicitar um contrato
@@ -18,7 +21,11 @@ class contratosController{
             $funcionarioId = $value['id_funcionario'];
         }
 
-        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId)){
+       foreach($this->formacao->getFormacaoFilial($idAluno) as $v){
+        $idFilial = $v['instituicao'];
+       }
+       
+        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId, $idFilial)){
             $retorno = array('msg' => 'Solicitação enviada! Aguarde a geração de contrato.', 'icon' => 'success' , 'success' => true);
             echo json_encode($retorno);
             return $retorno;
@@ -106,18 +113,33 @@ class contratosController{
         }
     }
 
+    public function desligamentoContrato($hash){
+        if($this->contratos->desligamentoContrato($hash)){
+            $retorno = array('msg' => 'Cancelamento feito!.', 'icon' => 'success' , 'success' => true);
+            echo json_encode($retorno);
+            return $retorno;
+        }
+        $retorno = array('msg' => 'Erro na solicitacao de cancelamento!', 'icon' => 'error' , 'success' => false);
+        echo json_encode($retorno);
+        return $retorno;
+    }
+
     public function getAllContratos($idAluno){
         $html = '';
         $status = '';
         foreach($this->contratos->getContratos($idAluno) as $value){
             if($value['assinado_aluno'] == 0){
-                $status .= '
+                $status = '
                     <a href="assinatura.php?contrato='.$value['hashContrato'].'">
                         <img src="../app/public/img/elipse.png" width="20px" height="20px" style="margin-right: 5px;">
                     </a>'
                 ;
             }elseif ($value['assinado_empresa'] == 0 || $value['assinado_instituicao'] == 0) {
-                $status .='<img src="../app/public/img/alerta.png" width="20px" height="20px" style="margin-right: 5px;">';
+                $status ='<img src="../app/public/img/alerta.png" width="20px" height="20px" style="margin-right: 5px;">';
+            }elseif ($value['contratoAtivo'] == 2){
+                $status ='<img src="../app/public/img/X.png" width="20px" height="20px" style="margin-right: 5px;">';
+            }else{
+                $status ='<img src="../app/public/img/OK.png" width="20px" height="20px" style="margin-right: 5px;">';
             }
 
 
@@ -143,13 +165,51 @@ class contratosController{
     }
 
     public function listarContrato($hash){
+        $ass = '';
+        $dataHora = '';
+        $dados = [];
         foreach($this->contratos->getContratoPorHash($hash) as $value){
             $contrato = $value['contrato'];
+            $contratoAtivo = $value['contratoAtivo'];
+            $ass .= '<div class="ass-item">' . $value['nomeAss'] . '</div>';
+            $dataHora .= '<div class="dataHora-item">' . $value['dataHora'] . '</div>';
+            $dados[] = [
+                'nomeAss' => $value['nomeAss'],
+                'dataHora' => $value['dataHora']
+            ];
         }
-        echo '
+        $html =  '
             <div class="card" id="contrato-texto">
                 '.$contrato.'
-            </div>';
+                <div class="assinaturas" style="display: flex; flex-direction: row; justify-content: space-evenly">
+                    <div>
+                       ' . (isset($dados[0]['nomeAss']) ? $dados[0]['nomeAss'] : '') . '
+                        <div class="linha"></div>
+                    </div>
+                    <div>
+                       ' . (isset($dados[1]['nomeAss']) ? $dados[1]['nomeAss'] : '') . '
+                        <div class="linha"></div>
+                    </div>
+                    <div>
+                        ' . (isset($dados[2]['nomeAss']) ? $dados[2]['nomeAss'] : '') . '
+                        <div class="linha"></div>
+                    </div>
+                </div>
+                <div class="comprovanteAss" style="margin: 0 auto; padding-top: 50px;">
+               ';
+
+                    $dataHora = new DateTime($value['dataHora']);
+                    foreach ($dados as $value) {
+                        $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y') . '</b></p>';
+                    }
+                    $contratoId = $_GET['contrato'];
+        $html .= '
+                </div>
+            </div>
+            '.($contratoAtivo == 1 ? '<button class="btn btn-danger" onclick="desligamento(\'' . $contratoId . '\')">Pedir desligamento</button>' : '');
+
+            echo $html;
+
     }
 
     public function listarContratoAssinatura($hash){
@@ -188,6 +248,25 @@ class contratosController{
             
             <br>
             <button class="btn btn-primary" onclick="assinaturaFunc('. $idFunc .')">Assinar</button>
+            ';
+    }
+
+    public function listarContratoAssinaturaInst($hash){
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+            $idContrato = $value['idContrato'];
+            $idFunc = $value['idFilial'];
+        }
+        echo '
+            <div class="card">
+                '.$contrato.'
+            </div>
+            <br>
+            <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            <input type="hidden" id="idContrato" value='.$idContrato.'>
+            
+            <br>
+            <button class="btn btn-primary" onclick="assinaturaInst('. $idFunc .')">Assinar</button>
             ';
     }
 

@@ -3,12 +3,12 @@
 require_once  __DIR__  .'/../config/conexao.php';
 
 class ExperienciaModel {
-
-  private $conn; 
+    private $conn;
+    private $conexao; 
     
     public function __construct() {
-        $conexao = new Conexao();
-        $this->conn = $conexao->conn();
+        $this->conexao = new Conexao();
+        $this->conn = $this->conexao->conn(); 
     }
 
     public function atualizar($idExperiencia, $nome, $cargo, $inicio, $fim, $tipo, $atividades, $id_aluno) {
@@ -33,54 +33,58 @@ class ExperienciaModel {
     
             $sql->execute();
             return true;
-        } catch (PDOException $e) {
-            return $e->getMessage();
+        }catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
         }
     }
-    
+   
     
 
    public function getAllExperiencia(int $idAluno,$id = null){
-        $sql = 'SELECT * FROM experiencia';
-        $sql .= ' WHERE id_aluno = :idAluno';
+        try {
+            $sql = 'SELECT * FROM experiencia';
+            $sql .= ' WHERE id_aluno = :idAluno';
+    
+            if ($id !== null) {
+                $sql .= ' AND id_exp = :id';
+            }
+    
+            $sql = $this->conn->prepare($sql);
+            $sql->bindValue(':idAluno', $idAluno);
+    
+            if ($id !== null) {
+                $sql->bindParam(':id', $id);
+            }
 
-        // verifica se existe valor no id para incluir no WHERE
-        if ($id !== null) {
-            $sql .= ' AND id_exp = :id';
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+
+        }  catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
         }
-
-        $sql = $this->conn->prepare($sql);
-
-        $sql->bindValue(':idAluno', $idAluno);
-
-        // verifica novamente se existe valor para inserir no bindParam
-        if ($id !== null) {
-            $sql->bindParam(':id', $id);
-        }
-
-        $sql->execute();
-        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
    }
    public function salvarExperiencia(int $idAluno, string $cargo, string $empresa, string $tipo, $inicio, $fim, string $atividades) {
-    try {
-        $sql = $this->conn->prepare('INSERT INTO experiencia (cargo, nome, inicio, fim, tipo, atividades, id_aluno) VALUES (:cargo, :empresa, :inicio, :fim, :tipo, :atividades, :id_aluno)');
+        try {
+            $sql = $this->conn->prepare('INSERT INTO experiencia (cargo, nome, inicio, fim, tipo, atividades, id_aluno) VALUES (:cargo, :empresa, :inicio, :fim, :tipo, :atividades, :id_aluno)');
 
-        $sql->bindValue(':cargo', $cargo);
-        $sql->bindValue(':empresa', $empresa);
-        $sql->bindValue(':inicio', $inicio);
-        $sql->bindValue(':fim', $fim);
-        $sql->bindValue(':tipo', $tipo);
-        $sql->bindValue(':atividades', $atividades);
-        $sql->bindValue(':id_aluno', $idAluno);
+            $sql->bindValue(':cargo', $cargo);
+            $sql->bindValue(':empresa', $empresa);
+            $sql->bindValue(':inicio', $inicio);
+            $sql->bindValue(':fim', $fim);
+            $sql->bindValue(':tipo', $tipo);
+            $sql->bindValue(':atividades', $atividades);
+            $sql->bindValue(':id_aluno', $idAluno);
 
-        $sql->execute();
-        return true;
-    } catch (PDOException $e) {
-        return $e->getMessage();
+            $sql->execute();
+            return true;
+        } catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
+        }
     }
-}
 
     public function excluirExperiencia(int $idExp, int $idAluno): bool {
         try {
@@ -93,11 +97,9 @@ class ExperienciaModel {
             $sql->execute();
 
             return true;
-        } catch (PDOException $e) {
-            echo ' MODEL -> Erro ao executar a operação: ' . $e->getMessage();
+        } catch (Exception $e) {
+            $this->conexao->logs($e);
             return false;
         }
     }
-
-
 }

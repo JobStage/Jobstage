@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Tempo de geração: 29-Abr-2024 às 01:04
--- Versão do servidor: 8.0.31
--- versão do PHP: 8.2.0
+-- Host: 127.0.0.1
+-- Tempo de geração: 21/10/2024 às 00:44
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -26,47 +26,89 @@ USE `jobstage`;
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `aluno`
+-- Estrutura para tabela `admin`
 --
 
-DROP TABLE IF EXISTS `aluno`;
-CREATE TABLE IF NOT EXISTS `aluno` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `data_nasc` date DEFAULT NULL,
-  `telefone` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `estado_civil` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cidade` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `estado` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `CEP` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `rua` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `numero` int DEFAULT NULL,
-  `descricao` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `linkedin` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `termos_de_uso` int DEFAULT '0' COMMENT 'mensagem que aparece apos fazer login (1 = aceitou // 0 ou NULL = nao aceitou)',
-  `cadastro_completo` int DEFAULT NULL COMMENT 'Quando inserir todos os dados na pagina de dados de usuario o cadastro estara completo (1)',
-  `senha` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `senha` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `admin`
+--
+
+INSERT INTO `admin` (`id`, `email`, `senha`) VALUES
+(1, '1', '9b02906129c8840ced91ac5f934bde4d');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `cidades`
+-- Estrutura para tabela `aluno`
 --
 
-DROP TABLE IF EXISTS `cidades`;
-CREATE TABLE IF NOT EXISTS `cidades` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(120) DEFAULT NULL,
-  `id_estado` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_Cidade_estado` (`id_estado`)
-) ENGINE=InnoDB AUTO_INCREMENT=5565 DEFAULT CHARSET=latin1;
+CREATE TABLE `aluno` (
+  `ID` int(11) NOT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `data_nasc` date DEFAULT NULL,
+  `telefone` varchar(14) DEFAULT NULL,
+  `estado_civil` varchar(20) DEFAULT NULL,
+  `cidade` int(11) DEFAULT NULL,
+  `estado` int(11) DEFAULT NULL,
+  `CEP` varchar(9) DEFAULT NULL,
+  `rua` varchar(100) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `descricao` varchar(500) DEFAULT NULL,
+  `linkedin` varchar(150) DEFAULT NULL,
+  `termos_de_uso` int(11) DEFAULT 0 COMMENT 'mensagem que aparece apos fazer login (1 = aceitou // 0 ou NULL = nao aceitou)',
+  `cadastro_completo` int(11) DEFAULT NULL COMMENT 'Quando inserir todos os dados na pagina de dados de usuario o cadastro estara completo (1)',
+  `senha` varchar(100) NOT NULL,
+  `tipo_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
--- Extraindo dados da tabela `cidades`
+-- Estrutura para tabela `assinatura`
+--
+
+CREATE TABLE `assinatura` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `idContratosEstagio` int(11) DEFAULT NULL,
+  `usuarioAssinado` int(11) NOT NULL COMMENT 'pega o ID de usuario pra saber quem assinou',
+  `dataHora` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `candidatura`
+--
+
+CREATE TABLE `candidatura` (
+  `ID` int(11) NOT NULL,
+  `id_vaga` int(11) DEFAULT NULL,
+  `id_aluno` int(11) DEFAULT NULL,
+  `id_empresa` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cidades`
+--
+
+CREATE TABLE `cidades` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(120) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `id_estado` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `cidades`
 --
 
 INSERT INTO `cidades` (`id`, `nome`, `id_estado`) VALUES
@@ -5640,60 +5682,335 @@ INSERT INTO `cidades` (`id`, `nome`, `id_estado`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `curso`
+-- Estrutura para tabela `contratacoes`
 --
 
-DROP TABLE IF EXISTS `curso`;
-CREATE TABLE IF NOT EXISTS `curso` (
-  `id_curso` int NOT NULL AUTO_INCREMENT,
-  `nome_curso` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `instituicao` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `contratacoes` (
+  `ID` int(11) NOT NULL,
+  `idVaga` int(11) NOT NULL,
+  `id_aluno` int(11) NOT NULL,
+  `id_empresa` int(11) NOT NULL,
+  `idContrato` int(11) NOT NULL,
+  `idRelatorio` int(11) NOT NULL,
+  `id_funcionario` int(11) DEFAULT NULL,
+  `contratoGerado` int(11) NOT NULL,
+  `contratoAssinado` int(11) NOT NULL,
+  `contratoAtivo` int(11) NOT NULL COMMENT '0 = em andamento / 1 = ativo / 2 = encerrado',
+  `contrato` text DEFAULT NULL,
+  `assinado_empresa` int(11) DEFAULT NULL,
+  `assinado_aluno` int(11) DEFAULT NULL,
+  `assinado_instituicao` int(11) DEFAULT NULL,
+  `idFilial` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `hashContrato` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `contratosestagio`
+--
+
+CREATE TABLE `contratosestagio` (
+  `id` int(11) NOT NULL,
+  `contrato` text NOT NULL,
+  `assinado_empresa` int(11) DEFAULT NULL COMMENT '(1º a assinar) quando assinar mudar para 1',
+  `assinado_aluno` int(11) DEFAULT NULL COMMENT '(2º a assinar) quando assinar mudar para 1',
+  `assinado_instituicao` int(11) DEFAULT NULL COMMENT '(3º a assinar) quando assinar mudar para 1',
+  `idFilial` int(11) DEFAULT NULL COMMENT 'pega o id da filial para saber qual filial precisa assinar',
+  `status` int(11) NOT NULL,
+  `hashContrato` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `curso`
+--
+
+CREATE TABLE `curso` (
+  `id_curso` int(11) NOT NULL,
+  `nome_curso` varchar(50) NOT NULL,
+  `instituicao` varchar(50) NOT NULL,
   `inicio` date NOT NULL,
   `fim` date NOT NULL,
-  `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nivel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `id_aluno` int NOT NULL,
-  PRIMARY KEY (`id_curso`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `status` varchar(50) NOT NULL,
+  `nivel` varchar(50) NOT NULL,
+  `id_aluno` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `empresa`
+-- Estrutura para tabela `curso_db`
 --
 
-DROP TABLE IF EXISTS `empresa`;
-CREATE TABLE IF NOT EXISTS `empresa` (
-  `id_empresa` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `cnpj` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `senha` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `contato` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `estado` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `cidade` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `cep` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `rua` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `numero` int NOT NULL,
-  PRIMARY KEY (`id_empresa`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `curso_db` (
+  `ID` int(11) NOT NULL,
+  `curso` varchar(100) DEFAULT NULL,
+  `nivel_id` int(11) DEFAULT NULL,
+  `setor_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `curso_db`
+--
+
+INSERT INTO `curso_db` (`ID`, `curso`, `nivel_id`, `setor_id`) VALUES
+(1, 'Pedagogia', 3, 1),
+(2, 'Educação Física', 3, 1),
+(3, 'Artes Visuais', 3, 1),
+(4, 'Música', 3, 1),
+(5, 'Artes', 3, 2),
+(6, 'Cinema e Animação', 3, 2),
+(7, 'Design de Interiores', 3, 2),
+(8, 'Moda', 3, 2),
+(9, 'Design', 3, 2),
+(10, 'Filosofia', 3, 2),
+(11, 'História', 3, 2),
+(12, 'Literatura', 3, 2),
+(13, 'Artes Cênicas', 3, 2),
+(14, 'Dança', 3, 2),
+(15, 'Música', 3, 2),
+(16, 'Teatro', 3, 2),
+(17, 'Teologia', 3, 2),
+(18, 'Fotografia', 3, 2),
+(19, 'Som e Imagem', 3, 2),
+(20, 'Ciência Política', 3, 3),
+(21, 'Relações Internacionais', 3, 3),
+(22, 'Ciências Sociais', 3, 3),
+(23, 'Negócios Internacionais', 3, 3),
+(24, 'Ciências Contábeis', 3, 3),
+(25, 'Direito', 3, 3),
+(26, 'Economia', 3, 3),
+(27, 'Administração', 3, 3),
+(28, 'Empreendedorismo', 3, 3),
+(29, 'Jornalismo', 3, 3),
+(30, 'Radiologia', 3, 3),
+(31, 'Radio', 3, 3),
+(32, 'Marketing', 3, 3),
+(33, 'Psicologia', 3, 3),
+(34, 'Secretariado', 3, 3),
+(35, 'Sociologia', 3, 3),
+(36, 'Banco de Dados', 3, 4),
+(37, 'Ciência da Computação', 3, 4),
+(38, 'Engenharia de Software', 3, 4),
+(39, 'Análise e Desenvolvimento de Sistemas', 3, 4),
+(40, 'Informática para Internet', 3, 4),
+(41, 'Biologia', 3, 5),
+(42, 'Biomedicina', 3, 5),
+(43, 'Bioquímica', 3, 5),
+(44, 'Zoologia', 3, 5),
+(45, 'Meteorologia', 3, 5),
+(46, 'Estatística', 3, 5),
+(47, 'Física', 3, 5),
+(48, 'Astronomia', 3, 5),
+(49, 'Matemática', 3, 5),
+(50, 'Química', 3, 5),
+(51, 'Arquitetura e Urbanismo', 3, 6),
+(52, 'Paisagismo', 3, 6),
+(53, 'Eletrotécnica', 3, 6),
+(54, 'Elétrica', 3, 6),
+(55, 'Eletromecânica', 3, 6),
+(56, 'Mecatrônica', 3, 6),
+(57, 'Construção Civil', 3, 6),
+(58, 'Engenharia Mecânica', 3, 6),
+(59, 'Engenharia Metalúrgica', 3, 6),
+(60, 'Cerâmica', 3, 6),
+(61, 'Engenharia de Petróleo', 3, 6),
+(62, 'Engenharia Geológica', 3, 6),
+(63, 'Extração de Petróleo e Gás', 3, 6),
+(64, 'Rochas Ornamentais', 3, 6),
+(65, 'Tecnologia de Mineração', 3, 6),
+(66, 'Engenharia de Alimentos', 3, 6),
+(67, 'Indústrias de Laticínios', 3, 6),
+(68, 'Engenharia Têxtil', 3, 6),
+(69, 'Engenharia Aeroespacial', 3, 6),
+(70, 'Engenharia Aeronáutica', 3, 6),
+(71, 'Engenharia Automotiva', 3, 6),
+(72, 'Engenharia Marítima', 3, 6),
+(73, 'Engenharia Naval', 3, 6),
+(74, 'Engenharia Florestal', 3, 7),
+(75, 'Silvicultura', 3, 7),
+(76, 'Horticultura', 3, 7),
+(77, 'Agroecologia', 3, 7),
+(78, 'Agroindústria', 3, 7),
+(79, 'Agronomia', 3, 7),
+(80, 'Agropecuária', 3, 7),
+(81, 'Ciências Agrárias', 3, 7),
+(82, 'Criação de Animais', 3, 7),
+(83, 'Engenharia Agrícola', 3, 7),
+(84, 'Manejo da Produção Agrícola', 3, 7),
+(85, 'Zootecnia', 3, 7),
+(86, 'Medicina Veterinária', 3, 8),
+(87, 'Enfermagem', 3, 9),
+(88, 'Farmácia', 3, 9),
+(89, 'Medicina', 3, 9),
+(90, 'Odontologia', 3, 9),
+(91, 'Fisioterapia', 3, 9),
+(92, 'Fonoaudiologia', 3, 9),
+(93, 'Nutrição', 3, 9),
+(94, 'Optometria', 3, 9),
+(95, 'Quiroprática', 3, 9),
+(96, 'Terapia Ocupacional', 3, 9),
+(97, 'Técnico em Artes Visuais', 2, 2),
+(98, 'Técnico em Artesanato', 2, 2),
+(99, 'Técnico em Canto', 2, 2),
+(100, 'Técnico em Cenografia', 2, 2),
+(101, 'Técnico em Composição e Arranjo', 2, 2),
+(102, 'Técnico em Comunicação Visual', 2, 2),
+(103, 'Técnico em Conservação e Restauro', 2, 2),
+(104, 'Técnico em Dança', 2, 2),
+(105, 'Técnico em Design de Calçados', 2, 2),
+(106, 'Técnico em Design de Embalagens', 2, 2),
+(107, 'Técnico em Design de Interiores', 2, 2),
+(108, 'Técnico em Design de Móveis', 2, 2),
+(109, 'Técnico em Documentação Musical', 2, 2),
+(110, 'Técnico em Fabricação de Instrumentos Musicais', 2, 2),
+(111, 'Técnico em Instrumento Musical', 2, 2),
+(112, 'Técnico em Modelagem do Vestuário', 2, 2),
+(113, 'Técnico em Multimídia', 2, 2),
+(114, 'Técnico em Museologia', 2, 2),
+(115, 'Técnico em Paisagismo', 2, 2),
+(116, 'Técnico em Processos Fotográficos', 2, 2),
+(117, 'Técnico em Produção de Áudio e Vídeo', 2, 2),
+(118, 'Técnico em Produção de Moda', 2, 2),
+(119, 'Técnico em Publicidade', 2, 2),
+(120, 'Técnico em Rádio e Televisão', 2, 2),
+(121, 'Técnico em Regência', 2, 2),
+(122, 'Técnico em Teatro', 2, 2),
+(123, 'Técnico em Segurança do Trabalho', 2, 2),
+(124, 'Técnico em Administração', 2, 3),
+(125, 'Técnico em Comércio', 2, 3),
+(126, 'Técnico em Comércio Exterior', 2, 3),
+(127, 'Técnico em Condomínio', 2, 3),
+(128, 'Técnico em Contabilidade', 2, 3),
+(129, 'Técnico em Cooperativismo', 2, 3),
+(130, 'Técnico em Finanças', 2, 3),
+(131, 'Técnico em Logística', 2, 3),
+(132, 'Técnico em Marketing', 2, 3),
+(133, 'Técnico em Qualidade', 2, 3),
+(134, 'Técnico em Recursos Humanos', 2, 3),
+(135, 'Técnico em Secretariado', 2, 3),
+(136, 'Técnico em Seguros', 2, 3),
+(137, 'Técnico em Serviços Jurídicos', 2, 3),
+(138, 'Técnico em Serviços Públicos', 2, 3),
+(139, 'Técnico em Transações Imobiliárias', 2, 3),
+(140, 'Técnico em Vendas', 2, 3),
+(141, 'Técnico em Computação Gráfica', 2, 4),
+(142, 'Técnico em Desenvolvimento de Sistemas', 2, 4),
+(143, 'Técnico em Informática', 2, 4),
+(144, 'Técnico em Informática para Internet', 2, 4),
+(145, 'Técnico em Manutenção e Suporte em Informática', 2, 4),
+(146, 'Técnico em Programação de Jogos Digitais', 2, 4),
+(147, 'Técnico em Redes de Computadores', 2, 4),
+(148, 'Técnico em Sistemas de Comutação', 2, 4),
+(149, 'Técnico em Sistemas de Transmissão', 2, 4),
+(150, 'Técnico em Telecomunicações', 2, 4),
+(151, 'Técnico em Açúcar e Álcool', 2, 6),
+(152, 'Técnico em Análises Químicas', 2, 6),
+(153, 'Técnico em Biocombustíveis', 2, 6),
+(154, 'Técnico em Biotecnologia', 2, 6),
+(155, 'Técnico em Calçados', 2, 6),
+(156, 'Técnico em Calçados', 2, 6),
+(157, 'Técnico em Celulose e Papel', 2, 6),
+(158, 'Técnico em Cerâmica', 2, 6),
+(159, 'Técnico em Construção Naval', 2, 6),
+(160, 'Técnico em Curtimento', 2, 6),
+(161, 'Técnico em Fabricação Mecânica', 2, 6),
+(162, 'Técnico em Impressão Offset', 2, 6),
+(163, 'Técnico em Impressão Rotográfica e Flexográfica', 2, 6),
+(164, 'Técnico em Joalheria', 2, 6),
+(165, 'Técnico em Móveis', 2, 6),
+(166, 'Técnico em Petróleo e Gás', 2, 6),
+(167, 'Técnico em Petroquímica', 2, 6),
+(168, 'Técnico em Plásticos', 2, 6),
+(169, 'Técnico em Pré-Impressão Gráfica', 2, 6),
+(170, 'Técnico em Processos Gráficos', 2, 6),
+(171, 'Técnico em Química', 2, 6),
+(172, 'Técnico em Têxtil', 2, 6),
+(173, 'Técnico em Vestuário', 2, 6),
+(174, 'Técnico em Agricultura', 2, 7),
+(175, 'Técnico em Agroecologia', 2, 7),
+(176, 'Técnico em Agronegócio', 2, 7),
+(177, 'Técnico em Agropecuária', 2, 7),
+(178, 'Técnico em Aquicultura', 2, 7),
+(179, 'Técnico em Cafeicultura', 2, 7),
+(180, 'Técnico em Equipamentos Pesqueiros', 2, 7),
+(181, 'Técnico em Florestas', 2, 7),
+(182, 'Técnico em Fruticultura', 2, 7),
+(183, 'Técnico em Geologia', 2, 7),
+(184, 'Técnico em Grãos', 2, 7),
+(185, 'Técnico em Mineração', 2, 7),
+(186, 'Técnico em Pesca', 2, 7),
+(187, 'Técnico em Pós-Colheita', 2, 7),
+(188, 'Técnico em Recursos Minerais', 2, 7),
+(189, 'Técnico em Recursos Pesqueiros', 2, 7),
+(190, 'Técnico em Zootecnia', 2, 7),
+(191, 'Técnico em Agente Comunitário de Saúde', 2, 9),
+(192, 'Técnico em Análises Clínicas', 2, 9),
+(193, 'Técnico em Citopatologia', 2, 9),
+(194, 'Técnico em Controle Ambiental', 2, 9),
+(195, 'Técnico em Cuidados de Idosos', 2, 9),
+(196, 'Técnico em Enfermagem', 2, 9),
+(197, 'Técnico em Equipamentos Biomédicos', 2, 9),
+(198, 'Técnico em Estética', 2, 9),
+(199, 'Técnico em Farmácia', 2, 9),
+(200, 'Técnico em Gerência de Saúde', 2, 9),
+(201, 'Técnico em Hemoterapia', 2, 9),
+(202, 'Técnico em Imagem Pessoal', 2, 9),
+(203, 'Técnico em Imobilizações Ortopédicas', 2, 9),
+(204, 'Técnico em Massoterapia', 2, 9),
+(205, 'Técnico em Meio Ambiente', 2, 9),
+(206, 'Técnico em Meteorologia', 2, 9),
+(207, 'Técnico em Necropsia', 2, 9),
+(208, 'Técnico em Nutrição e Dietética', 2, 9),
+(209, 'Técnico em Óptica', 2, 9),
+(210, 'Técnico em Órteses e Próteses', 2, 9),
+(211, 'Técnico em Podologia', 2, 9),
+(212, 'Técnico em Prótese Dentária', 2, 9),
+(213, 'Técnico em Radiologia', 2, 9),
+(214, 'Técnico em Reabilitação de Dependentes Químicos', 2, 9),
+(215, 'Técnico em Reciclagem', 2, 9),
+(216, 'Técnico em Registros e Informações em Saúde', 2, 9),
+(217, 'Técnico em Saúde Bucal', 2, 9),
+(218, 'Ensino Médio', 1, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `estados`
+-- Estrutura para tabela `empresa`
 --
 
-DROP TABLE IF EXISTS `estados`;
-CREATE TABLE IF NOT EXISTS `estados` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `empresa` (
+  `id_empresa` int(11) NOT NULL,
+  `nome` varchar(50) NOT NULL,
+  `cnpj` varchar(18) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(100) NOT NULL,
+  `contato` varchar(14) DEFAULT NULL,
+  `estado` int(11) DEFAULT NULL,
+  `cidade` int(11) DEFAULT NULL,
+  `cep` varchar(20) NOT NULL,
+  `rua` varchar(50) NOT NULL,
+  `numero` int(11) NOT NULL,
+  `tipo_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `estados`
+--
+
+CREATE TABLE `estados` (
+  `id` int(11) NOT NULL,
   `nome` varchar(75) DEFAULT NULL,
-  `uf` varchar(5) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+  `uf` varchar(5) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `estados`
+-- Despejando dados para a tabela `estados`
 --
 
 INSERT INTO `estados` (`id`, `nome`, `uf`) VALUES
@@ -5728,340 +6045,697 @@ INSERT INTO `estados` (`id`, `nome`, `uf`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `experiencia`
+-- Estrutura para tabela `experiencia`
 --
 
-DROP TABLE IF EXISTS `experiencia`;
-CREATE TABLE IF NOT EXISTS `experiencia` (
-  `id_exp` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `cargo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `experiencia` (
+  `id_exp` int(11) NOT NULL,
+  `nome` varchar(50) NOT NULL,
+  `cargo` varchar(50) NOT NULL,
   `inicio` date NOT NULL,
-  `fim` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tipo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `atividades` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `id_aluno` int NOT NULL,
-  PRIMARY KEY (`id_exp`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `fim` varchar(50) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
+  `atividades` varchar(500) NOT NULL,
+  `id_aluno` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `formacao`
+-- Estrutura para tabela `filial`
 --
 
-DROP TABLE IF EXISTS `formacao`;
-CREATE TABLE IF NOT EXISTS `formacao` (
-  `id_formacao` int NOT NULL AUTO_INCREMENT,
-  `curso` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `setor` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `instituicao` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nivel` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `filial` (
+  `id_filial` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `nivel` varchar(6) NOT NULL,
+  `cursosTecnico` varchar(500) DEFAULT NULL,
+  `cursosSuperior` varchar(500) DEFAULT NULL,
+  `cadastroCompleto` int(11) NOT NULL DEFAULT 0 COMMENT '0 para cadastro incompleto e 1 para completo',
+  `id_instituicao` int(11) NOT NULL,
+  `estado` int(11) DEFAULT NULL,
+  `cidade` int(11) DEFAULT NULL,
+  `CEP` varchar(255) NOT NULL,
+  `rua` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `formacao`
+--
+
+CREATE TABLE `formacao` (
+  `id_formacao` int(11) NOT NULL,
+  `curso` int(11) NOT NULL,
+  `setor` varchar(50) NOT NULL,
+  `instituicao` int(11) NOT NULL,
+  `nivel` int(11) NOT NULL,
   `inicio` date NOT NULL,
   `fim` date NOT NULL,
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `matricula` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'INSERIR URL DO ARQUIVO DA MATRICULA',
-  `id_aluno` int NOT NULL,
-  PRIMARY KEY (`id_formacao`),
-  KEY `id_aluno` (`id_aluno`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `status` varchar(10) NOT NULL,
+  `matricula` varchar(255) NOT NULL COMMENT 'INSERIR URL DO ARQUIVO DA MATRICULA',
+  `matricula_valida` int(11) NOT NULL,
+  `id_aluno` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
--- Restrições para despejos de tabelas
+-- Estrutura para tabela `funcionarios`
+--
+
+CREATE TABLE `funcionarios` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `id_empresa` int(11) NOT NULL,
+  `tipo_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `instituicao`
+--
+
+CREATE TABLE `instituicao` (
+  `id_instituicao` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `tipo_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `logs`
+--
+
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL,
+  `mensagem` text NOT NULL,
+  `dataHora` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `modelo`
+--
+
+CREATE TABLE `modelo` (
+  `id` int(11) NOT NULL,
+  `modelo` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `modelo`
+--
+
+INSERT INTO `modelo` (`id`, `modelo`) VALUES
+(1, 'Presencial'),
+(2, 'Híbrido'),
+(3, 'Remoto'),
+(1, 'Presencial'),
+(2, 'Híbrido'),
+(3, 'Remoto'),
+(1, 'Presencial'),
+(2, 'Híbrido'),
+(3, 'Remoto');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `msgaluno`
+--
+
+CREATE TABLE `msgaluno` (
+  `id` int(11) NOT NULL,
+  `msg` varchar(255) NOT NULL,
+  `idDestino` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `dataEnvio` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `msgempresa`
+--
+
+CREATE TABLE `msgempresa` (
+  `id` int(11) NOT NULL,
+  `msg` varchar(255) NOT NULL,
+  `idDestino` int(11) NOT NULL,
+  `idUsuario` int(11) NOT NULL,
+  `dataEnvio` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `nivel`
+--
+
+CREATE TABLE `nivel` (
+  `ID` int(11) NOT NULL,
+  `nivel` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `nivel`
+--
+
+INSERT INTO `nivel` (`ID`, `nivel`) VALUES
+(1, 'Ensino médio'),
+(2, 'Técnico'),
+(3, 'Superior');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `perguntas`
+--
+
+CREATE TABLE `perguntas` (
+  `ID` int(11) NOT NULL,
+  `pergunta` varchar(100) DEFAULT NULL,
+  `id_vaga` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `resposta_pergunta`
+--
+
+CREATE TABLE `resposta_pergunta` (
+  `ID` int(11) NOT NULL,
+  `resposta` text DEFAULT NULL,
+  `id_pergunta` int(11) DEFAULT NULL,
+  `id_aluno` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `setor`
+--
+
+CREATE TABLE `setor` (
+  `ID` int(11) NOT NULL,
+  `setor` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `setor`
+--
+
+INSERT INTO `setor` (`ID`, `setor`) VALUES
+(1, 'Educação'),
+(2, 'Humanas'),
+(3, 'Ciências Sociais'),
+(4, 'Tecnologia da Informação'),
+(5, 'Ciência'),
+(6, 'Produção e construção'),
+(7, 'Agricultura'),
+(8, 'Veterinária'),
+(9, 'Saúde');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tipo_user`
+--
+
+CREATE TABLE `tipo_user` (
+  `ID` int(11) NOT NULL,
+  `tipo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `tipo_user`
+--
+
+INSERT INTO `tipo_user` (`ID`, `tipo`) VALUES
+(1, 'aluno'),
+(2, 'empresa'),
+(3, 'admin'),
+(4, 'instituicao'),
+(5, 'funcionario');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `vagas`
+--
+
+CREATE TABLE `vagas` (
+  `idVaga` int(11) NOT NULL,
+  `nome` varchar(255) NOT NULL,
+  `salario` varchar(50) DEFAULT NULL,
+  `nivel` varchar(50) DEFAULT NULL,
+  `setor` varchar(100) DEFAULT NULL,
+  `cursos` text DEFAULT NULL,
+  `modelo` varchar(50) DEFAULT NULL,
+  `descricao` text DEFAULT NULL,
+  `requisitos` text DEFAULT NULL,
+  `ativo` int(11) NOT NULL DEFAULT 1,
+  `id_empresa` int(11) DEFAULT NULL,
+  `id_funcionario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tabelas despejadas
 --
 
 --
--- Limitadores para a tabela `cidades`
+-- Índices de tabela `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `aluno`
+--
+ALTER TABLE `aluno`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `cidade` (`cidade`),
+  ADD KEY `estado` (`estado`),
+  ADD KEY `tipo_usuario` (`tipo_usuario`);
+
+--
+-- Índices de tabela `assinatura`
+--
+ALTER TABLE `assinatura`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idContratosEstagio` (`idContratosEstagio`);
+
+--
+-- Índices de tabela `candidatura`
+--
+ALTER TABLE `candidatura`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_vaga` (`id_vaga`),
+  ADD KEY `id_aluno` (`id_aluno`),
+  ADD KEY `id_empresa` (`id_empresa`);
+
+--
+-- Índices de tabela `cidades`
+--
+ALTER TABLE `cidades`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_Cidade_estado` (`id_estado`);
+
+--
+-- Índices de tabela `contratacoes`
+--
+ALTER TABLE `contratacoes`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `idContrato` (`idContrato`),
+  ADD KEY `idVaga` (`idVaga`),
+  ADD KEY `id_aluno` (`id_aluno`),
+  ADD KEY `id_empresa` (`id_empresa`);
+
+--
+-- Índices de tabela `contratosestagio`
+--
+ALTER TABLE `contratosestagio`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idFilial` (`idFilial`);
+
+--
+-- Índices de tabela `curso`
+--
+ALTER TABLE `curso`
+  ADD PRIMARY KEY (`id_curso`),
+  ADD KEY `id_aluno` (`id_aluno`);
+
+--
+-- Índices de tabela `curso_db`
+--
+ALTER TABLE `curso_db`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `nivel_id` (`nivel_id`),
+  ADD KEY `setor_id` (`setor_id`);
+
+--
+-- Índices de tabela `empresa`
+--
+ALTER TABLE `empresa`
+  ADD PRIMARY KEY (`id_empresa`),
+  ADD KEY `estado` (`estado`),
+  ADD KEY `cidade` (`cidade`),
+  ADD KEY `tipo_usuario` (`tipo_usuario`);
+
+--
+-- Índices de tabela `estados`
+--
+ALTER TABLE `estados`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `experiencia`
+--
+ALTER TABLE `experiencia`
+  ADD PRIMARY KEY (`id_exp`),
+  ADD KEY `id_aluno` (`id_aluno`);
+
+--
+-- Índices de tabela `filial`
+--
+ALTER TABLE `filial`
+  ADD PRIMARY KEY (`id_filial`),
+  ADD KEY `id_instituicao` (`id_instituicao`),
+  ADD KEY `cidade` (`cidade`),
+  ADD KEY `estado` (`estado`);
+
+--
+-- Índices de tabela `formacao`
+--
+ALTER TABLE `formacao`
+  ADD PRIMARY KEY (`id_formacao`),
+  ADD KEY `id_aluno` (`id_aluno`),
+  ADD KEY `instituicao` (`instituicao`),
+  ADD KEY `curso` (`curso`),
+  ADD KEY `nivel` (`nivel`);
+
+--
+-- Índices de tabela `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_empresa` (`id_empresa`),
+  ADD KEY `tipo_usuario` (`tipo_usuario`);
+
+--
+-- Índices de tabela `instituicao`
+--
+ALTER TABLE `instituicao`
+  ADD PRIMARY KEY (`id_instituicao`),
+  ADD KEY `tipo_usuario` (`tipo_usuario`);
+
+--
+-- Índices de tabela `logs`
+--
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `nivel`
+--
+ALTER TABLE `nivel`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Índices de tabela `perguntas`
+--
+ALTER TABLE `perguntas`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_vaga` (`id_vaga`);
+
+--
+-- Índices de tabela `resposta_pergunta`
+--
+ALTER TABLE `resposta_pergunta`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `id_pergunta` (`id_pergunta`),
+  ADD KEY `id_aluno` (`id_aluno`);
+
+--
+-- Índices de tabela `setor`
+--
+ALTER TABLE `setor`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Índices de tabela `tipo_user`
+--
+ALTER TABLE `tipo_user`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Índices de tabela `vagas`
+--
+ALTER TABLE `vagas`
+  ADD PRIMARY KEY (`idVaga`),
+  ADD KEY `id_empresa` (`id_empresa`),
+  ADD KEY `id_funcionario` (`id_funcionario`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `aluno`
+--
+ALTER TABLE `aluno`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `assinatura`
+--
+ALTER TABLE `assinatura`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `candidatura`
+--
+ALTER TABLE `candidatura`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `cidades`
+--
+ALTER TABLE `cidades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5565;
+
+--
+-- AUTO_INCREMENT de tabela `contratacoes`
+--
+ALTER TABLE `contratacoes`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `contratosestagio`
+--
+ALTER TABLE `contratosestagio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `curso`
+--
+ALTER TABLE `curso`
+  MODIFY `id_curso` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `curso_db`
+--
+ALTER TABLE `curso_db`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
+
+--
+-- AUTO_INCREMENT de tabela `empresa`
+--
+ALTER TABLE `empresa`
+  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `estados`
+--
+ALTER TABLE `estados`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de tabela `experiencia`
+--
+ALTER TABLE `experiencia`
+  MODIFY `id_exp` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `filial`
+--
+ALTER TABLE `filial`
+  MODIFY `id_filial` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `formacao`
+--
+ALTER TABLE `formacao`
+  MODIFY `id_formacao` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `instituicao`
+--
+ALTER TABLE `instituicao`
+  MODIFY `id_instituicao` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `nivel`
+--
+ALTER TABLE `nivel`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `perguntas`
+--
+ALTER TABLE `perguntas`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `resposta_pergunta`
+--
+ALTER TABLE `resposta_pergunta`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `setor`
+--
+ALTER TABLE `setor`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de tabela `tipo_user`
+--
+ALTER TABLE `tipo_user`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `vagas`
+--
+ALTER TABLE `vagas`
+  MODIFY `idVaga` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `aluno`
+--
+ALTER TABLE `aluno`
+  ADD CONSTRAINT `aluno_ibfk_1` FOREIGN KEY (`cidade`) REFERENCES `cidades` (`id`),
+  ADD CONSTRAINT `aluno_ibfk_2` FOREIGN KEY (`estado`) REFERENCES `estados` (`id`),
+  ADD CONSTRAINT `aluno_ibfk_3` FOREIGN KEY (`tipo_usuario`) REFERENCES `tipo_user` (`ID`);
+
+--
+-- Restrições para tabelas `candidatura`
+--
+ALTER TABLE `candidatura`
+  ADD CONSTRAINT `candidatura_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`),
+  ADD CONSTRAINT `candidatura_ibfk_2` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`),
+  ADD CONSTRAINT `candidatura_ibfk_3` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`idVaga`);
+
+--
+-- Restrições para tabelas `cidades`
 --
 ALTER TABLE `cidades`
   ADD CONSTRAINT `cidades_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id`);
 
 --
--- Limitadores para a tabela `formacao`
+-- Restrições para tabelas `contratacoes`
+--
+ALTER TABLE `contratacoes`
+  ADD CONSTRAINT `contratacoes_ibfk_1` FOREIGN KEY (`idVaga`) REFERENCES `vagas` (`idVaga`),
+  ADD CONSTRAINT `contratacoes_ibfk_2` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`),
+  ADD CONSTRAINT `contratacoes_ibfk_3` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`);
+
+--
+-- Restrições para tabelas `curso`
+--
+ALTER TABLE `curso`
+  ADD CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`);
+
+--
+-- Restrições para tabelas `curso_db`
+--
+ALTER TABLE `curso_db`
+  ADD CONSTRAINT `curso_db_ibfk_1` FOREIGN KEY (`nivel_id`) REFERENCES `nivel` (`ID`),
+  ADD CONSTRAINT `curso_db_ibfk_2` FOREIGN KEY (`setor_id`) REFERENCES `setor` (`ID`);
+
+--
+-- Restrições para tabelas `empresa`
+--
+ALTER TABLE `empresa`
+  ADD CONSTRAINT `empresa_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `estados` (`id`),
+  ADD CONSTRAINT `empresa_ibfk_2` FOREIGN KEY (`cidade`) REFERENCES `cidades` (`id`),
+  ADD CONSTRAINT `empresa_ibfk_3` FOREIGN KEY (`tipo_usuario`) REFERENCES `tipo_user` (`ID`);
+
+--
+-- Restrições para tabelas `experiencia`
+--
+ALTER TABLE `experiencia`
+  ADD CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`);
+
+--
+-- Restrições para tabelas `filial`
+--
+ALTER TABLE `filial`
+  ADD CONSTRAINT `filial_ibfk_1` FOREIGN KEY (`id_instituicao`) REFERENCES `instituicao` (`id_instituicao`),
+  ADD CONSTRAINT `filial_ibfk_2` FOREIGN KEY (`cidade`) REFERENCES `cidades` (`id`),
+  ADD CONSTRAINT `filial_ibfk_3` FOREIGN KEY (`estado`) REFERENCES `estados` (`id`);
+
+--
+-- Restrições para tabelas `formacao`
 --
 ALTER TABLE `formacao`
-  ADD CONSTRAINT `formacao_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`);
+  ADD CONSTRAINT `formacao_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`),
+  ADD CONSTRAINT `formacao_ibfk_2` FOREIGN KEY (`curso`) REFERENCES `curso_db` (`ID`),
+  ADD CONSTRAINT `formacao_ibfk_3` FOREIGN KEY (`nivel`) REFERENCES `nivel` (`ID`);
+
+--
+-- Restrições para tabelas `funcionarios`
+--
+ALTER TABLE `funcionarios`
+  ADD CONSTRAINT `funcionarios_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`),
+  ADD CONSTRAINT `funcionarios_ibfk_2` FOREIGN KEY (`tipo_usuario`) REFERENCES `tipo_user` (`ID`);
+
+--
+-- Restrições para tabelas `instituicao`
+--
+ALTER TABLE `instituicao`
+  ADD CONSTRAINT `instituicao_ibfk_1` FOREIGN KEY (`tipo_usuario`) REFERENCES `tipo_user` (`ID`);
+
+--
+-- Restrições para tabelas `perguntas`
+--
+ALTER TABLE `perguntas`
+  ADD CONSTRAINT `perguntas_ibfk_1` FOREIGN KEY (`id_vaga`) REFERENCES `vagas` (`idVaga`);
+
+--
+-- Restrições para tabelas `resposta_pergunta`
+--
+ALTER TABLE `resposta_pergunta`
+  ADD CONSTRAINT `resposta_pergunta_ibfk_1` FOREIGN KEY (`id_aluno`) REFERENCES `aluno` (`ID`),
+  ADD CONSTRAINT `resposta_pergunta_ibfk_2` FOREIGN KEY (`id_pergunta`) REFERENCES `perguntas` (`ID`);
+
+--
+-- Restrições para tabelas `vagas`
+--
+ALTER TABLE `vagas`
+  ADD CONSTRAINT `vagas_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `empresa` (`id_empresa`),
+  ADD CONSTRAINT `vagas_ibfk_2` FOREIGN KEY (`id_funcionario`) REFERENCES `funcionarios` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-
-
----------------------------------------------------------------------------------------------
-
--- Tabela Nivel
-CREATE TABLE Nivel (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    nivel VARCHAR(50)
-);
-
--- Inserir dados na tabela Nivel
-INSERT INTO Nivel (nivel) VALUES
-('Ensino médio'),
-('Técnico'),
-('Superior');
-
--- Tabela Setor
-CREATE TABLE Setor (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    setor VARCHAR(50)
-);
-
--- Inserir dados na tabela Setor
-INSERT INTO Setor (setor) VALUES
-('Educação'),
-('Humanas'),
-('Ciências Sociais'),
-('Tecnologia da Informação'),
-('Ciência'),
-('Produção e construção'),
-('Agricultura'),
-('Veterinária'),
-('Saúde');
-
--- Tabela Curso
-CREATE TABLE Curso_db (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    curso VARCHAR(100),
-    nivel_id INT,
-    setor_id INT,
-    FOREIGN KEY (nivel_id) REFERENCES Nivel(ID),
-    FOREIGN KEY (setor_id) REFERENCES Setor(ID)
-);
-
--- Inserir dados na tabela Curso
-INSERT INTO Curso_db (curso, nivel_id, setor_id) VALUES
-('Pedagogia', 3, 1), -- Educação
-('Educação Física', 3, 1), -- Educação
-('Artes Visuais', 3, 1), -- Educação
-('Música', 3, 1), -- Educação
-
-('Artes', 3, 2), -- Humanas
-('Cinema e Animação', 3, 2), -- Humanas
-('Design de Interiores', 3, 2), -- Humanas
-('Moda', 3, 2), -- Humanas
-('Design', 3, 2), -- Humanas
-('Filosofia', 3, 2), -- Humanas
-('História', 3, 2), -- Humanas
-('Literatura', 3, 2), -- Humanas
-('Artes Cênicas', 3, 2), -- Humanas
-('Dança', 3, 2), -- Humanas
-('Música', 3, 2), -- Humanas
-('Teatro', 3, 2), -- Humanas
-('Teologia', 3, 2), -- Humanas
-('Fotografia', 3, 2), -- Humanas
-('Som e Imagem', 3, 2), -- Humanas
-
-('Ciência Política', 3, 3), -- Ciências Sociais
-('Relações Internacionais', 3, 3), -- Ciências Sociais
-('Ciências Sociais', 3, 3), -- Ciências Sociais
-('Negócios Internacionais', 3, 3), -- Ciências Sociais
-('Ciências Contábeis', 3, 3), -- Ciências Sociais
-('Direito', 3, 3), -- Ciências Sociais
-('Economia', 3, 3), -- Ciências Sociais
-('Administração', 3, 3), -- Ciências Sociais
-('Empreendedorismo', 3, 3), -- Ciências Sociais
-('Jornalismo', 3, 3), -- Ciências Sociais
-('Radiologia', 3, 3), -- Ciências Sociais
-('Radio', 3, 3), -- Ciências Sociais
-('Marketing', 3, 3), -- Ciências Sociais
-('Psicologia', 3, 3), -- Ciências Sociais
-('Secretariado', 3, 3), -- Ciências Sociais
-('Sociologia', 3, 3), -- Ciências Sociais
-
-('Banco de Dados', 3, 4), -- Tecnologia da Informação
-('Ciência da Computação', 3, 4), -- Tecnologia da Informação
-('Engenharia de Software', 3, 4), -- Tecnologia da Informação
-('Análise e Desenvolvimento de Sistemas', 3, 4), -- Tecnologia da Informação
-('Informática para Internet', 3, 4), -- Tecnologia da Informação
-
-('Biologia', 3, 5), -- Ciências
-('Biomedicina', 3, 5), -- Ciências
-('Bioquímica', 3, 5), -- Ciências
-('Zoologia', 3, 5), -- Ciências
-('Meteorologia', 3, 5), -- Ciências
-('Estatística', 3, 5), -- Ciências
-('Física', 3, 5), -- Ciências
-('Astronomia', 3, 5), -- Ciências
-('Matemática', 3, 5), -- Ciências
-('Química', 3, 5), -- Ciências
-
-('Arquitetura e Urbanismo', 3, 6), -- Produção e Construção
-('Paisagismo', 3, 6), -- Produção e Construção
-('Eletrotécnica', 3, 6), -- Produção e Construção
-('Elétrica', 3, 6), -- Produção e Construção
-('Eletromecânica', 3, 6), -- Produção e Construção
-('Mecatrônica', 3, 6), -- Produção e Construção
-('Construção Civil', 3, 6), -- Produção e Construção
-('Engenharia Mecânica', 3, 6), -- Produção e Construção
-('Engenharia Metalúrgica', 3, 6), -- Produção e Construção
-('Cerâmica', 3, 6), -- Produção e Construção
-('Engenharia de Petróleo', 3, 6), -- Produção e Construção
-('Engenharia Geológica', 3, 6), -- Produção e Construção
-('Extração de Petróleo e Gás', 3, 6), -- Produção e Construção
-('Rochas Ornamentais', 3, 6), -- Produção e Construção
-('Tecnologia de Mineração', 3, 6), -- Produção e Construção
-('Engenharia de Alimentos', 3, 6), -- Produção e Construção
-('Indústrias de Laticínios', 3, 6), -- Produção e Construção
-('Engenharia Têxtil', 3, 6), -- Produção e Construção
-('Engenharia Aeroespacial', 3, 6), -- Produção e Construção
-('Engenharia Aeronáutica', 3, 6), -- Produção e Construção
-('Engenharia Automotiva', 3, 6), -- Produção e Construção
-('Engenharia Marítima', 3, 6), -- Produção e Construção
-('Engenharia Naval', 3, 6), -- Produção e Construção
-
-('Engenharia Florestal', 3, 7), -- Agricultura
-('Silvicultura', 3, 7), -- Agricultura
-('Horticultura', 3, 7), -- Agricultura
-('Agroecologia', 3, 7), -- Agricultura
-('Agroindústria', 3, 7), -- Agricultura
-('Agronomia', 3, 7), -- Agricultura
-('Agropecuária', 3, 7), -- Agricultura
-('Ciências Agrárias', 3, 7), -- Agricultura
-('Criação de Animais', 3, 7), -- Agricultura
-('Engenharia Agrícola', 3, 7), -- Agricultura
-('Manejo da Produção Agrícola', 3, 7), -- Agricultura
-('Zootecnia', 3, 7), -- Agricultura
-
-('Medicina Veterinária', 3, 8), -- Veterinária
-
-('Enfermagem', 3, 9), -- Saúde
-('Farmácia', 3, 9), -- Saúde
-('Medicina', 3, 9), -- Saúde
-('Odontologia', 3, 9), -- Saúde
-('Fisioterapia', 3, 9), -- Saúde
-('Fonoaudiologia', 3, 9), -- Saúde
-('Nutrição', 3, 9), -- Saúde
-('Optometria', 3, 9), -- Saúde
-('Quiroprática', 3, 9), -- Saúde
-('Terapia Ocupacional', 3, 9), -- Saúde
-
-('Técnico em Artes Visuais', 2, 1), -- Humanas
-('Técnico em Artesanato', 2, 1), -- Humanas
-('Técnico em Canto', 2, 1), -- Humanas
-('Técnico em Cenografia', 2, 1), -- Humanas
-('Técnico em Composição e Arranjo', 2, 1), -- Humanas
-('Técnico em Comunicação Visual', 2, 1), -- Humanas
-('Técnico em Conservação e Restauro', 2, 1), -- Humanas
-('Técnico em Dança', 2, 1), -- Humanas
-('Técnico em Design de Calçados', 2, 1), -- Humanas
-('Técnico em Design de Embalagens', 2, 1), -- Humanas
-('Técnico em Design de Interiores', 2, 1), -- Humanas
-('Técnico em Design de Móveis', 2, 1), -- Humanas
-('Técnico em Documentação Musical', 2, 1), -- Humanas
-('Técnico em Fabricação de Instrumentos Musicais', 2, 1), -- Humanas
-('Técnico em Instrumento Musical', 2, 1), -- Humanas
-('Técnico em Modelagem do Vestuário', 2, 1), -- Humanas
-('Técnico em Multimídia', 2, 1), -- Humanas
-('Técnico em Museologia', 2, 1), -- Humanas
-('Técnico em Paisagismo', 2, 1), -- Humanas
-('Técnico em Processos Fotográficos', 2, 1), -- Humanas
-('Técnico em Produção de Áudio e Vídeo', 2, 1), -- Humanas
-('Técnico em Produção de Moda', 2, 1), -- Humanas
-('Técnico em Publicidade', 2, 1), -- Humanas
-('Técnico em Rádio e Televisão', 2, 1), -- Humanas
-('Técnico em Regência', 2, 1), -- Humanas
-('Técnico em Teatro', 2, 1), -- Humanas
-('Técnico em Segurança do Trabalho', 2, 1), -- Humanas
-
-('Técnico em Administração', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Comércio', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Comércio Exterior', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Condomínio', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Contabilidade', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Cooperativismo', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Finanças', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Logística', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Marketing', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Qualidade', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Recursos Humanos', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Secretariado', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Seguros', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Serviços Jurídicos', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Serviços Públicos', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Transações Imobiliárias', 2, 3), -- Ciências Sociais, Negócios e Direito
-('Técnico em Vendas', 2, 3), -- Ciências Sociais, Negócios e Direito
-
-('Técnico em Computação Gráfica', 2, 4), -- Tecnologia da Informação
-('Técnico em Desenvolvimento de Sistemas', 2, 4), -- Tecnologia da Informação
-('Técnico em Informática', 2, 4), -- Tecnologia da Informação
-('Técnico em Informática para Internet', 2, 4), -- Tecnologia da Informação
-('Técnico em Manutenção e Suporte em Informática', 2, 4), -- Tecnologia da Informação
-('Técnico em Programação de Jogos Digitais', 2, 4), -- Tecnologia da Informação
-('Técnico em Redes de Computadores', 2, 4), -- Tecnologia da Informação
-('Técnico em Sistemas de Comutação', 2, 4), -- Tecnologia da Informação
-('Técnico em Sistemas de Transmissão', 2, 4), -- Tecnologia da Informação
-('Técnico em Telecomunicações', 2, 4), -- Tecnologia da Informação
-
-('Técnico em Açúcar e Álcool', 2, 6), -- Produção e Construção
-('Técnico em Análises Químicas', 2, 6), -- Produção e Construção
-('Técnico em Biocombustíveis', 2, 6), -- Produção e Construção
-('Técnico em Biotecnologia', 2, 6), -- Produção e Construção
-('Técnico em Calçados', 2, 6), -- Produção e
-('Técnico em Calçados', 2, 6), -- Produção e Construção
-('Técnico em Celulose e Papel', 2, 6), -- Produção e Construção
-('Técnico em Cerâmica', 2, 6), -- Produção e Construção
-('Técnico em Construção Naval', 2, 6), -- Produção e Construção
-('Técnico em Curtimento', 2, 6), -- Produção e Construção
-('Técnico em Fabricação Mecânica', 2, 6), -- Produção e Construção
-('Técnico em Impressão Offset', 2, 6), -- Produção e Construção
-('Técnico em Impressão Rotográfica e Flexográfica', 2, 6), -- Produção e Construção
-('Técnico em Joalheria', 2, 6), -- Produção e Construção
-('Técnico em Móveis', 2, 6), -- Produção e Construção
-('Técnico em Petróleo e Gás', 2, 6), -- Produção e Construção
-('Técnico em Petroquímica', 2, 6), -- Produção e Construção
-('Técnico em Plásticos', 2, 6), -- Produção e Construção
-('Técnico em Pré-Impressão Gráfica', 2, 6), -- Produção e Construção
-('Técnico em Processos Gráficos', 2, 6), -- Produção e Construção
-('Técnico em Química', 2, 6), -- Produção e Construção
-('Técnico em Têxtil', 2, 6), -- Produção e Construção
-('Técnico em Vestuário', 2, 6), -- Produção e Construção
-
-('Técnico em Agricultura', 2, 7), -- Agricultura
-('Técnico em Agroecologia', 2, 7), -- Agricultura
-('Técnico em Agronegócio', 2, 7), -- Agricultura
-('Técnico em Agropecuária', 2, 7), -- Agricultura
-('Técnico em Aquicultura', 2, 7), -- Agricultura
-('Técnico em Cafeicultura', 2, 7), -- Agricultura
-('Técnico em Equipamentos Pesqueiros', 2, 7), -- Agricultura
-('Técnico em Florestas', 2, 7), -- Agricultura
-('Técnico em Fruticultura', 2, 7), -- Agricultura
-('Técnico em Geologia', 2, 7), -- Agricultura
-('Técnico em Grãos', 2, 7), -- Agricultura
-('Técnico em Mineração', 2, 7), -- Agricultura
-('Técnico em Pesca', 2, 7), -- Agricultura
-('Técnico em Pós-Colheita', 2, 7), -- Agricultura
-('Técnico em Recursos Minerais', 2, 7), -- Agricultura
-('Técnico em Recursos Pesqueiros', 2, 7), -- Agricultura
-('Técnico em Zootecnia', 2, 7), -- Agricultura
-
-('Técnico em Agente Comunitário de Saúde', 2, 9), -- Saúde
-('Técnico em Análises Clínicas', 2, 9), -- Saúde
-('Técnico em Citopatologia', 2, 9), -- Saúde
-('Técnico em Controle Ambiental', 2, 9), -- Saúde
-('Técnico em Cuidados de Idosos', 2, 9), -- Saúde
-('Técnico em Enfermagem', 2, 9), -- Saúde
-('Técnico em Equipamentos Biomédicos', 2, 9), -- Saúde
-('Técnico em Estética', 2, 9), -- Saúde
-('Técnico em Farmácia', 2, 9), -- Saúde
-('Técnico em Gerência de Saúde', 2, 9), -- Saúde
-('Técnico em Hemoterapia', 2, 9), -- Saúde
-('Técnico em Imagem Pessoal', 2, 9), -- Saúde
-('Técnico em Imobilizações Ortopédicas', 2, 9), -- Saúde
-('Técnico em Massoterapia', 2, 9), -- Saúde
-('Técnico em Meio Ambiente', 2, 9), -- Saúde
-('Técnico em Meteorologia', 2, 9), -- Saúde
-('Técnico em Necropsia', 2, 9), -- Saúde
-('Técnico em Nutrição e Dietética', 2, 9), -- Saúde
-('Técnico em Óptica', 2, 9), -- Saúde
-('Técnico em Órteses e Próteses', 2, 9), -- Saúde
-('Técnico em Podologia', 2, 9), -- Saúde
-('Técnico em Prótese Dentária', 2, 9), -- Saúde
-('Técnico em Radiologia', 2, 9), -- Saúde
-('Técnico em Reabilitação de Dependentes Químicos', 2, 9), -- Saúde
-('Técnico em Reciclagem', 2, 9), -- Saúde
-('Técnico em Registros e Informações em Saúde', 2, 9), -- Saúde
-('Técnico em Saúde Bucal', 2, 9); -- Saúde

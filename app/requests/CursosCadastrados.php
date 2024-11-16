@@ -17,5 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         case 'listarCurso':
             $curso->listaCursos($_POST['nivel']);
         break;
+        case 'listarTodasAreas':
+            $curso->listarTodasArea();
+        break;
     }
 }
