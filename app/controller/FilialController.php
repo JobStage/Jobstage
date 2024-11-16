@@ -209,6 +209,7 @@ class FilialController {
 
     public function lisarContratosParaAssinar($id){
         $html = '';
+       
         foreach($this->filial->getContratosParaAssinar($id) as $value){
             $html .= ' 
                 <div class="card">
@@ -220,7 +221,7 @@ class FilialController {
                             <h3>'.$value['curso'].'</h3>
                         </div>
                         <div class="icons">
-                            <img src="../app/public/img/assinatura.png" width="48px" height="48px" style="cursor:pointer" onclick="assinar()">
+                            <img src="../app/public/img/assinatura.png" width="48px" height="48px" style="cursor:pointer" onclick="assinar(\'' . $value['hashContrato'] . '\')">
                         </div>
                     </div>
                 </div>

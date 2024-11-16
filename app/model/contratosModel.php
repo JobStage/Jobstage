@@ -174,6 +174,7 @@ class contratosModel{
             $sql = $this->conn->prepare("SELECT
                                             c.contrato as contrato, 
                                             c.id_aluno as idAluno, 
+                                            c.idFilial as idFilial, 
                                             c.contratoAtivo as contratoAtivo, 
                                             c.id as idContrato,
                                             c.id_funcionario as idFunc,

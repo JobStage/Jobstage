@@ -244,6 +244,25 @@ class contratosController{
             ';
     }
 
+    public function listarContratoAssinaturaInst($hash){
+        foreach($this->contratos->getContratoPorHash($hash) as $value){
+            $contrato = $value['contrato'];
+            $idContrato = $value['idContrato'];
+            $idFunc = $value['idFilial'];
+        }
+        echo '
+            <div class="card">
+                '.$contrato.'
+            </div>
+            <br>
+            <input type="text" id="ass" style="width:50%; height:60px; font-size:25px; align-self:center; font-family">
+            <input type="hidden" id="idContrato" value='.$idContrato.'>
+            
+            <br>
+            <button class="btn btn-primary" onclick="assinaturaInst('. $idFunc .')">Assinar</button>
+            ';
+    }
+
     public function verificaSeTemContratoParaAssinatura($id, $user){
         if(!$this->contratos->verificaSeTemAssinatura($id, $user)){
             header('Location: contratos.php');

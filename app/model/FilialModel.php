@@ -209,7 +209,8 @@ class FilialModel {
                                             inner join curso_db as cd
                                             on cd.ID = fr.curso
                                             WHERE f.id_instituicao = :id
-                                            AND c.contratoGerado = :ctt");
+                                            AND c.contratoGerado = :ctt
+                                            and c.contratoAtivo = 0");
                                 
             $sql->bindParam(':id', $id);
             $sql->bindValue(':ctt', 1);
