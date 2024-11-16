@@ -145,4 +145,20 @@ class FormacaoModel{
             return false;
         }
     }
+
+    public function getFormacaoFilial($id){
+        try {
+            $sql = $this->conn->prepare('SELECT instituicao FROM formacao
+                                        WHERE id_aluno = :idAluno
+                                      ');
+            $sql->bindParam(':idAluno',$id);
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+           
+        }  catch (Exception $e) {
+            echo $e;
+            return false;
+        }
+    }
 }
