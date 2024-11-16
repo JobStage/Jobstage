@@ -117,14 +117,13 @@ class CandidaturasController{
     }
 
     public function candidatosVaga($idVaga) {
-        $resposta = $this->vagaModel->listarUltimaResposta();
-        $respostaTexto = $resposta['resposta'] ?? 'Sem resposta';
-
-        $pergunta = $this->vagaModel->listarUltimaPergunta();
-        $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
+        $respostas = $this->vagaModel->listarUltimasRespostas();
+        $perguntas = $this->vagaModel->listarUltimasPerguntas();
+    
         $html = '';
-        foreach($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
+        foreach ($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
             $html .= '<div class="card">
+
     <div class="conteudo-principal">
         <div class="user">
             <h5>'.$value['nomeUsuario'].'</h5>
@@ -149,13 +148,36 @@ class CandidaturasController{
         </div>
     </div>
      <div class="more-info">
-        <div class="collapse" id="collapseExample">
-            '. $perguntaTexto .': '. $respostaTexto .'
-        </div>
-    </div>
-    </div>
-</div>';
+         <div class="collapse" id="collapseExample">';
+    
+            // Exibir cada pergunta com as respectivas respostas como estrelas
+            foreach ($perguntas as $index => $pergunta) {
+                $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
+                $respostaValor = $respostas[$index]['resposta'] ?? 0;
+                $respostaEstrelas = $this->gerarEstrelas((int)$respostaValor);
+    
+                $html .= '<p><strong>' . $perguntaTexto . ':</strong> ' . $respostaEstrelas . '</p>';
+            }
+    
+            $html .= '</div>
+                </div>
+            </div>';
         }
         echo $html;
-   }  
+    }
+    
+
+    private function gerarEstrelas($valor) {
+        $estrelas = '';
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= $valor) {
+                $estrelas .= '<span>&#9733;</span>'; 
+            } else {
+                $estrelas .= '<span>&#9734;</span>';  
+            }
+        }
+        return $estrelas;
+    }
+    
+    
 }

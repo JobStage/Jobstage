@@ -231,20 +231,22 @@ public function salvarRespostas($resposta, $idAluno) {
 
   return $stmt->execute();
 }
-public function listarUltimaResposta() {
-  $query = "SELECT resposta FROM resposta_pergunta ORDER BY id DESC LIMIT 1";
+public function listarUltimasRespostas() {
+  $query = "SELECT resposta FROM resposta_pergunta ORDER BY id DESC LIMIT 2";
   $stmt = $this->conn->prepare($query);
   $stmt->execute();
   
-  // Retornar a resposta encontrada
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+  // Retornar as duas últimas respostas encontradas
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-public function listarUltimaPergunta() {
-  $query = "SELECT pergunta FROM perguntas ORDER BY id DESC LIMIT 1";
+
+public function listarUltimasPerguntas() {
+  $query = "SELECT pergunta FROM perguntas ORDER BY id DESC LIMIT 2";
   $stmt = $this->conn->prepare($query);
   $stmt->execute();
   
-  // Retornar a resposta encontrada
-  return $stmt->fetch(PDO::FETCH_ASSOC);
+  // Retornar as duas últimas perguntas encontradas
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 }
