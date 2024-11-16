@@ -197,5 +197,31 @@ class FilialModel {
         return $result;
     }
 
+    public function getContratosParaAssinar($id){
+        try {
+            $sql = $this->conn->prepare("SELECT * FROM contratacoes AS c
+                                            INNER JOIN filial AS f
+                                            ON f.id_filial = c.idFilial
+                                            inner join aluno as a
+                                            on a.ID = c.id_aluno 
+                                            inner join formacao as fr
+                                            on fr.id_aluno = a.ID 
+                                            inner join curso_db as cd
+                                            on cd.ID = fr.curso
+                                            WHERE f.id_instituicao = :id
+                                            AND c.contratoGerado = :ctt");
+                                
+            $sql->bindParam(':id', $id);
+            $sql->bindValue(':ctt', 1);
+            $sql->execute();
+    
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+           
+        }  catch (Exception $e) {
+            $this->conexao->logs($e);
+            return false;
+        }
+    }
 
 }

@@ -89,7 +89,7 @@ class LoginController{
         $resultLogin = $this->login->loginInstituicao($email, $senha);
         if($resultLogin){
             $_SESSION['id'] = $resultLogin;
-            $_SESSION['idSessao'] = 3;
+            $_SESSION['idSessao'] = 4;
             
             $retorno = array('redirecionar'=>'filiais.php', 'sucesso'=> true);
             echo json_encode($retorno);

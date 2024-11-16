@@ -206,4 +206,26 @@ class FilialController {
         echo json_encode($dadosFilial);
         return $dadosFilial;
     }
+
+    public function lisarContratosParaAssinar($id){
+        $html = '';
+        foreach($this->filial->getContratosParaAssinar($id) as $value){
+            $html .= ' 
+                <div class="card">
+                    <div class="conteudo-principal">
+                        <div class="user">
+                                <h3>'.$value['nome'].'</h3>
+                        </div>
+                        <div class="formacao">
+                            <h3>'.$value['curso'].'</h3>
+                        </div>
+                        <div class="icons">
+                            <img src="../app/public/img/assinatura.png" width="48px" height="48px" style="cursor:pointer" onclick="assinar()">
+                        </div>
+                    </div>
+                </div>
+            ';
+        }
+        echo $html;
+    }
 }
