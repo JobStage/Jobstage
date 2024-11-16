@@ -26,12 +26,12 @@ ob_start();
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>
             </div>
-            <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
+            <!-- <div class="contratoEstagio" style="display:flex; flex-direction:column; align-items:center" >
                 <p>Relatórios</p>
                 <a href="relatorios.php?idAluno=" id="verRelatorioLink">
                     <img src="../app/public/img/anexo.png" width="50px" height="50px">
                 </a>    
-            </div>
+            </div> -->
         </div>
       </div>
       <div class="modal-footer">

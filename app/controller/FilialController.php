@@ -226,7 +226,7 @@ class FilialController {
                     </div>
                 </div>
             ';
-        }
-        echo $html;
+         }
+        echo ($html) ? $html : '<div class="alert alert-info" role="alert">Não existem contratos para assinar!</div>';
     }
 }

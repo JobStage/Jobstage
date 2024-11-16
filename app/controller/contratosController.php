@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/../model/contratosModel.php';
 require_once __DIR__ . '/../model/VagasModel.php';
+require_once __DIR__ . '/../model/FormacaoModel.php';
 require_once __DIR__ . '/../../email.php';
 
 class contratosController{
     private $contratos;
+    private $formacao;
     private $email;
     private $dadosVaga;
     public function __construct() {
         $this->contratos = new contratosModel();
         $this->dadosVaga = new Vagas();
+        $this->formacao = new FormacaoModel();
         $this->email = new email();
     }
     // funcao para a empresa slicitar um contrato
@@ -18,7 +21,11 @@ class contratosController{
             $funcionarioId = $value['id_funcionario'];
         }
 
-        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId)){
+       foreach($this->formacao->getFormacaoFilial($idAluno) as $v){
+        $idFilial = $v['instituicao'];
+       }
+       
+        if($this->contratos->gerarContratoEmpresaModel($idAluno, $idVaga, $idEmpresa, $funcionarioId, $idFilial)){
             $retorno = array('msg' => 'Solicitação enviada! Aguarde a geração de contrato.', 'icon' => 'success' , 'success' => true);
             echo json_encode($retorno);
             return $retorno;
