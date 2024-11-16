@@ -200,7 +200,7 @@ class contratosController{
 
                     $dataHora = new DateTime($value['dataHora']);
                     foreach ($dados as $value) {
-                        $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y H:i:s') . '</b></p>';
+                        $html .= '<p><img src="../app/public/img/jobstage.png" width="40px" height="40px"> Contrato assinado digitalmente por <b>' . $value['nomeAss'] . '</b> em <b>' . $dataHora->format('d/m/Y') . '</b></p>';
                     }
                     $contratoId = $_GET['contrato'];
         $html .= '

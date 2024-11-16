@@ -1,4 +1,5 @@
 <?php
+require_once 'verificaSessao.php';
 require_once '../app/controller/contratosController.php';
 $contratos = new contratosController();
 $contratos->verificaSeTemContratoParaAssinaturaFuncionario('funcionario');

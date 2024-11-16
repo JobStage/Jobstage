@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 require_once '../app/controller/FormacaoController.php';
 require_once '../app/controller/CursosCadastrados.php';
 require_once '../app/controller/FilialController.php';

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Negado</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .image {
+            width: 100%;
+            height: auto;
+        }
+
+        .text {
+            transform: translate(-50%, -50%);
+            color: rgb(255, 0, 0);
+            font-size: 3rem;
+            font-family: Arial, sans-serif;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; align-items: center; flex-direction: column;">
+
+            <div class="text">Acesso negado!</div>
+            <img src="app/public/img/acesso_negado.jpg" alt="Acesso Negado" class="image">
+        </div>
+    </div>
+</body>
+</html>

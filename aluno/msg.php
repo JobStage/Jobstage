@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'verificaSessao.php';
 ob_start();
 require_once '../app/controller/msgController.php';
 $msg = new msgController();
