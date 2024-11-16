@@ -123,48 +123,51 @@ class CandidaturasController{
         $html = '';
         foreach ($this->vagaModel->getCandidatosVagas($idVaga, $_SESSION['id']) as $value) {
             $html .= '<div class="card">
-
-    <div class="conteudo-principal">
-        <div class="user">
-            <h5>'.$value['nomeUsuario'].'</h5>
-            <p>'.$value['idade'].'</p>
-        </div>
-        <div class="formacao">
-            <h5>'.$value['curso'].'</h5>
-            <p>'.$value['dataFormacao'].'</p>
-        </div>
-        <div class="icons">
-            <img src="../app/public/img/info.png" width="48px" height="48px" 
-            data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-
-            <a href="curriculo.php?id='.$value['idAluno'].'" target="_blank">
-                <img src="../app/public/img/curriculo-preto.png" width="48px" height="48px">
-            </a>
-
-            <a href="msg.php?id='.$value['idAluno'].'" target="_blank">
-                <img src="../app/public/img/msg.png" width="48px" height="48px" >
-            </a>
-            <img src="../app/public/img/pasta.png" width="48px" height="48px" onclick="gerarContrato('.$value['idAluno'].', '.$idVaga.')">
-        </div>
-    </div>
-     <div class="more-info">
-         <div class="collapse" id="collapseExample">';
-    
-            // Exibir cada pergunta com as respectivas respostas como estrelas
-            foreach ($perguntas as $index => $pergunta) {
-                $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
-                $respostaValor = $respostas[$index]['resposta'] ?? 0;
-                $respostaEstrelas = $this->gerarEstrelas((int)$respostaValor);
-    
-                $html .= '<p><strong>' . $perguntaTexto . ':</strong> ' . $respostaEstrelas . '</p>';
-            }
-    
+                <div class="conteudo-principal">
+                    <div class="user">
+                        <h5>'.$value['nomeUsuario'].'</h5>
+                        <p>'.$value['idade']. ' anos</p>
+                    </div>
+                    <div class="formacao">
+                        <h5>'.$value['curso'].'</h5>';
+                        
+                        $data = DateTime::createFromFormat('Y-m-d', $value['dataFormacao']);
+                        $html .= '<p>' . $data->format('d-m-Y') . '</p>';
+                        
             $html .= '</div>
+                    <div class="icons">
+                        <img src="../app/public/img/info.png" width="48px" height="48px" 
+                        data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        
+                        <a href="curriculo.php?id='.$value['idAluno'].'" target="_blank">
+                            <img src="../app/public/img/curriculo-preto.png" width="48px" height="48px">
+                        </a>
+        
+                        <a href="msg.php?id='.$value['idAluno'].'" target="_blank">
+                            <img src="../app/public/img/msg.png" width="48px" height="48px" >
+                        </a>
+                        <img src="../app/public/img/pasta.png" width="48px" height="48px" onclick="gerarContrato('.$value['idAluno'].', '.$idVaga.')">
+                    </div>
                 </div>
-            </div>';
+                 <div class="more-info">
+                     <div class="collapse" id="collapseExample">';
+        
+                        // Exibir cada pergunta com as respectivas respostas como estrelas
+                        foreach ($perguntas as $index => $pergunta) {
+                            $perguntaTexto = $pergunta['pergunta'] ?? 'Sem pergunta';
+                            $respostaValor = $respostas[$index]['resposta'] ?? 0;
+                            $respostaEstrelas = $this->gerarEstrelas((int)$respostaValor);
+        
+                            $html .= '<p><strong>' . $perguntaTexto . ':</strong> ' . $respostaEstrelas . '</p>';
+                        }
+        
+                        $html .= '</div>
+                            </div>
+                        </div>';
+                    }
+            echo $html;
         }
-        echo $html;
-    }
+        
     
 
     private function gerarEstrelas($valor) {

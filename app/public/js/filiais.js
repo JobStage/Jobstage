@@ -331,7 +331,7 @@ function salvarDadosFilial(id) {
           text: 'salvo',
           icon: 'success'
         }).then(() => {
-          location.reload();
+          window.location.replace('filiais.php');
         });
       } else {
         Swal.fire({
