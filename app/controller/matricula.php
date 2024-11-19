@@ -100,9 +100,8 @@ class matricula {
                             <embed src="../app/matricula/'.$value['matricula'].'" width="50%" height="600px" />
                             <div>
                                 <p><strong>Curso:</strong> '.$value['curso'].'</p>
-                                <p><strong>Instituição:</strong> '.$value['instituicao'].'</p>
-                                <p><strong>Início:</strong> '.$value['inicio'].'</p>
-                                <p><strong>Fim:</strong> '.$value['fim'].'</p>
+                                <p><strong>Instituição:</strong> '.$value['nomeFilial'].'</p>
+                                <p><strong>Fim:</strong> '.date("d-m-Y", strtotime($value['fim'])).'</p>
                                 <div>
                                     <button class="btn btn-danger" onclick="reprovar('.$value['ID'].', '.$value['id_formacao'].')">Reprovar</button>
                                     <button class="btn btn-primary" onclick="aprovar('.$value['ID'].', '.$value['id_formacao'].')">Aprovar</button>

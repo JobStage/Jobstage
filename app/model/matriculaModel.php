@@ -14,12 +14,14 @@ class matriculaModel{
 
     public function getAllMatriculas(){
         try {
-            $sql = $this->conn->prepare('SELECT * FROM formacao as f
-                                            INNER JOIN aluno as a
-                                            ON a.ID = f.id_aluno
-                                            LEFT JOIN curso_db as c
-                                            ON c.ID = f.curso
-                                        WHERE f.matricula_valida = 0');
+            $sql = $this->conn->prepare('  SELECT fi.nome as nomeFilial, a.nome as nome, c.curso  as curso, f.fim as fim, a.ID as ID, f.id_formacao as id_formacao, f.matricula as matricula FROM formacao as f
+        INNER JOIN filial as fi
+        on fi.id_filial = f.instituicao
+    INNER JOIN aluno as a
+    ON a.ID = f.id_aluno
+    LEFT JOIN curso_db as c
+    ON c.ID = f.curso
+WHERE f.matricula_valida = 0');
             $sql->execute();
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
             return $result;
